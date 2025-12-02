@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "LoginWidget.h"
 #include "RegisterWidget.h"
-#include "ConnectionManager.h"
 #include <QApplication>
 #include <QFile>    // 【新增】必须加这个，否则报错 QFile unknown
 #include <QDebug>   // 【新增】必须加这个，否则报错 qDebug unknown

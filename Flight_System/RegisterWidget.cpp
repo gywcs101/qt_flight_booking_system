@@ -5,7 +5,6 @@
 #include <QSqlError>
 #include <QDebug>
 
-// 注意：不要再包含 ConnectionManager.h
 
 RegisterWidget::RegisterWidget(QWidget *parent) :
     QWidget(parent),
