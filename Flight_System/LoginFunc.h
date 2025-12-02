@@ -7,6 +7,7 @@ class LoginFunc
 {
 public:
     static bool verifyUser(const QString &username, const QString &password);
+    static bool verifyAdmin(const QString &username, const QString &password);
 };
 
 #endif // LOGINFUNC_H  <--- 注意！必须放在最后一行！
