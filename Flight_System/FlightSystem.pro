@@ -8,6 +8,7 @@ TEMPLATE = app
 
 # 3. 源文件列表 (C++逻辑)
 HEADERS += \
+    AdminWidget.h \
     LoginWidget.h \
     MainWindow.h \
     RegisterWidget.h \
@@ -16,6 +17,7 @@ HEADERS += \
     # ConnectionManager.h  <-- 【删除】删掉这个
 
 SOURCES += \
+    AdminWidget.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
@@ -25,6 +27,7 @@ SOURCES += \
 
 # 5. 界面文件列表 (设计师UI)
 FORMS += \
+    AdminWidget.ui \
     MainWindow.ui \
     LoginWidget.ui \
     RegisterWidget.ui

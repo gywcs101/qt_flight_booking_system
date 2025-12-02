@@ -1,0 +1,4 @@
+#ifndef ADMINWIDGET_H
+#define ADMINWIDGET_H
+
+#endif // ADMINWIDGET_H
