@@ -18,6 +18,20 @@ QLineEdit {
     padding: 5px;
 }
 
+/* 3.5. 【新增】下拉框样式 (让它和输入框长得一样) */
+QComboBox {
+    border-image: none;      /* 防止继承背景图 */
+    background-color: white; /* 背景变白 */
+    border: 1px solid #ccc;  /* ★ 这里就是你要的灰色边框 */
+    border-radius: 4px;      /* 圆角 */
+    padding: 5px;            /* 内边距 */
+}
+/* 去掉下拉箭头按钮周围丑陋的独立边框 */
+QComboBox::drop-down {
+    border: none;
+    width: 25px;
+}
+
 /* 4. 按钮样式 (防止继承背景图) */
 QPushButton {
     border-image: none;

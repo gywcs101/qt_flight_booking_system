@@ -11,6 +11,7 @@ TEMPLATE = app
 # 这里的 bannerwidget.h 和 homeform.h 是你从新项目带过来的
 # =========================================================================
 HEADERS += \
+    AdminWidget.h \
     LoginWidget.h \
     MainWindow.h \
     RegisterWidget.h \
@@ -24,6 +25,7 @@ HEADERS += \
 # 对应的 cpp 文件也要加上
 # =========================================================================
 SOURCES += \
+    AdminWidget.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
@@ -38,6 +40,7 @@ SOURCES += \
 # homeform.ui 是新界面的一部分，必须加上
 # =========================================================================
 FORMS += \
+    AdminWidget.ui \
     MainWindow.ui \
     LoginWidget.ui \
     RegisterWidget.ui \

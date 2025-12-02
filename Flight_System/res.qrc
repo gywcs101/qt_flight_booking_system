@@ -15,5 +15,6 @@
         <file>like.png</file>
         <file>main.png</file>
         <file>user.png</file>
+        <file>DefaultAvatar.png</file>
     </qresource>
 </RCC>

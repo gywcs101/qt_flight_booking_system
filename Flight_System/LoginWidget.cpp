@@ -63,3 +63,11 @@ void LoginWidget::on_pushButton_2_clicked()
     qApp->quit();
 }
 
+
+void LoginWidget::on_btn_register_clicked()
+{
+    // 发送信号给 main.cpp，让它隐藏登录窗，显示注册窗
+    emit goToRegister();
+}
+
+

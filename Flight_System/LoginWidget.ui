@@ -111,26 +111,13 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>290</y>
-     <width>61</width>
+     <y>291</y>
+     <width>71</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
     <string>没有账号？</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>290</y>
-     <width>51</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#0000ff;&quot;&gt;立即注册&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QComboBox" name="comboBox">
@@ -169,6 +156,39 @@
    </property>
    <property name="text">
     <string>身    份：</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btn_register">
+   <property name="geometry">
+    <rect>
+     <x>144</x>
+     <y>287</y>
+     <width>93</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    border: none;              /* 去掉边框 */
+    background-color: transparent; /* 背景透明 */
+    color: #007bff;           /* 文字颜色：蓝色 */
+    text-align: left;          /* 文字左对齐 (可选) */
+}
+
+QPushButton:hover {
+    color: #0056b3;           /* 鼠标悬停时颜色变深 */
+    text-decoration: underline; /* 鼠标悬停时加下划线，更有链接的感觉 */
+}
+
+QPushButton:pressed {
+    color: #004494;           /* 按下时颜色更深 */
+}</string>
+   </property>
+   <property name="text">
+    <string>立即注册</string>
    </property>
   </widget>
  </widget>
