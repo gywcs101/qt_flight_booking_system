@@ -18,7 +18,8 @@ HEADERS += \
     LoginFunc.h \
     ODBC.h \
     bannerwidget.h \
-    homeform.h
+    homeform.h \
+    UserCenter.h
 
 # =========================================================================
 # 2. 源文件列表 (SOURCES)
@@ -33,7 +34,8 @@ SOURCES += \
     LoginFunc.cpp \
     ODBC.cpp \
     bannerwidget.cpp \
-    homeform.cpp
+    homeform.cpp \
+    UserCenter.cpp
 
 # =========================================================================
 # 3. 界面文件列表 (FORMS)
@@ -44,7 +46,8 @@ FORMS += \
     MainWindow.ui \
     LoginWidget.ui \
     RegisterWidget.ui \
-    homeform.ui
+    homeform.ui \
+    UserCenter.ui
 
 # =========================================================================
 # 4. 资源文件

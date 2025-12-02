@@ -1,4 +1,4 @@
-#include "LoginWidget.h"
+ #include "LoginWidget.h"
 #include "ui_LoginWidget.h" // 注意这里自动生成的头文件名变了
 #include "LoginFunc.h"
 #include <QMessageBox>
