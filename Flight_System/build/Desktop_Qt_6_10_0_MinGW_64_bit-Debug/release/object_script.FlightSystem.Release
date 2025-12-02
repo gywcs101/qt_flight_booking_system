@@ -1,0 +1,10 @@
+release/main.o
+release/LoginWidget.o
+release/MainWindow.o
+release/RegisterWidget.o
+release/LoginFunc.o
+release/ODBC.o
+release/qrc_res.o
+release/moc_LoginWidget.o
+release/moc_MainWindow.o
+release/moc_RegisterWidget.o

@@ -2,32 +2,49 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-# 2. 生成的可执行文件名
+# 生成的可执行文件名
 TARGET = FlightSystem
 TEMPLATE = app
 
-# 3. 源文件列表 (C++逻辑)
+# =========================================================================
+# 1. 头文件列表 (HEADERS)
+# 这里的 bannerwidget.h 和 homeform.h 是你从新项目带过来的
+# =========================================================================
 HEADERS += \
     LoginWidget.h \
     MainWindow.h \
     RegisterWidget.h \
     LoginFunc.h \
-    ODBC.h          # 【新增】加上这个
-    # ConnectionManager.h  <-- 【删除】删掉这个
+    ODBC.h \
+    bannerwidget.h \
+    homeform.h
 
+# =========================================================================
+# 2. 源文件列表 (SOURCES)
+# 对应的 cpp 文件也要加上
+# =========================================================================
 SOURCES += \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
     RegisterWidget.cpp \
     LoginFunc.cpp \
-    ODBC.cpp        # 【新增】加上这个
+    ODBC.cpp \
+    bannerwidget.cpp \
+    homeform.cpp
 
-# 5. 界面文件列表 (设计师UI)
+# =========================================================================
+# 3. 界面文件列表 (FORMS)
+# homeform.ui 是新界面的一部分，必须加上
+# =========================================================================
 FORMS += \
     MainWindow.ui \
     LoginWidget.ui \
-    RegisterWidget.ui
+    RegisterWidget.ui \
+    homeform.ui
 
+# =========================================================================
+# 4. 资源文件
+# =========================================================================
 RESOURCES += \
     res.qrc
