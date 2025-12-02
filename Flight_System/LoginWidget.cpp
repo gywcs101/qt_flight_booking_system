@@ -3,6 +3,7 @@
 #include "LoginFunc.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <QApplication>
 
 LoginWidget::LoginWidget(QWidget *parent) :
     QWidget(parent),
@@ -42,3 +43,8 @@ void LoginWidget::on_btn_login_clicked()
         QMessageBox::warning(this,"登录失败","用户名或密码有误！");
     }
 }
+void LoginWidget::on_pushButton_2_clicked()
+{
+    qApp->quit();
+}
+
