@@ -1,15 +1,15 @@
 #include "LoginWidget.h"
-#include "ui_LoginWidget.h"
-#include "ConnectionManager.h"
+#include "ui_LoginWidget.h" // 注意这里自动生成的头文件名变了
+#include "LoginFunc.h"
 #include <QMessageBox>
+#include <QDebug>
 
 LoginWidget::LoginWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LoginWidget)
 {
     ui->setupUi(this);
-
-    // 这里的类名和 objectName 必须匹配，截图确认是 LoginWidget，所以没问题
+    this->setAttribute(Qt::WA_StyledBackground); // 也就是旧代码里的设置
 }
 
 LoginWidget::~LoginWidget()
@@ -17,34 +17,28 @@ LoginWidget::~LoginWidget()
     delete ui;
 }
 
+// --- 这里是把 widget.cpp 的逻辑搬过来，并把 Widget:: 改为 LoginWidget:: ---
+
 void LoginWidget::on_btn_login_clicked()
 {
-    // 获取 UI 里的输入框内容
-    QString user = ui->lineEdit_username->text();
-    QString pass = ui->lineEdit_password->text();
+    QString username = ui->lineEdit_username->text().trimmed();
+    QString password = ui->lineEdit_password->text();
 
-    if (user.isEmpty() || pass.isEmpty()) {
-        QMessageBox::warning(this, "提示", "用户名或密码不能为空");
+    if(username.isEmpty() || password.isEmpty()){
+        QMessageBox::warning(this,"错误输入","别忘了填写用户名和密码哦");
         return;
     }
 
-    User currentUser;
-    // 调用数据库登录
-    if (ConnectionManager::instance().login(user, pass, currentUser)) {
-        emit loginSuccess(); // 发送信号给 main.cpp
-    } else {
-        QMessageBox::warning(this, "错误", "用户名或密码错误");
+    // 调用搬过来的 LoginFunc
+    bool result = LoginFunc::verifyUser(username, password);
+    
+    if(result){
+        // QMessageBox::information(this,"欢迎","登录成功"); 
+        // 登录成功后，不要只弹窗，要发送信号给 Main.cpp 切换窗口
+        emit loginSuccess(); 
+        this->close(); // 关闭登录窗
     }
-}
-
-void LoginWidget::on_pushButton_2_clicked()
-{
-    // 这是“取消”按钮，点击后关闭窗口
-    this->close();
-}
-
-void LoginWidget::on_btn_register_jump_clicked()
-{
-    // 发送跳转信号
-    emit goToRegister();
+    else{
+        QMessageBox::warning(this,"登录失败","用户名或密码有误！");
+    }
 }

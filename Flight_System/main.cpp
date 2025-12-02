@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QFile>    // 【新增】必须加这个，否则报错 QFile unknown
 #include <QDebug>   // 【新增】必须加这个，否则报错 qDebug unknown
+#include "ODBC.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +22,8 @@ int main(int argc, char *argv[])
     }
 
     // --- 下面是之前的逻辑连接代码 ---
-    if (!ConnectionManager::instance().connect()) {
+    if (!ODBC::connectToDB()) {                      // <-- 换成这行
+        qDebug() << "数据库连接失败，程序退出";
         return -1;
     }
 

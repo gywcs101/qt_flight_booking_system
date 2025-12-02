@@ -15,15 +15,14 @@ public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
 
+    // --- 必须补上这部分 ---
 signals:
-    void loginSuccess();   // 登录成功信号
-    void goToRegister();   // 跳转注册信号
+    void loginSuccess();  // 登录成功的信号
+    void goToRegister();  // 跳转去注册的信号
+    // --------------------
 
 private slots:
     void on_btn_login_clicked();
-    void on_pushButton_2_clicked();
-
-    void on_btn_register_jump_clicked();
 
 private:
     Ui::LoginWidget *ui;
