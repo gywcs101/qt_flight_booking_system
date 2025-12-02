@@ -2,5 +2,18 @@
     <qresource prefix="/">
         <file>style.qss</file>
         <file>LoginBackGround.png</file>
+        <file>about.png</file>
+        <file>account.png</file>
+        <file>adPicture1.jpg</file>
+        <file>adPicture1.png</file>
+        <file>adPicture2.png</file>
+        <file>dingdan.png</file>
+        <file>find.png</file>
+        <file>flight.png</file>
+        <file>flight2.png</file>
+        <file>flight3.png</file>
+        <file>like.png</file>
+        <file>main.png</file>
+        <file>user.png</file>
     </qresource>
 </RCC>
