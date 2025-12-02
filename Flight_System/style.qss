@@ -1,0 +1,45 @@
+QWidget {
+    background-color: #f5f6f7;
+    font-family: "Microsoft YaHei";
+}
+QPushButton {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    padding: 8px;
+}
+QPushButton:hover {
+    background-color: #0056b3;
+}
+QLineEdit {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+QWidget#Register {
+    border-image: url(:/LoginBackGround.png);
+}
+
+QLineEdit {
+    border-image: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+QPushButton {
+    border-image: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+QLabel {
+    background-color: transparent; /* 背景设为透明 */
+
+    /* 可选：如果背景图很深，你可能需要把文字改成白色 */
+    /* color: white; */
+
+    /* 可选：加粗字体让文字在背景图上更清晰 */
+    /* font-weight: bold; */
+}

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>flight.png</file>
+        <file>like.png</file>
+        <file>flight2.png</file>
+        <file>flight3.png</file>
+        <file>style.qss</file>
+        <file>about.png</file>
+        <file>account.png</file>
+        <file>dingdan.png</file>
+        <file>main.png</file>
+        <file>user.png</file>
+        <file>find.png</file>
+    </qresource>
+</RCC>
