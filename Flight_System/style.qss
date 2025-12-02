@@ -1,8 +1,26 @@
+/* 1. 默认字体配置 */
 QWidget {
-    background-color: #f5f6f7;
     font-family: "Microsoft YaHei";
 }
+
+/* 2. 核心：给登录和注册窗口指定背景图 */
+/* 这里的 #LoginWidget 对应你截图里的对象名 */
+QWidget#LoginWidget, QWidget#RegisterWidget {
+    border-image: url(:/LoginBackGround.png);
+}
+
+/* 3. 输入框样式 (防止继承背景图) */
+QLineEdit {
+    border-image: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+/* 4. 按钮样式 (防止继承背景图) */
 QPushButton {
+    border-image: none;
     background-color: #007bff;
     color: white;
     border-radius: 5px;
@@ -11,35 +29,12 @@ QPushButton {
 QPushButton:hover {
     background-color: #0056b3;
 }
-QLineEdit {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px;
-}
 
-QWidget#Register {
-    border-image: url(:/LoginBackGround.png);
-}
-
-QLineEdit {
-    border-image: none;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-QPushButton {
-    border-image: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-}
+/* 5. 标签样式 (透明背景，白色文字) */
 QLabel {
-    background-color: transparent; /* 背景设为透明 */
-
-    /* 可选：如果背景图很深，你可能需要把文字改成白色 */
+    border-image: none;
+    background-color: transparent;
+    /* 如果背景图很深，建议把下面这行前面的注释去掉，让字变白 */
     /* color: white; */
-
-    /* 可选：加粗字体让文字在背景图上更清晰 */
-    /* font-weight: bold; */
+    font-weight: bold;
 }
