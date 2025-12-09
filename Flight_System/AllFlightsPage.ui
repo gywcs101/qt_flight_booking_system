@@ -142,7 +142,7 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
     <rect>
      <x>0</x>
      <y>10</y>
-     <width>751</width>
+     <width>771</width>
      <height>111</height>
     </rect>
    </property>
