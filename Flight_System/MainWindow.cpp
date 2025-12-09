@@ -10,7 +10,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->bannerWidget->addImage(":/images/banner1.jpg"); // 假设你有资源文件
+    ui->bannerWidget->addImage("D:/test/ad2.jpg");      // 或者本地路径
+    ui->bannerWidget->addImage("D:/test/ad3.jpg");
 
+    // 2. 启动轮播
+    ui->bannerWidget->start(3000);
 }
 
 MainWindow::~MainWindow()
