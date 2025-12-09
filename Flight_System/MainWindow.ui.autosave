@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>950</width>
+    <height>629</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>哈夫克航班系统</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
+   <item>
+    <widget class="QWidget" name="leftContainer" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout" stretch="8">
+      <item>
+       <widget class="QListWidget" name="menuList">
+        <property name="focusPolicy">
+         <enum>Qt::FocusPolicy::NoFocus</enum>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>244</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="spacing">
+         <number>8</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>首页</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/main.png</normaloff>:/main.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>全部航班</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/flight3.png</normaloff>:/flight3.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>特价机票</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/account.png</normaloff>:/account.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>发现</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/find.png</normaloff>:/find.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>我的收藏</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/like.png</normaloff>:/like.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>我的订单</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/dingdan.png</normaloff>:/dingdan.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>用户中心</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/user.png</normaloff>:/user.png</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>关于我们</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res.qrc">
+           <normaloff>:/about.png</normaloff>:/about.png</iconset>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="rightContainer" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>751</width>
+        <height>621</height>
+       </rect>
+      </property>
+      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="page_3"/>
+      <widget class="QWidget" name="page_4"/>
+      <widget class="QWidget" name="page_5"/>
+      <widget class="QWidget" name="page_6"/>
+      <widget class="QWidget" name="page_7"/>
+      <widget class="QWidget" name="page_8"/>
+      <widget class="QWidget" name="page_2"/>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections/>
+</ui>
