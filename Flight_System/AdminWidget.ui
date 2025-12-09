@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-<<<<<<< Updated upstream
  <class>AdminWidget</class>
  <widget class="QWidget" name="AdminWidget">
-=======
- <class>Form</class>
- <widget class="QWidget" name="Form">
->>>>>>> Stashed changes
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -16,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>AdminWidget</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4">
    <item>
