@@ -11,8 +11,8 @@ homeForm::homeForm(QWidget *parent)
     images << ":/adPicture1.png" << ":/adPicture2.png";
 
     // ui->widgetBanner 就是刚才你在 UI 里提升的那个控件
-    // 因为提升了，它有了 BannerWidget 的方法
-    ui->widgetBanner->setImagePaths(images);
+    // 因为提升了，它有了 adbanner 的方法
+    ui->adbanner->setImagePaths(images);
 }
 
 homeForm::~homeForm()

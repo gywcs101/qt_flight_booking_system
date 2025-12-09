@@ -17,7 +17,7 @@ HEADERS += \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
-    bannerwidget.h \
+    adbanner.h \
     homeform.h \
     UserCenter.h
 
@@ -33,7 +33,7 @@ SOURCES += \
     RegisterWidget.cpp \
     LoginFunc.cpp \
     ODBC.cpp \
-    bannerwidget.cpp \
+    adbanner.cpp \
     homeform.cpp \
     UserCenter.cpp
 

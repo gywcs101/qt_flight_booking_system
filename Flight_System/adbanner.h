@@ -16,6 +16,7 @@ class AdBanner : public QWidget
 public:
     explicit AdBanner(QWidget *parent = nullptr);
     void addImage(const QString &imagePath); // 添加图片路径
+    void setImagePaths(const QStringList &paths); // 【新增】一次性添加多张图片
     void start(int interval = 3000);         // 开始轮播
     void stop();                             // 停止轮播
 
