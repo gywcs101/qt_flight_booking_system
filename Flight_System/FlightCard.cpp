@@ -11,7 +11,8 @@ FlightCard::FlightCard(const FlightData &data, QWidget *parent)
 }
 
 void FlightCard::setupUi() {
-    this->setFixedHeight(110);
+    // 【修改】增加高度以容纳两个大按钮
+    this->setFixedHeight(125);
     this->setAttribute(Qt::WA_StyledBackground, true);
     this->setStyleSheet("FlightCard { background: white; border-radius: 8px; border: 1px solid #E0E0E0; }"
                         "FlightCard:hover { border: 1px solid #0078D7; }");
@@ -46,24 +47,30 @@ void FlightCard::setupUi() {
     col3->addWidget(new QLabel(m_data.arrCity));
     mainLayout->addLayout(col3, 2);
 
-    // 5. 价格与操作
+    // 5. 价格
     QVBoxLayout *col4 = new QVBoxLayout;
     QLabel *price = new QLabel(QString("¥%1").arg(m_data.price));
     price->setStyleSheet("color: #FF6600; font-weight: bold; font-size: 20px;");
     col4->addWidget(price);
     col4->setAlignment(Qt::AlignRight);
 
-    // 按钮区
+    // 6. 按钮区
     QVBoxLayout *btnLayout = new QVBoxLayout;
+    btnLayout->setSpacing(5); // 按钮间距
+
+    // 预订按钮
     QPushButton *btnBook = new QPushButton("预订");
     btnBook->setFixedSize(80, 30);
-    btnBook->setStyleSheet("background-color: #0078D7; color: white; border-radius: 4px;");
+    btnBook->setStyleSheet("QPushButton { background-color: #0078D7; color: white; border-radius: 4px; border:none; font-weight: bold; }"
+                           "QPushButton:hover { background-color: #005A9E; }");
     connect(btnBook, &QPushButton::clicked, [this](){ emit bookClicked(m_data.flightId); });
 
+    // 【修改】收藏按钮：尺寸设为 80x30
     m_btnFav = new QPushButton();
-    m_btnFav->setFixedSize(80, 25);
-    m_btnFav->setFlat(true);
+    m_btnFav->setFixedSize(80, 30);
     m_btnFav->setCursor(Qt::PointingHandCursor);
+    // 注意：这里不用 setFlat(true)，我们要自定义边框样式
+
     connect(m_btnFav, &QPushButton::clicked, [this](){
         m_data.isFavorite = !m_data.isFavorite;
         setFavoriteState(m_data.isFavorite);
@@ -80,10 +87,23 @@ void FlightCard::setupUi() {
 
 void FlightCard::setFavoriteState(bool isFav) {
     if (isFav) {
+        // 已收藏：浅红背景，红字红边框
         m_btnFav->setText("♥ 已收藏");
-        m_btnFav->setStyleSheet("color: #FF4D4F; font-weight: bold; border: none;");
+        m_btnFav->setStyleSheet("QPushButton { "
+                                "   color: #FF4D4F; "
+                                "   border: 1px solid #FF4D4F; "
+                                "   background-color: #FFF1F0; "
+                                "   border-radius: 4px; font-weight: bold;"
+                                "}");
     } else {
+        // 未收藏：白底灰字
         m_btnFav->setText("♡ 收藏");
-        m_btnFav->setStyleSheet("color: #909399; border: none;");
+        m_btnFav->setStyleSheet("QPushButton { "
+                                "   color: #606266; "
+                                "   border: 1px solid #DCDFE6; "
+                                "   background-color: white; "
+                                "   border-radius: 4px;"
+                                "}"
+                                "QPushButton:hover { color: #409EFF; border-color: #409EFF; }");
     }
 }

@@ -6,15 +6,19 @@ DateSelector::DateSelector(QWidget *parent) : QWidget(parent)
 {
     setupUi();
 
-    // 初始化年份：今年和明年
+    // 1. 初始化年份 (今年和明年)
     int curYear = QDate::currentDate().year();
     m_comboYear->addItem(QString::number(curYear) + "年", curYear);
     m_comboYear->addItem(QString::number(curYear + 1) + "年", curYear + 1);
 
-    // 默认选中今天
+    // 2. 【关键】手动触发一次更新，确保月份和日期框被填满
+    // 否则 getDate() 会因为下拉框为空而返回错误日期
+    updateMonths();
+
+    // 3. 选中今天
     setDate(QDate::currentDate());
 
-    // 级联更新逻辑
+    // 4. 建立信号连接
     connect(m_comboYear, &QComboBox::currentIndexChanged, this, &DateSelector::updateMonths);
     connect(m_comboMonth, &QComboBox::currentIndexChanged, this, &DateSelector::updateDays);
     connect(m_comboDay, &QComboBox::currentIndexChanged, [this](){
@@ -50,7 +54,8 @@ void DateSelector::setupUi()
     layout->addWidget(m_comboMonth);
     layout->addWidget(m_comboDay);
 
-    this->setMinimumSize(220, 40); // 确保不被压缩
+    // 强制大小，防止被压缩
+    this->setMinimumSize(240, 40);
 }
 
 void DateSelector::updateMonths()
@@ -61,13 +66,15 @@ void DateSelector::updateMonths()
     QDate today = QDate::currentDate();
     int selYear = m_comboYear->currentData().toInt();
 
-    // 如果是今年，只能选本月及以后；明年则全选
+    // 逻辑：如果是今年，从本月开始；明年则显示1-12月
     int startMonth = (selYear == today.year()) ? today.month() : 1;
 
     for (int i = startMonth; i <= 12; i++) {
         m_comboMonth->addItem(QString("%1月").arg(i, 2, 10, QChar('0')), i);
     }
     m_comboMonth->blockSignals(false);
+
+    // 月份变了，必须刷新天数
     updateDays();
 }
 
@@ -79,16 +86,17 @@ void DateSelector::updateDays()
     QDate today = QDate::currentDate();
     int selYear = m_comboYear->currentData().toInt();
     int selMonth = m_comboMonth->currentData().toInt();
+    if(selMonth == 0) selMonth = 1;
+
     int daysInMonth = QDate(selYear, selMonth, 1).daysInMonth();
 
-    // 如果是今年且本月，只能选今天及以后
+    // 逻辑：如果是今年今月，从今天开始
     int startDay = (selYear == today.year() && selMonth == today.month()) ? today.day() : 1;
 
     for (int i = startDay; i <= daysInMonth; i++) {
         m_comboDay->addItem(QString("%1日").arg(i, 2, 10, QChar('0')), i);
     }
     m_comboDay->blockSignals(false);
-    emit dateChanged(getDate());
 }
 
 void DateSelector::setDate(const QDate &date)
