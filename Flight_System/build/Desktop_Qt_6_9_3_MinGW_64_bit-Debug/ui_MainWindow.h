@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
+#include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -26,6 +27,15 @@ public:
     QVBoxLayout *verticalLayout;
     QListWidget *menuList;
     QWidget *rightContainer;
+    QStackedWidget *stackedWidget;
+    QWidget *page;
+    QWidget *page_3;
+    QWidget *page_4;
+    QWidget *page_5;
+    QWidget *page_6;
+    QWidget *page_7;
+    QWidget *page_8;
+    QWidget *page_2;
 
     void setupUi(QWidget *MainWindow)
     {
@@ -94,6 +104,33 @@ public:
         rightContainer->setObjectName("rightContainer");
         sizePolicy.setHeightForWidth(rightContainer->sizePolicy().hasHeightForWidth());
         rightContainer->setSizePolicy(sizePolicy);
+        stackedWidget = new QStackedWidget(rightContainer);
+        stackedWidget->setObjectName("stackedWidget");
+        stackedWidget->setGeometry(QRect(0, 0, 751, 621));
+        page = new QWidget();
+        page->setObjectName("page");
+        stackedWidget->addWidget(page);
+        page_3 = new QWidget();
+        page_3->setObjectName("page_3");
+        stackedWidget->addWidget(page_3);
+        page_4 = new QWidget();
+        page_4->setObjectName("page_4");
+        stackedWidget->addWidget(page_4);
+        page_5 = new QWidget();
+        page_5->setObjectName("page_5");
+        stackedWidget->addWidget(page_5);
+        page_6 = new QWidget();
+        page_6->setObjectName("page_6");
+        stackedWidget->addWidget(page_6);
+        page_7 = new QWidget();
+        page_7->setObjectName("page_7");
+        stackedWidget->addWidget(page_7);
+        page_8 = new QWidget();
+        page_8->setObjectName("page_8");
+        stackedWidget->addWidget(page_8);
+        page_2 = new QWidget();
+        page_2->setObjectName("page_2");
+        stackedWidget->addWidget(page_2);
 
         horizontalLayout->addWidget(rightContainer);
 

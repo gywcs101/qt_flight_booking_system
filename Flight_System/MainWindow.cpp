@@ -1,5 +1,8 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "adbanner.h"
+#include <QDesktopServices>
+#include <QUrl>
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent), // 注意：这里调用 QWidget 构造
@@ -7,9 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 初始化列表或其他逻辑
-    // 例如默认选中第一项
-    // ui->menuList->setCurrentRow(0);
+
 }
 
 MainWindow::~MainWindow()
