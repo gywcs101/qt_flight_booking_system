@@ -20,222 +20,254 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* ==================== 
-   1. 顶部筛选栏样式 
-   ==================== */
-QFrame#topBar {
-    background-color: white;
-    border-bottom: 1px solid #E0E0E0; /* 底部淡灰色分割线 */
-}
-
-/* 输入框样式 */
-QLineEdit {
-    border: 1px solid #DCDFE6;
-    border-radius: 4px;
-    padding: 0 10px; /* 文字内边距 */
+   <string notr="true">/* ===========================================
+   1. 全局字体与背景设置
+   =========================================== */
+QWidget {
+    font-family: &quot;Microsoft YaHei&quot;, &quot;Segoe UI&quot;, sans-serif; /* 优先使用微软雅黑 */
     font-size: 14px;
-    color: #333;
-    background-color: white;
+    color: #333333; /* 通用文字深灰色 */
 }
 
-QLineEdit:focus {
-    border: 1px solid #0078D7; /* 选中时变蓝 */
+/* ===========================================
+   2. 顶部筛选栏 (Top Bar)
+   =========================================== */
+/* 给 Frame 设置白底和底部细线，形成分割感 */
+QFrame#topBar {
+    background-color: #FFFFFF; 
+    border-bottom: 1px solid #E5E5E5; 
 }
 
-/* 箭头 Label */
-QLabel {
-    color: #909399;
+/* ===========================================
+   3. 输入框 (Line Edit) - 出发地/目的地
+   =========================================== */
+QLineEdit {
+    border: 1px solid #DCDFE6; /* 边框浅灰 */
+    border-radius: 4px;        /* 圆角 */
+    padding: 0 10px;           /* 左右留白，文字不贴边 */
+    background-color: #FFFFFF;
+    height: 35px;              /* 强制高度，防止太扁 */
     font-weight: bold;
 }
 
-/* 查询按钮 */
+/* 鼠标悬停时，边框稍微变深 */
+QLineEdit:hover {
+    border-color: #C0C4CC;
+}
+
+/* 获得焦点（输入时），边框变蓝 */
+QLineEdit:focus {
+    border: 1px solid #0078D7;
+}
+
+/* ===========================================
+   4. 按钮 (Push Button) - 查询按钮
+   =========================================== */
 QPushButton#btnSearch {
-    background-color: #0078D7; /* 携程蓝 */
-    color: white;
+    background-color: #0078D7; /* 携程蓝/微软蓝 */
+    color: white;              /* 白字 */
+    border-radius: 4px;        /* 圆角 */
+    border: none;              /* 去掉丑陋的边框 */
     font-size: 15px;
     font-weight: bold;
-    border-radius: 4px;
-    border: none;
 }
 
+/* 鼠标悬停：颜色加深 */
 QPushButton#btnSearch:hover {
-    background-color: #005A9E; /* 悬停深蓝 */
+    background-color: #0062B1;
 }
 
+/* 鼠标按下：颜色更深，模拟按压感 */
 QPushButton#btnSearch:pressed {
-    background-color: #004C85;
+    background-color: #004E8C;
+    padding-top: 2px; /* 稍微下沉一点点 */
+    padding-left: 2px;
 }
 
-/* ==================== 
-   2. 滚动区域样式 
-   ==================== */
+/* ===========================================
+   5. 装饰性 Label (那个箭头)
+   =========================================== */
+QLabel {
+    color: #909399; /* 浅灰色箭头，不喧宾夺主 */
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* ===========================================
+   6. 滚动区域 (Scroll Area)
+   =========================================== */
+/* 滚动区的背景设为淡灰，衬托白色的卡片 */
 QScrollArea {
-    background-color: #F5F7FA; /* 整体背景淡灰 */
-    border: none;
+    border: none; /* 去掉外边框 */
+    background-color: #F5F7FA; 
 }
 
-/* 滚动条内部容器 */
+/* 滚动区内部的画布也要设为淡灰 */
 QWidget#scrollAreaWidgetContents {
-    background-color: #F5F7FA; /* 确保里面也是淡灰 */
+    background-color: #F5F7FA;
 }
 
-/* 滚动条美化 (可选，去掉就是系统默认) */
+/* ===========================================
+   7. (进阶) 美化滚动条 - 让它变细变好看
+   =========================================== */
 QScrollBar:vertical {
     border: none;
     background: #F5F7FA;
-    width: 8px;
+    width: 8px; /* 滚动条宽度变细 */
     margin: 0px;
 }
+
+/* 滚动条里面的滑块 */
 QScrollBar::handle:vertical {
-    background: #C0C4CC;
-    border-radius: 4px;
-    min-height: 20px;
+    background: #C0C4CC; /* 浅灰色滑块 */
+    border-radius: 4px;  /* 圆形滑块 */
+    min-height: 30px;
 }
+
+/* 鼠标放到滑块上变深 */
+QScrollBar::handle:vertical:hover {
+    background: #909399;
+}
+
+/* 隐藏上下的小箭头按钮，现代UI都不用那个 */
 QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
     height: 0px;
 }</string>
   </property>
-  <widget class="QFrame" name="topBar">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>571</width>
-     <height>111</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Shape::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Shadow::Raised</enum>
-   </property>
-   <widget class="QLineEdit" name="lineEditDep">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>-1</pointsize>
-     </font>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-    <property name="placeholderText">
-     <string>出发城市</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEditArr">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>20</y>
-      <width>121</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>-1</pointsize>
-     </font>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-    <property name="placeholderText">
-     <string>到达城市</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnSearch">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>40</y>
-      <width>100</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>100</width>
-      <height>40</height>
-     </size>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>-1</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>搜索</string>
-    </property>
-   </widget>
-   <widget class="DateSelector" name="dateSelector" native="true">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>70</y>
-      <width>141</width>
-      <height>31</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>30</y>
-      <width>41</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>30</pointsize>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>⇄</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QScrollArea" name="scrollArea">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>120</y>
-     <width>571</width>
-     <height>341</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::Shape::NoFrame</enum>
-   </property>
-   <property name="widgetResizable">
-    <bool>true</bool>
-   </property>
-   <widget class="QWidget" name="scrollAreaWidgetContents">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>571</width>
-      <height>341</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="topBar">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <widget class="QLineEdit" name="lineEditDep">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>出发城市</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEditArr">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>20</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+      <property name="placeholderText">
+       <string>到达城市</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnSearch">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>40</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>搜索</string>
+      </property>
+     </widget>
+     <widget class="DateSelector" name="dateSelector" native="true">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>70</y>
+        <width>211</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>30</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft YaHei</family>
+        <pointsize>-1</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>⇄</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>579</width>
+        <height>278</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
