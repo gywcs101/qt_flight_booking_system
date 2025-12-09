@@ -11,6 +11,10 @@ TEMPLATE = app
 # =========================================================================
 HEADERS += \
     AdminWidget.h \
+    AllFlightsPage.h \
+    DateSelector.h \
+    FlightCard.h \
+    FlightData.h \
     LoginWidget.h \
     MainWindow.h \
     RegisterWidget.h \
@@ -25,6 +29,9 @@ HEADERS += \
 # =========================================================================
 SOURCES += \
     AdminWidget.cpp \
+    AllFlightsPage.cpp \
+    DateSelector.cpp \
+    FlightCard.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
@@ -40,6 +47,7 @@ SOURCES += \
 # =========================================================================
 FORMS += \
     AdminWidget.ui \
+    AllFlightsPage.ui \
     MainWindow.ui \
     LoginWidget.ui \
     RegisterWidget.ui \
