@@ -16,7 +16,8 @@ public:
     ~MainWindow();
 
 private slots:
-
+    // 【新增】左侧菜单点击事件
+    void on_menuList_currentRowChanged(int currentRow);
 
 private:
     Ui::MainWindow *ui;

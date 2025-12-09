@@ -40,7 +40,7 @@
   <customwidget>
    <class>AdBanner</class>
    <extends>QWidget</extends>
-   <header location="global">adbanner.h</header>
+   <header>adbanner.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

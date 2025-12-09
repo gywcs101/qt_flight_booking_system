@@ -153,9 +153,9 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>5</number>
     </property>
-    <widget class="QWidget" name="page">
+    <widget class="QWidget" name="page0_First">
      <widget class="AdBanner" name="bannerWidget" native="true">
       <property name="geometry">
        <rect>
@@ -235,13 +235,13 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_3"/>
-    <widget class="QWidget" name="page_4"/>
-    <widget class="QWidget" name="page_5"/>
-    <widget class="QWidget" name="page_6"/>
-    <widget class="QWidget" name="page_7"/>
-    <widget class="QWidget" name="page_8"/>
-    <widget class="QWidget" name="page_2"/>
+    <widget class="QWidget" name="page2_Special"/>
+    <widget class="QWidget" name="page3_Find"/>
+    <widget class="QWidget" name="page4_Love"/>
+    <widget class="QWidget" name="page5_Order"/>
+    <widget class="QWidget" name="page7_About"/>
+    <widget class="UserCenter" name="page6_User"/>
+    <widget class="QWidget" name="page1_Flight"/>
    </widget>
   </widget>
  </widget>
@@ -250,6 +250,12 @@
    <class>AdBanner</class>
    <extends>QWidget</extends>
    <header>adbanner.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>UserCenter</class>
+   <extends>QWidget</extends>
+   <header location="global">usercenter.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
