@@ -99,7 +99,7 @@ public:
 
         layoutWidget1 = new QWidget(UserCenter);
         layoutWidget1->setObjectName("layoutWidget1");
-        layoutWidget1->setGeometry(QRect(320, 70, 92, 241));
+        layoutWidget1->setGeometry(QRect(320, 70, 152, 241));
         verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setObjectName("verticalLayout_2");
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);

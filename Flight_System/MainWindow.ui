@@ -146,23 +146,23 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>-10</x>
+      <y>10</y>
       <width>751</width>
       <height>621</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>5</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page0_First">
      <widget class="AdBanner" name="bannerWidget" native="true">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>10</y>
+        <x>10</x>
+        <y>0</y>
         <width>731</width>
-        <height>101</height>
+        <height>161</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -176,9 +176,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>170</y>
-        <width>211</width>
-        <height>261</height>
+        <y>270</y>
+        <width>231</width>
+        <height>301</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -192,9 +192,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>110</y>
-        <width>71</width>
-        <height>31</height>
+        <y>210</y>
+        <width>101</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="sizePolicy">
@@ -205,32 +205,32 @@
       </property>
       <property name="font">
        <font>
-        <family>Britannic</family>
-        <pointsize>12</pointsize>
-        <bold>true</bold>
+        <family>华文琥珀</family>
+        <pointsize>25</pointsize>
+        <bold>false</bold>
        </font>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;热门目的地：&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;热门速报&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QWidget" name="destinationWidget2" native="true">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>170</y>
-        <width>221</width>
-        <height>261</height>
+        <x>260</x>
+        <y>270</y>
+        <width>231</width>
+        <height>301</height>
        </rect>
       </property>
      </widget>
      <widget class="QWidget" name="destinationWidget3" native="true">
       <property name="geometry">
        <rect>
-        <x>520</x>
-        <y>170</y>
-        <width>211</width>
-        <height>261</height>
+        <x>510</x>
+        <y>270</y>
+        <width>231</width>
+        <height>301</height>
        </rect>
       </property>
      </widget>
