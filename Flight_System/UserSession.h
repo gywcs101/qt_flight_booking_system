@@ -1,0 +1,4 @@
+#ifndef USERSESSION_H
+#define USERSESSION_H
+
+#endif // USERSESSION_H
