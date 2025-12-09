@@ -7,95 +7,103 @@
 FlightCard::FlightCard(const FlightData &data, QWidget *parent)
     : QWidget(parent), m_data(data) {
     setupUi();
+    setFavoriteState(m_data.isFavorite);
 }
 
 void FlightCard::setupUi() {
-    // 1. 设置卡片整体样式
-    this->setFixedHeight(110);
-    this->setAttribute(Qt::WA_StyledBackground, true); // 确保QSS生效
-    this->setStyleSheet(
-        "FlightCard { background-color: white; border-radius: 8px; border: 1px solid #E0E0E0; }"
-        "FlightCard:hover { border: 1px solid #0078D7; }" // 悬停变蓝
-        );
+    // 【修改】增加高度以容纳两个大按钮
+    this->setFixedHeight(125);
+    this->setAttribute(Qt::WA_StyledBackground, true);
+    this->setStyleSheet("FlightCard { background: white; border-radius: 8px; border: 1px solid #E0E0E0; }"
+                        "FlightCard:hover { border: 1px solid #0078D7; }");
 
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(20, 15, 20, 15);
-    mainLayout->setSpacing(10);
 
-    // --- 第1列：航班号与航司 ---
+    // 1. 航班号
     QVBoxLayout *col1 = new QVBoxLayout;
     QLabel *lblId = new QLabel(m_data.flightId);
     lblId->setStyleSheet("font-weight: bold; color: #0078D7; font-size: 16px;");
-    QLabel *lblAirline = new QLabel(m_data.airline);
-    lblAirline->setStyleSheet("color: #666; font-size: 13px;");
     col1->addWidget(lblId);
-    col1->addWidget(lblAirline);
+    col1->addWidget(new QLabel(m_data.airline));
+    mainLayout->addLayout(col1, 2);
 
-    // --- 第2列：出发信息 ---
+    // 2. 出发
     QVBoxLayout *col2 = new QVBoxLayout;
-    QLabel *lblDepTime = new QLabel(m_data.depTime.toString("HH:mm"));
-    lblDepTime->setStyleSheet("font-weight: bold; font-size: 24px; color: #333;");
-    QLabel *lblDepInfo = new QLabel(m_data.depCity + " " + m_data.depTime.toString("MM-dd"));
-    lblDepInfo->setStyleSheet("color: #888; font-size: 12px;");
-    col2->addWidget(lblDepTime);
-    col2->addWidget(lblDepInfo);
-    col2->setAlignment(Qt::AlignCenter);
+    QLabel *t1 = new QLabel(m_data.depTime.toString("HH:mm"));
+    t1->setStyleSheet("font-weight: bold; font-size: 24px;");
+    col2->addWidget(t1);
+    col2->addWidget(new QLabel(m_data.depCity));
+    mainLayout->addLayout(col2, 2);
 
-    // --- 第3列：箭头装饰 ---
-    QLabel *arrow = new QLabel("──────✈");
-    arrow->setStyleSheet("color: #DDD; font-size: 10px;");
-    arrow->setAlignment(Qt::AlignCenter);
+    // 3. 箭头
+    mainLayout->addWidget(new QLabel("──✈──"), 1, Qt::AlignCenter);
 
-    // --- 第4列：到达信息 ---
+    // 4. 到达
     QVBoxLayout *col3 = new QVBoxLayout;
-    QLabel *lblArrTime = new QLabel(m_data.arrTime.toString("HH:mm"));
-    lblArrTime->setStyleSheet("font-weight: bold; font-size: 24px; color: #333;");
-    QLabel *lblArrInfo = new QLabel(m_data.arrCity + " " + m_data.arrTime.toString("MM-dd"));
-    lblArrInfo->setStyleSheet("color: #888; font-size: 12px;");
-    col3->addWidget(lblArrTime);
-    col3->addWidget(lblArrInfo);
-    col3->setAlignment(Qt::AlignCenter);
+    QLabel *t2 = new QLabel(m_data.arrTime.toString("HH:mm"));
+    t2->setStyleSheet("font-weight: bold; font-size: 24px;");
+    col3->addWidget(t2);
+    col3->addWidget(new QLabel(m_data.arrCity));
+    mainLayout->addLayout(col3, 2);
 
-    // --- 第5列：价格、状态、按钮 ---
+    // 5. 价格
     QVBoxLayout *col4 = new QVBoxLayout;
+    QLabel *price = new QLabel(QString("¥%1").arg(m_data.price));
+    price->setStyleSheet("color: #FF6600; font-weight: bold; font-size: 20px;");
+    col4->addWidget(price);
+    col4->setAlignment(Qt::AlignRight);
 
-    // 价格
-    QLabel *lblPrice = new QLabel(QString("¥%1").arg(m_data.price));
-    lblPrice->setStyleSheet("color: #FF6600; font-weight: bold; font-size: 20px;");
-    lblPrice->setAlignment(Qt::AlignRight);
-
-    // 状态标签
-    QLabel *lblStatus = new QLabel(m_data.status);
-    lblStatus->setAlignment(Qt::AlignRight);
-    if (m_data.status == "延误") {
-        lblStatus->setStyleSheet("color: red; font-weight: bold; font-size: 12px;");
-    } else {
-        lblStatus->setStyleSheet("color: #28a745; font-size: 12px;");
-    }
-
-    col4->addWidget(lblPrice);
-    col4->addWidget(lblStatus);
+    // 6. 按钮区
+    QVBoxLayout *btnLayout = new QVBoxLayout;
+    btnLayout->setSpacing(5); // 按钮间距
 
     // 预订按钮
-    QVBoxLayout *colBtn = new QVBoxLayout;
     QPushButton *btnBook = new QPushButton("预订");
     btnBook->setFixedSize(80, 30);
-    btnBook->setCursor(Qt::PointingHandCursor);
-    btnBook->setStyleSheet(
-        "QPushButton { background-color: #0078D7; color: white; border-radius: 4px; border: none; }"
-        "QPushButton:hover { background-color: #005A9E; }"
-        );
-    connect(btnBook, &QPushButton::clicked, [this]() {
-        emit bookClicked(m_data.flightId);
-    });
-    colBtn->addWidget(btnBook);
-    colBtn->setAlignment(Qt::AlignCenter);
+    btnBook->setStyleSheet("QPushButton { background-color: #0078D7; color: white; border-radius: 4px; border:none; font-weight: bold; }"
+                           "QPushButton:hover { background-color: #005A9E; }");
+    connect(btnBook, &QPushButton::clicked, [this](){ emit bookClicked(m_data.flightId); });
 
-    // 添加到主布局
-    mainLayout->addLayout(col1, 2);
-    mainLayout->addLayout(col2, 2);
-    mainLayout->addWidget(arrow, 1);
-    mainLayout->addLayout(col3, 2);
+    // 【修改】收藏按钮：尺寸设为 80x30
+    m_btnFav = new QPushButton();
+    m_btnFav->setFixedSize(80, 30);
+    m_btnFav->setCursor(Qt::PointingHandCursor);
+    // 注意：这里不用 setFlat(true)，我们要自定义边框样式
+
+    connect(m_btnFav, &QPushButton::clicked, [this](){
+        m_data.isFavorite = !m_data.isFavorite;
+        setFavoriteState(m_data.isFavorite);
+        emit favClicked(m_data.flightId, m_data.isFavorite);
+    });
+
+    btnLayout->addWidget(btnBook);
+    btnLayout->addWidget(m_btnFav);
+    btnLayout->setAlignment(Qt::AlignCenter);
+
     mainLayout->addLayout(col4, 2);
-    mainLayout->addLayout(colBtn, 1);
+    mainLayout->addLayout(btnLayout, 1);
+}
+
+void FlightCard::setFavoriteState(bool isFav) {
+    if (isFav) {
+        // 已收藏：浅红背景，红字红边框
+        m_btnFav->setText("♥ 已收藏");
+        m_btnFav->setStyleSheet("QPushButton { "
+                                "   color: #FF4D4F; "
+                                "   border: 1px solid #FF4D4F; "
+                                "   background-color: #FFF1F0; "
+                                "   border-radius: 4px; font-weight: bold;"
+                                "}");
+    } else {
+        // 未收藏：白底灰字
+        m_btnFav->setText("♡ 收藏");
+        m_btnFav->setStyleSheet("QPushButton { "
+                                "   color: #606266; "
+                                "   border: 1px solid #DCDFE6; "
+                                "   background-color: white; "
+                                "   border-radius: 4px;"
+                                "}"
+                                "QPushButton:hover { color: #409EFF; border-color: #409EFF; }");
+    }
 }

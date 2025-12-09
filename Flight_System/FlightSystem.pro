@@ -22,6 +22,7 @@ HEADERS += \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
+    UserSession.h \
     adbanner.h \
     homeform.h \
     UserCenter.h

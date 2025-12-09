@@ -1,6 +1,8 @@
 #include "AllFlightsPage.h"
 #include "ui_AllFlightsPage.h"
 #include "FlightCard.h"
+#include "UserSession.h"
+#include "DateSelector.h" // 确保包含这个，否则报错
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
@@ -12,27 +14,23 @@ AllFlightsPage::AllFlightsPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 1. 设置 ScrollArea 无边框，美观
-    ui->scrollArea->setFrameShape(QFrame::NoFrame);
-    // 给内部容器设置垂直布局 (这步建议在 Designer 里右键 scrollAreaWidgetContents -> Layout Vertical 完成)
-    // 如果 Designer 没做，代码补救：
+    // 1. 【布局修复】去掉自身内边距，确保填满 StackWidget
+    if (this->layout()) this->layout()->setContentsMargins(0,0,0,0);
+
+    // 2. 修复 ScrollArea 内部布局
     if (!ui->scrollAreaWidgetContents->layout()) {
         QVBoxLayout *vbox = new QVBoxLayout(ui->scrollAreaWidgetContents);
         vbox->setSpacing(15);
-        vbox->setContentsMargins(20, 10, 20, 10);
+        vbox->setContentsMargins(20, 20, 20, 20);
     }
 
-    // 2. 初始日期设为今天
+    // 3. 【自动初始化日期】设为今天
     ui->dateSelector->setDate(QDate::currentDate());
 
-    // 3. 信号连接
-    // 点击查询按钮 -> 刷新
+    // 4. 连接信号
     connect(ui->btnSearch, &QPushButton::clicked, this, &AllFlightsPage::loadFlightsData);
 
-    // (可选) 日期一变自动刷新 -> 像携程一样
-    connect(ui->dateSelector, &DateSelector::dateChanged, this, &AllFlightsPage::loadFlightsData);
-
-    // 4. 初始加载
+    // 5. 【关键】界面加载时自动查一次
     loadFlightsData();
 }
 
@@ -43,66 +41,71 @@ AllFlightsPage::~AllFlightsPage()
 
 void AllFlightsPage::loadFlightsData()
 {
-    // 获取布局
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
     if (!layout) return;
 
-    // 1. 清空旧卡片
+    // 清空旧卡片
     QLayoutItem *child;
     while ((child = layout->takeAt(0)) != nullptr) {
         if(child->widget()) delete child->widget();
         delete child;
     }
 
-    // 2. 准备 SQL
-    // 注意：DATE(departure_time) 是 MySQL 函数，用于提取 datetime 中的日期部分
-    QString sql = "SELECT * FROM flights WHERE 1=1";
+    // 获取当前用户ID
+    int uid = UserSession::instance().getUserId();
 
-    // 筛选出发地
-    if(!ui->lineEditDep->text().isEmpty()) {
-        sql += QString(" AND departure_city LIKE '%%1%'").arg(ui->lineEditDep->text());
-    }
-    // 筛选目的地
-    if(!ui->lineEditArr->text().isEmpty()) {
-        sql += QString(" AND arrival_city LIKE '%%1%'").arg(ui->lineEditArr->text());
-    }
+    // SQL: 联表查询收藏状态
+    QString sql = "SELECT f.*, "
+                  "(SELECT COUNT(*) FROM favorites WHERE user_id = :uid AND flight_id = f.flight_id) as is_fav "
+                  "FROM flights f WHERE 1=1";
 
-    // 筛选日期 [关键修改]
-    // 从自定义控件获取日期
-    QDate selectedDate = ui->dateSelector->getDate();
-    QString dateStr = selectedDate.toString("yyyy-MM-dd");
-    sql += QString(" AND DATE(departure_time) = '%1'").arg(dateStr);
+    // 筛选条件
+    if(!ui->lineEditDep->text().isEmpty())
+        sql += QString(" AND f.departure_city LIKE '%%1%'").arg(ui->lineEditDep->text());
+    if(!ui->lineEditArr->text().isEmpty())
+        sql += QString(" AND f.arrival_city LIKE '%%1%'").arg(ui->lineEditArr->text());
 
-    // 排序
-    sql += " ORDER BY departure_time ASC";
+    // 日期筛选 (DateSelector 此时已经有默认值了)
+    QDate selDate = ui->dateSelector->getDate();
+    sql += QString(" AND DATE(f.departure_time) = '%1'").arg(selDate.toString("yyyy-MM-dd"));
 
-    // 3. 执行查询
+    sql += " ORDER BY f.departure_time ASC";
+
     QSqlQuery query;
-    if (!query.exec(sql)) {
-        qDebug() << "SQL Error:" << query.lastError().text();
+    query.prepare(sql);
+    query.bindValue(":uid", uid);
+
+    if (!query.exec()) {
+        qDebug() << "Query Failed:" << query.lastError().text();
         return;
     }
 
-    // 4. 生成卡片
     while (query.next()) {
         FlightData data;
-        data.flightId    = query.value("flight_id").toString();
-        data.airline     = query.value("airline").toString();
-        data.depCity     = query.value("departure_city").toString();
-        data.arrCity     = query.value("arrival_city").toString();
-        data.depTime     = query.value("departure_time").toDateTime();
-        data.arrTime     = query.value("arrival_time").toDateTime();
-        data.price       = query.value("price").toDouble();
-        data.status      = query.value("status").toString();
+        data.flightId = query.value("flight_id").toString();
+        data.airline  = query.value("airline").toString();
+        data.depCity  = query.value("departure_city").toString();
+        data.arrCity  = query.value("arrival_city").toString();
+        data.depTime  = query.value("departure_time").toDateTime();
+        data.arrTime  = query.value("arrival_time").toDateTime();
+        data.price    = query.value("price").toDouble();
+        data.status   = query.value("status").toString();
+        data.isFavorite = query.value("is_fav").toInt() > 0;
 
-        // 创建并添加卡片
         FlightCard *card = new FlightCard(data);
         layout->addWidget(card);
 
-        connect(card, &FlightCard::bookClicked, [=](QString id){
-            qDebug() << "Book:" << id;
+        connect(card, &FlightCard::favClicked, [=](QString fid, bool isFav){
+            if (uid == -1) return;
+            QSqlQuery favQ;
+            if (isFav)
+                favQ.prepare("INSERT INTO favorites (user_id, flight_id) VALUES (:uid, :fid)");
+            else
+                favQ.prepare("DELETE FROM favorites WHERE user_id = :uid AND flight_id = :fid");
+            favQ.bindValue(":uid", uid);
+            favQ.bindValue(":fid", fid);
+            favQ.exec();
         });
     }
-
     layout->addStretch();
 }

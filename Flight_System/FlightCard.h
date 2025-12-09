@@ -4,17 +4,22 @@
 #include <QWidget>
 #include "FlightData.h"
 
+class QPushButton;
+
 class FlightCard : public QWidget {
     Q_OBJECT
 public:
     explicit FlightCard(const FlightData &data, QWidget *parent = nullptr);
+    void setFavoriteState(bool isFav);
 
 signals:
-    void bookClicked(QString flightId); // 点击预订按钮时发射信号
+    void bookClicked(QString flightId);
+    void favClicked(QString flightId, bool isFavorite);
 
 private:
     FlightData m_data;
-    void setupUi(); // 初始化界面布局
+    QPushButton *m_btnFav;
+    void setupUi();
 };
 
 #endif // FLIGHTCARD_H
