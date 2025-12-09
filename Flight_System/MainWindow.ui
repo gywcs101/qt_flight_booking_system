@@ -156,7 +156,7 @@
      <number>0</number>
     </property>
     <widget class="QWidget" name="page">
-     <widget class="AdBanner" name="widget" native="true">
+     <widget class="AdBanner" name="bannerWidget" native="true">
       <property name="geometry">
        <rect>
         <x>0</x>

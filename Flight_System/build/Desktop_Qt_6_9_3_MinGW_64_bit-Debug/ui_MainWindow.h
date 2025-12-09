@@ -11,24 +11,24 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "adbanner.h"
 
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow
 {
 public:
-    QHBoxLayout *horizontalLayout;
     QWidget *leftContainer;
     QVBoxLayout *verticalLayout;
     QListWidget *menuList;
     QWidget *rightContainer;
     QStackedWidget *stackedWidget;
     QWidget *page;
+    AdBanner *bannerWidget;
     QWidget *page_3;
     QWidget *page_4;
     QWidget *page_5;
@@ -47,10 +47,9 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(MainWindow->sizePolicy().hasHeightForWidth());
         MainWindow->setSizePolicy(sizePolicy);
-        horizontalLayout = new QHBoxLayout(MainWindow);
-        horizontalLayout->setObjectName("horizontalLayout");
         leftContainer = new QWidget(MainWindow);
         leftContainer->setObjectName("leftContainer");
+        leftContainer->setGeometry(QRect(6, 6, 187, 617));
         sizePolicy.setHeightForWidth(leftContainer->sizePolicy().hasHeightForWidth());
         leftContainer->setSizePolicy(sizePolicy);
         verticalLayout = new QVBoxLayout(leftContainer);
@@ -97,11 +96,9 @@ public:
         verticalLayout->addWidget(menuList);
 
         verticalLayout->setStretch(0, 8);
-
-        horizontalLayout->addWidget(leftContainer);
-
         rightContainer = new QWidget(MainWindow);
         rightContainer->setObjectName("rightContainer");
+        rightContainer->setGeometry(QRect(197, 6, 747, 617));
         sizePolicy.setHeightForWidth(rightContainer->sizePolicy().hasHeightForWidth());
         rightContainer->setSizePolicy(sizePolicy);
         stackedWidget = new QStackedWidget(rightContainer);
@@ -109,6 +106,9 @@ public:
         stackedWidget->setGeometry(QRect(0, 0, 751, 621));
         page = new QWidget();
         page->setObjectName("page");
+        bannerWidget = new AdBanner(page);
+        bannerWidget->setObjectName("bannerWidget");
+        bannerWidget->setGeometry(QRect(0, 10, 731, 101));
         stackedWidget->addWidget(page);
         page_3 = new QWidget();
         page_3->setObjectName("page_3");
@@ -132,12 +132,10 @@ public:
         page_2->setObjectName("page_2");
         stackedWidget->addWidget(page_2);
 
-        horizontalLayout->addWidget(rightContainer);
-
-        horizontalLayout->setStretch(0, 1);
-        horizontalLayout->setStretch(1, 4);
-
         retranslateUi(MainWindow);
+
+        stackedWidget->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi

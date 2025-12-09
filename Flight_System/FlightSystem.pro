@@ -17,6 +17,7 @@ HEADERS += \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
+    adbanner.h \
     bannerwidget.h \
     homeform.h \
     UserCenter.h
@@ -27,6 +28,7 @@ HEADERS += \
 # =========================================================================
 SOURCES += \
     AdminWidget.cpp \
+    adbanner.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \

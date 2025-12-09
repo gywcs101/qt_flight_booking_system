@@ -6,6 +6,7 @@ release/MainWindow.o
 release/RegisterWidget.o
 release/LoginFunc.o
 release/ODBC.o
+release/bannerwidget.o
 release/homeform.o
 release/UserCenter.o
 release/qrc_res.o
