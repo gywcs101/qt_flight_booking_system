@@ -5,18 +5,16 @@
 #include <QDateTime>
 
 struct FlightData {
-    QString flightId;       // 航班号 (flight_id)
-    QString airline;        // 航空公司
-    QString depCity;        // 出发城市
-    QString arrCity;        // 到达城市
-    QDateTime depTime;      // 出发时间
-    QDateTime arrTime;      // 到达时间
-    double price;           // 价格
-    int capacity;           // 容量
-    int bookedCount;        // 已订
-    QString status;         // 状态
+    QString flightId;       // 对应数据库的 VARCHAR flight_id
+    QString airline;
+    QString depCity;
+    QString arrCity;
+    QDateTime depTime;
+    QDateTime arrTime;
+    double price;
+    QString status;
 
-    // 【新增】是否已收藏
+    // 是否被当前用户收藏
     bool isFavorite = false;
 };
 
