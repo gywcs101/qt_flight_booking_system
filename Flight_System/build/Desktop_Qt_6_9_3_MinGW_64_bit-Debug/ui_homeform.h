@@ -12,14 +12,14 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
-#include "bannerwidget.h"
+#include <adbanner.h>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_homeForm
 {
 public:
-    BannerWidget *widgetBanner;
+    AdBanner *adbanner;
 
     void setupUi(QWidget *homeForm)
     {
@@ -31,11 +31,11 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(homeForm->sizePolicy().hasHeightForWidth());
         homeForm->setSizePolicy(sizePolicy);
-        widgetBanner = new BannerWidget(homeForm);
-        widgetBanner->setObjectName("widgetBanner");
-        widgetBanner->setGeometry(QRect(10, 0, 731, 181));
-        sizePolicy.setHeightForWidth(widgetBanner->sizePolicy().hasHeightForWidth());
-        widgetBanner->setSizePolicy(sizePolicy);
+        adbanner = new AdBanner(homeForm);
+        adbanner->setObjectName("adbanner");
+        adbanner->setGeometry(QRect(10, 0, 731, 181));
+        sizePolicy.setHeightForWidth(adbanner->sizePolicy().hasHeightForWidth());
+        adbanner->setSizePolicy(sizePolicy);
 
         retranslateUi(homeForm);
 

@@ -16,5 +16,8 @@
         <file>main.png</file>
         <file>user.png</file>
         <file>DefaultAvatar.png</file>
+        <file>destinationPic1.png</file>
+        <file>destinationPic2.png</file>
+        <file>destinationPic3.png</file>
     </qresource>
 </RCC>

@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -29,6 +30,10 @@ public:
     QStackedWidget *stackedWidget;
     QWidget *page;
     AdBanner *bannerWidget;
+    QWidget *destinationWidget;
+    QLabel *label;
+    QWidget *destinationWidget2;
+    QWidget *destinationWidget3;
     QWidget *page_3;
     QWidget *page_4;
     QWidget *page_5;
@@ -109,6 +114,29 @@ public:
         bannerWidget = new AdBanner(page);
         bannerWidget->setObjectName("bannerWidget");
         bannerWidget->setGeometry(QRect(0, 10, 731, 101));
+        sizePolicy.setHeightForWidth(bannerWidget->sizePolicy().hasHeightForWidth());
+        bannerWidget->setSizePolicy(sizePolicy);
+        destinationWidget = new QWidget(page);
+        destinationWidget->setObjectName("destinationWidget");
+        destinationWidget->setGeometry(QRect(10, 170, 211, 261));
+        sizePolicy.setHeightForWidth(destinationWidget->sizePolicy().hasHeightForWidth());
+        destinationWidget->setSizePolicy(sizePolicy);
+        label = new QLabel(page);
+        label->setObjectName("label");
+        label->setGeometry(QRect(10, 110, 71, 31));
+        sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy);
+        QFont font;
+        font.setFamilies({QString::fromUtf8("Britannic")});
+        font.setPointSize(12);
+        font.setBold(true);
+        label->setFont(font);
+        destinationWidget2 = new QWidget(page);
+        destinationWidget2->setObjectName("destinationWidget2");
+        destinationWidget2->setGeometry(QRect(270, 170, 221, 261));
+        destinationWidget3 = new QWidget(page);
+        destinationWidget3->setObjectName("destinationWidget3");
+        destinationWidget3->setGeometry(QRect(520, 170, 211, 261));
         stackedWidget->addWidget(page);
         page_3 = new QWidget();
         page_3->setObjectName("page_3");
@@ -164,6 +192,7 @@ public:
         ___qlistwidgetitem7->setText(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216\346\210\221\344\273\254", nullptr));
         menuList->setSortingEnabled(__sortingEnabled);
 
+        label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">\347\203\255\351\227\250\347\233\256\347\232\204\345\234\260\357\274\232</span></p></body></html>", nullptr));
     } // retranslateUi
 
 };

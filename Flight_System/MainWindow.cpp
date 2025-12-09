@@ -20,6 +20,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // 启动轮播
     ui->bannerWidget->start(3000);
+
+    ui->destinationWidget->setStyleSheet("border-image: url(:/destinationPic1.png); border-radius: 8px;");
+
+    // 2. 设置第二个控件
+    ui->destinationWidget2->setStyleSheet("border-image: url(:/destinationPic2.png); border-radius: 8px;");
+
+    // 3. 设置第三个控件
+    ui->destinationWidget3->setStyleSheet("border-image: url(:/destinationPic3.png); border-radius: 8px;");
 }
 
 MainWindow::~MainWindow()
