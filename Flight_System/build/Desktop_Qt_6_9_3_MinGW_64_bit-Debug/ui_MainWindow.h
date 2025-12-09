@@ -16,6 +16,7 @@
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <allflightspage.h>
 #include <usercenter.h>
 #include "adbanner.h"
 
@@ -41,7 +42,7 @@ public:
     QWidget *page5_Order;
     QWidget *page7_About;
     UserCenter *page6_User;
-    QWidget *page1_Flight;
+    AllFlightsPage *page1_Flight;
 
     void setupUi(QWidget *MainWindow)
     {
@@ -157,13 +158,13 @@ public:
         page6_User = new UserCenter();
         page6_User->setObjectName("page6_User");
         stackedWidget->addWidget(page6_User);
-        page1_Flight = new QWidget();
+        page1_Flight = new AllFlightsPage();
         page1_Flight->setObjectName("page1_Flight");
         stackedWidget->addWidget(page1_Flight);
 
         retranslateUi(MainWindow);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(6);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

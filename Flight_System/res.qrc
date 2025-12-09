@@ -19,5 +19,7 @@
         <file>destinationPic1.png</file>
         <file>destinationPic2.png</file>
         <file>destinationPic3.png</file>
+        <file>heart_checked.png</file>
+        <file>heart_unchecked.png</file>
     </qresource>
 </RCC>
