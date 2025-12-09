@@ -6,6 +6,7 @@ debug/MainWindow.o
 debug/RegisterWidget.o
 debug/LoginFunc.o
 debug/ODBC.o
+debug/bannerwidget.o
 debug/homeform.o
 debug/UserCenter.o
 debug/qrc_res.o
