@@ -8,7 +8,6 @@ TEMPLATE = app
 
 # =========================================================================
 # 1. 头文件列表 (HEADERS)
-# 这里的 bannerwidget.h 和 homeform.h 是你从新项目带过来的
 # =========================================================================
 HEADERS += \
     AdminWidget.h \
@@ -21,13 +20,12 @@ HEADERS += \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
-    bannerwidget.h \
+    adbanner.h \
     homeform.h \
     UserCenter.h
 
 # =========================================================================
 # 2. 源文件列表 (SOURCES)
-# 对应的 cpp 文件也要加上
 # =========================================================================
 SOURCES += \
     AdminWidget.cpp \
@@ -40,13 +38,12 @@ SOURCES += \
     RegisterWidget.cpp \
     LoginFunc.cpp \
     ODBC.cpp \
-    bannerwidget.cpp \
+    adbanner.cpp \
     homeform.cpp \
     UserCenter.cpp
 
 # =========================================================================
 # 3. 界面文件列表 (FORMS)
-# homeform.ui 是新界面的一部分，必须加上
 # =========================================================================
 FORMS += \
     AdminWidget.ui \

@@ -28,13 +28,13 @@ public:
     QPushButton *btnEdit;
     QPushButton *btnPass;
     QPushButton *btnLogout;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QVBoxLayout *verticalLayout;
     QLineEdit *lineEdit_3;
     QLineEdit *phoneNumber;
     QDateEdit *Birthday;
     QLineEdit *phoneNumber_2;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QVBoxLayout *verticalLayout_2;
     QLabel *label_2;
     QLabel *label_3;
@@ -67,61 +67,61 @@ public:
         btnLogout = new QPushButton(UserCenter);
         btnLogout->setObjectName("btnLogout");
         btnLogout->setGeometry(QRect(540, 430, 91, 41));
-        widget = new QWidget(UserCenter);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(410, 50, 167, 281));
-        verticalLayout = new QVBoxLayout(widget);
+        layoutWidget = new QWidget(UserCenter);
+        layoutWidget->setObjectName("layoutWidget");
+        layoutWidget->setGeometry(QRect(410, 50, 167, 281));
+        verticalLayout = new QVBoxLayout(layoutWidget);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        lineEdit_3 = new QLineEdit(widget);
+        lineEdit_3 = new QLineEdit(layoutWidget);
         lineEdit_3->setObjectName("lineEdit_3");
         lineEdit_3->setMinimumSize(QSize(144, 24));
 
         verticalLayout->addWidget(lineEdit_3);
 
-        phoneNumber = new QLineEdit(widget);
+        phoneNumber = new QLineEdit(layoutWidget);
         phoneNumber->setObjectName("phoneNumber");
         phoneNumber->setMinimumSize(QSize(144, 24));
 
         verticalLayout->addWidget(phoneNumber);
 
-        Birthday = new QDateEdit(widget);
+        Birthday = new QDateEdit(layoutWidget);
         Birthday->setObjectName("Birthday");
         Birthday->setMinimumSize(QSize(109, 24));
 
         verticalLayout->addWidget(Birthday);
 
-        phoneNumber_2 = new QLineEdit(widget);
+        phoneNumber_2 = new QLineEdit(layoutWidget);
         phoneNumber_2->setObjectName("phoneNumber_2");
         phoneNumber_2->setMinimumSize(QSize(144, 24));
 
         verticalLayout->addWidget(phoneNumber_2);
 
-        widget1 = new QWidget(UserCenter);
-        widget1->setObjectName("widget1");
-        widget1->setGeometry(QRect(320, 70, 92, 241));
-        verticalLayout_2 = new QVBoxLayout(widget1);
+        layoutWidget1 = new QWidget(UserCenter);
+        layoutWidget1->setObjectName("layoutWidget1");
+        layoutWidget1->setGeometry(QRect(320, 70, 92, 241));
+        verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setObjectName("verticalLayout_2");
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_2 = new QLabel(widget1);
+        label_2 = new QLabel(layoutWidget1);
         label_2->setObjectName("label_2");
         label_2->setMinimumSize(QSize(81, 20));
         label_2->setFont(font);
 
         verticalLayout_2->addWidget(label_2);
 
-        label_3 = new QLabel(widget1);
+        label_3 = new QLabel(layoutWidget1);
         label_3->setObjectName("label_3");
         label_3->setFont(font);
 
         verticalLayout_2->addWidget(label_3);
 
-        label_4 = new QLabel(widget1);
+        label_4 = new QLabel(layoutWidget1);
         label_4->setObjectName("label_4");
 
         verticalLayout_2->addWidget(label_4);
 
-        label_5 = new QLabel(widget1);
+        label_5 = new QLabel(layoutWidget1);
         label_5->setObjectName("label_5");
 
         verticalLayout_2->addWidget(label_5);

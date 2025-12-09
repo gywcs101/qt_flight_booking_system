@@ -97,3 +97,10 @@ void AdBanner::hideEvent(QHideEvent *e) {
     m_timer->stop();
     QWidget::hideEvent(e);
 }
+void AdBanner::setImagePaths(const QStringList &paths)
+{
+    // 遍历列表，一个个加进去
+    for(const QString &path : paths) {
+        addImage(path);
+    }
+}

@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="BannerWidget" name="widgetBanner" native="true">
+  <widget class="AdBanner" name="adbanner" native="true">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -38,9 +38,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>BannerWidget</class>
+   <class>AdBanner</class>
    <extends>QWidget</extends>
-   <header>bannerwidget.h</header>
+   <header location="global">adbanner.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
