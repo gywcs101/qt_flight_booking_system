@@ -57,7 +57,7 @@
         <string>首页</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/main.png</normaloff>:/main.png</iconset>
        </property>
       </item>
@@ -66,7 +66,7 @@
         <string>全部航班</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/flight3.png</normaloff>:/flight3.png</iconset>
        </property>
       </item>
@@ -75,7 +75,7 @@
         <string>特价机票</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/account.png</normaloff>:/account.png</iconset>
        </property>
       </item>
@@ -84,7 +84,7 @@
         <string>发现</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/find.png</normaloff>:/find.png</iconset>
        </property>
       </item>
@@ -93,7 +93,7 @@
         <string>我的收藏</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/like.png</normaloff>:/like.png</iconset>
        </property>
       </item>
@@ -102,7 +102,7 @@
         <string>我的订单</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/dingdan.png</normaloff>:/dingdan.png</iconset>
        </property>
       </item>
@@ -111,7 +111,7 @@
         <string>用户中心</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/user.png</normaloff>:/user.png</iconset>
        </property>
       </item>
@@ -120,7 +120,7 @@
         <string>关于我们</string>
        </property>
        <property name="icon">
-        <iconset resource="res.qrc">
+        <iconset>
          <normaloff>:/about.png</normaloff>:/about.png</iconset>
        </property>
       </item>
@@ -241,7 +241,7 @@
     <widget class="QWidget" name="page5_Order"/>
     <widget class="QWidget" name="page7_About"/>
     <widget class="UserCenter" name="page6_User"/>
-    <widget class="QWidget" name="page1_Flight"/>
+    <widget class="AllFlightsPage" name="page1_Flight"/>
    </widget>
   </widget>
  </widget>
@@ -255,12 +255,16 @@
   <customwidget>
    <class>UserCenter</class>
    <extends>QWidget</extends>
-   <header location="global">usercenter.h</header>
+   <header>usercenter.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AllFlightsPage</class>
+   <extends>QWidget</extends>
+   <header location="global">allflightspage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
