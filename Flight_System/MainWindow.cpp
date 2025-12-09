@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->bannerWidget->addImage(":/adPicture2.png");
     // ui->bannerWidget->addImage(":/adPicture3.png"); // 有更多图片可以继续加
 
-<<<<<<< Updated upstream
     // 启动轮播
     ui->bannerWidget->start(3000);
 
@@ -28,15 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // 3. 设置第三个控件
     ui->destinationWidget3->setStyleSheet("border-image: url(:/destinationPic3.png); border-radius: 8px;");
-=======
-    ui->bannerWidget->start(3000); // 3秒轮播一次
-
-    // 2. 【新增】强制默认选中第一项（首页）
-    // 这会让程序一启动，左侧选中"首页"，右侧显示 page0_First
-    ui->menuList->setCurrentRow(0);
-    ui->stackedWidget->setCurrentIndex(0);
->>>>>>> Stashed changes
 }
+
+
 
 MainWindow::~MainWindow()
 {

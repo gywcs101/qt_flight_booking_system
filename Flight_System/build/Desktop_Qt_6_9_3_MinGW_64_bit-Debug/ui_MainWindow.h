@@ -16,6 +16,7 @@
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include <usercenter.h>
 #include "adbanner.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,19 +29,19 @@ public:
     QListWidget *menuList;
     QWidget *rightContainer;
     QStackedWidget *stackedWidget;
-    QWidget *page;
+    QWidget *page0_First;
     AdBanner *bannerWidget;
     QWidget *destinationWidget;
     QLabel *label;
     QWidget *destinationWidget2;
     QWidget *destinationWidget3;
-    QWidget *page_3;
-    QWidget *page_4;
-    QWidget *page_5;
-    QWidget *page_6;
-    QWidget *page_7;
-    QWidget *page_8;
-    QWidget *page_2;
+    QWidget *page2_Special;
+    QWidget *page3_Find;
+    QWidget *page4_Love;
+    QWidget *page5_Order;
+    QWidget *page7_About;
+    UserCenter *page6_User;
+    QWidget *page1_Flight;
 
     void setupUi(QWidget *MainWindow)
     {
@@ -108,57 +109,57 @@ public:
         rightContainer->setSizePolicy(sizePolicy);
         stackedWidget = new QStackedWidget(rightContainer);
         stackedWidget->setObjectName("stackedWidget");
-        stackedWidget->setGeometry(QRect(0, 0, 751, 621));
-        page = new QWidget();
-        page->setObjectName("page");
-        bannerWidget = new AdBanner(page);
+        stackedWidget->setGeometry(QRect(-10, 10, 751, 621));
+        page0_First = new QWidget();
+        page0_First->setObjectName("page0_First");
+        bannerWidget = new AdBanner(page0_First);
         bannerWidget->setObjectName("bannerWidget");
-        bannerWidget->setGeometry(QRect(0, 10, 731, 101));
+        bannerWidget->setGeometry(QRect(10, 0, 731, 161));
         sizePolicy.setHeightForWidth(bannerWidget->sizePolicy().hasHeightForWidth());
         bannerWidget->setSizePolicy(sizePolicy);
-        destinationWidget = new QWidget(page);
+        destinationWidget = new QWidget(page0_First);
         destinationWidget->setObjectName("destinationWidget");
-        destinationWidget->setGeometry(QRect(10, 170, 211, 261));
+        destinationWidget->setGeometry(QRect(10, 270, 231, 301));
         sizePolicy.setHeightForWidth(destinationWidget->sizePolicy().hasHeightForWidth());
         destinationWidget->setSizePolicy(sizePolicy);
-        label = new QLabel(page);
+        label = new QLabel(page0_First);
         label->setObjectName("label");
-        label->setGeometry(QRect(10, 110, 71, 31));
+        label->setGeometry(QRect(10, 210, 101, 51));
         sizePolicy.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
         label->setSizePolicy(sizePolicy);
         QFont font;
-        font.setFamilies({QString::fromUtf8("Britannic")});
-        font.setPointSize(12);
-        font.setBold(true);
+        font.setFamilies({QString::fromUtf8("\345\215\216\346\226\207\347\220\245\347\217\200")});
+        font.setPointSize(25);
+        font.setBold(false);
         label->setFont(font);
-        destinationWidget2 = new QWidget(page);
+        destinationWidget2 = new QWidget(page0_First);
         destinationWidget2->setObjectName("destinationWidget2");
-        destinationWidget2->setGeometry(QRect(270, 170, 221, 261));
-        destinationWidget3 = new QWidget(page);
+        destinationWidget2->setGeometry(QRect(260, 270, 231, 301));
+        destinationWidget3 = new QWidget(page0_First);
         destinationWidget3->setObjectName("destinationWidget3");
-        destinationWidget3->setGeometry(QRect(520, 170, 211, 261));
-        stackedWidget->addWidget(page);
-        page_3 = new QWidget();
-        page_3->setObjectName("page_3");
-        stackedWidget->addWidget(page_3);
-        page_4 = new QWidget();
-        page_4->setObjectName("page_4");
-        stackedWidget->addWidget(page_4);
-        page_5 = new QWidget();
-        page_5->setObjectName("page_5");
-        stackedWidget->addWidget(page_5);
-        page_6 = new QWidget();
-        page_6->setObjectName("page_6");
-        stackedWidget->addWidget(page_6);
-        page_7 = new QWidget();
-        page_7->setObjectName("page_7");
-        stackedWidget->addWidget(page_7);
-        page_8 = new QWidget();
-        page_8->setObjectName("page_8");
-        stackedWidget->addWidget(page_8);
-        page_2 = new QWidget();
-        page_2->setObjectName("page_2");
-        stackedWidget->addWidget(page_2);
+        destinationWidget3->setGeometry(QRect(510, 270, 231, 301));
+        stackedWidget->addWidget(page0_First);
+        page2_Special = new QWidget();
+        page2_Special->setObjectName("page2_Special");
+        stackedWidget->addWidget(page2_Special);
+        page3_Find = new QWidget();
+        page3_Find->setObjectName("page3_Find");
+        stackedWidget->addWidget(page3_Find);
+        page4_Love = new QWidget();
+        page4_Love->setObjectName("page4_Love");
+        stackedWidget->addWidget(page4_Love);
+        page5_Order = new QWidget();
+        page5_Order->setObjectName("page5_Order");
+        stackedWidget->addWidget(page5_Order);
+        page7_About = new QWidget();
+        page7_About->setObjectName("page7_About");
+        stackedWidget->addWidget(page7_About);
+        page6_User = new UserCenter();
+        page6_User->setObjectName("page6_User");
+        stackedWidget->addWidget(page6_User);
+        page1_Flight = new QWidget();
+        page1_Flight->setObjectName("page1_Flight");
+        stackedWidget->addWidget(page1_Flight);
 
         retranslateUi(MainWindow);
 
@@ -192,7 +193,7 @@ public:
         ___qlistwidgetitem7->setText(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216\346\210\221\344\273\254", nullptr));
         menuList->setSortingEnabled(__sortingEnabled);
 
-        label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-size:12pt;\">\347\203\255\351\227\250\347\233\256\347\232\204\345\234\260\357\274\232</span></p></body></html>", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "<html><head/><body><p>\347\203\255\351\227\250\351\200\237\346\212\245</p></body></html>", nullptr));
     } // retranslateUi
 
 };

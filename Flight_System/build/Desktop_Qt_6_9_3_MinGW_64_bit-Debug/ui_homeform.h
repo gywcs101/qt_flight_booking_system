@@ -12,7 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
-#include <adbanner.h>
+#include "adbanner.h"
 
 QT_BEGIN_NAMESPACE
 
