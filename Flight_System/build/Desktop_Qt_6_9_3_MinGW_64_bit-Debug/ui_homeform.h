@@ -12,7 +12,11 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
+<<<<<<< Updated upstream
 #include "adbanner.h"
+=======
+#include <adbanner.h>
+>>>>>>> Stashed changes
 
 QT_BEGIN_NAMESPACE
 
