@@ -153,7 +153,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="page0_First">
      <widget class="AdBanner" name="bannerWidget" native="true">
@@ -236,7 +236,7 @@
      </widget>
     </widget>
     <widget class="QWidget" name="page2_Special"/>
-    <widget class="DiscoveryPage" name="page3_Find"/>
+    <widget class="QWidget" name="page3_Find"/>
     <widget class="FavoritesPage" name="page4_Love"/>
     <widget class="QWidget" name="page5_Order"/>
     <widget class="QWidget" name="page7_About"/>
@@ -249,7 +249,7 @@
   <customwidget>
    <class>AdBanner</class>
    <extends>QWidget</extends>
-   <header>adbanner.h</header>
+   <header location="global">adbanner.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -261,19 +261,13 @@
   <customwidget>
    <class>AllFlightsPage</class>
    <extends>QWidget</extends>
-   <header>allflightspage.h</header>
+   <header location="global">allflightspage.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>FavoritesPage</class>
    <extends>QWidget</extends>
-   <header>FavoritesPage.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DiscoveryPage</class>
-   <extends>QWidget</extends>
-   <header location="global">discoverypage.h</header>
+   <header location="global">FavoritesPage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

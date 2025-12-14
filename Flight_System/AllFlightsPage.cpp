@@ -7,9 +7,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
-#include <QVBoxLayout>
-#include <QLayout>
-#include <QLayoutItem>
 
 AllFlightsPage::AllFlightsPage(QWidget *parent) :
     QWidget(parent),
