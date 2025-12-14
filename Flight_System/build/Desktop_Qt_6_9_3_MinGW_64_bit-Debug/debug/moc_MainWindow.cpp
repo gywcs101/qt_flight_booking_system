@@ -39,6 +39,7 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
     namespace QMC = QtMocConstants;
     QtMocHelpers::StringRefStorage qt_stringData {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         "MainWindow",
         "on_menuList_currentRowChanged",
         "",
@@ -51,10 +52,15 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
             { QMetaType::Int, 3 },
         }}),
 =======
+=======
+>>>>>>> Stashed changes
         "MainWindow"
     };
 
     QtMocHelpers::UintData qt_methods {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     };
     QtMocHelpers::UintData qt_properties {
@@ -78,6 +84,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
 {
     auto *_t = static_cast<MainWindow *>(_o);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->on_menuList_currentRowChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
@@ -85,10 +92,15 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         }
     }
 =======
+=======
+>>>>>>> Stashed changes
     (void)_t;
     (void)_c;
     (void)_id;
     (void)_a;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
@@ -109,6 +121,7 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QWidget::qt_metacall(_c, _id, _a);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
@@ -121,6 +134,8 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 1;
     }
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     return _id;

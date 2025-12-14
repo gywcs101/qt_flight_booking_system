@@ -39,6 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // 启动轮播
     ui->bannerWidget->start(3000);
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 }
 
@@ -48,6 +51,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
 // 【新增】实现左侧菜单与右侧页面的联动
@@ -67,5 +71,7 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
     default: break;
     }
 }
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
