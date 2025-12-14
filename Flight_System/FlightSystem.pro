@@ -27,6 +27,7 @@ HEADERS += \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
+    #ResetPasswordWidget.h \
     UserSession.h \
     adbanner.h \
     homeform.h \
@@ -48,6 +49,7 @@ SOURCES += \
     MyOrdersPage.cpp \
     OrderCard.cpp \
     PostCard.cpp \
+    #ResetPasswordWidget.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
@@ -72,6 +74,7 @@ FORMS += \
     LoginWidget.ui \
     MyOrdersPage.ui \
     RegisterWidget.ui \
+    #ResetPasswordWidget.ui \
     homeform.ui \
     UserCenter.ui \
     FavoritesPage.ui
