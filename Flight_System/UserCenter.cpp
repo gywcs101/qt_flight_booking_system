@@ -1,11 +1,12 @@
-#include "usercenter.h"
-#include "ui_usercenter.h"
-#include "ODBC.h"           // 引入你的数据库连接类
-#include <QSqlQuery>        // 执行SQL语句
-#include <QSqlError>        // 获取错误信息
-#include <QMessageBox>      // 弹窗
+#include "UserCenter.h"
+#include "ui_UserCenter.h"
+#include "ODBC.h"
+#include "UserSession.h" // 包含您现有的 UserSession.h
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QMessageBox>
 #include <QDebug>
-#include <QPainter>         // 用于画圆形头像
+#include <QPainter>
 #include <QPainterPath>
 
 UserCenter::UserCenter(QWidget *parent) :
@@ -14,16 +15,16 @@ UserCenter::UserCenter(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 1. 初始化界面状态
+    // 初始化界面状态
     isEditing = false;
-    setInputsEnabled(false); // 默认所有输入框锁定，只读
+    setInputsEnabled(false); // 默认所有输入框锁定
 
-    // 2. 连接按钮信号
+    // 连接按钮信号
     connect(ui->btnEdit, &QPushButton::clicked, this, &UserCenter::onBtnEditClicked);
     connect(ui->btnPass, &QPushButton::clicked, this, &UserCenter::onBtnPassClicked);
     connect(ui->btnLogout, &QPushButton::clicked, this, &UserCenter::onBtnLogoutClicked);
 
-    // 3. 设置一下默认头像（防止数据库还没读的时候是空的）
+    // 设置默认头像
     updateAvatarDisplay(":/DefaultAvatar.png");
 }
 
@@ -32,199 +33,167 @@ UserCenter::~UserCenter()
     delete ui;
 }
 
-// ==========================================
-// 核心功能：从数据库加载数据
-// ==========================================
-void UserCenter::loadUserData(QString userId)
+// [核心] 从 UserSession 加载当前登录用户的数据
+void UserCenter::loadCurrentUserData()
 {
-    m_currentUserId = userId; // 存下来，更新的时候要用
+    // 1. 从您的 UserSession 单例获取当前用户ID (int类型)
+    m_currentUserId = UserSession::instance().getUserId();
 
-    // 1. 确保数据库连接
-    if (!ODBC::connectToDB()) {
-        QMessageBox::critical(this, "系统错误", "无法连接到数据库！");
+    // 检查用户是否有效登录
+    if (m_currentUserId == -1) {
+        QMessageBox::critical(this, "系统错误", "无法获取当前用户信息，请重新登录！");
+        // 可以考虑清空界面显示
+        ui->editUsername->clear();
+        ui->editPhone->clear();
+        ui->lblBalanceValue->setText("0.00");
         return;
     }
 
-    // 2. 准备查询语句
-    QSqlQuery query;
-    // 对应你的表结构：id, username, phone, birthday, balance, avatar_path
-    QString sql = "SELECT username, phone, birthday, balance, avatar_path FROM user WHERE id = :id";
+    // 2. 准备查询语句 (根据您的数据库截图)
+    // 表名: users (请确认为您的表名)
+    // 列名: username, phone, birthday, balance, avatar_path
+    QString sql = QString("SELECT username, phone, birthday, balance, avatar_path FROM users WHERE id = %1").arg(m_currentUserId);
+    QSqlQuery query = ODBC::query(sql);
 
-    query.prepare(sql);
-    query.bindValue(":id", m_currentUserId);
+    // 3. 执行查询并更新UI
+    if (query.next()) {
+        QString name = query.value("username").toString();
+        QString phone = query.value("phone").toString();
+        QString avatarPath = query.value("avatar_path").toString();
+        double balance = query.value("balance").toDouble();
+        QDate birth = query.value("birthday").toDate();
 
-    // 3. 执行查询
-    if (query.exec()) {
-        if (query.next()) {
-            // --- 获取数据 ---
-            QString name = query.value("username").toString();
-            QString phone = query.value("phone").toString();
-            QString avatarPath = query.value("avatar_path").toString();
-            double balance = query.value("balance").toDouble();
+        ui->editUsername->setText(name);
+        ui->editPhone->setText(phone);
+        ui->editBirthday->setDate(birth.isValid() ? birth : QDate(2000, 1, 1));
+        ui->lblBalanceValue->setText(QString::number(balance, 'f', 2));
 
-            // 处理生日：如果是 NULL，给一个默认值 2000-01-01，否则转为日期
-            QDate birth = query.value("birthday").toDate();
-            if (!birth.isValid()) {
-                birth = QDate(2000, 1, 1);
-            }
-
-            // --- 显示到界面 ---
-            ui->editUsername->setText(name);
-            ui->editPhone->setText(phone);
-            ui->editBirthday->setDate(birth);
-
-            // 显示余额 (保留2位小数)
-            ui->lblBalanceValue->setText(QString::number(balance, 'f', 2));
-
-            // 显示圆形头像
-            // 如果数据库里头像路径是空的，就用默认头像
-            if (avatarPath.isEmpty()) avatarPath = ":/DefaultAvatar.png";
-            updateAvatarDisplay(avatarPath);
-
-        } else {
-            QMessageBox::warning(this, "错误", "未查询到用户信息 (ID: " + userId + ")");
+        if (avatarPath.isEmpty() || avatarPath == "NULL") {
+            avatarPath = ":/DefaultAvatar.png";
         }
+        updateAvatarDisplay(avatarPath);
+
+        // 确保每次加载数据后，界面都恢复到非编辑状态
+        setInputsEnabled(false);
+        ui->btnEdit->setText("编辑资料");
+        ui->btnEdit->setStyleSheet(""); // 清除特定样式，恢复默认
+        isEditing = false;
+
     } else {
-        qDebug() << "SQL Error:" << query.lastError().text();
-        QMessageBox::critical(this, "查询失败", query.lastError().text());
+        qWarning() << "SQL Error:" << query.lastError().text() << " while fetching user ID:" << m_currentUserId;
+        QMessageBox::warning(this, "数据加载失败", "无法从数据库中找到您的用户信息。");
     }
 }
 
-// ==========================================
-// 核心功能：编辑与保存
-// ==========================================
+// "编辑资料" / "保存修改" 按钮的槽函数
 void UserCenter::onBtnEditClicked()
 {
     if (!isEditing) {
-        // >>>>> 进入编辑模式 <<<<<
+        // ---- 进入编辑模式 ----
         setInputsEnabled(true);
-
-        // 按钮变身：变成绿色“保存修改”
         ui->btnEdit->setText("保存修改");
-        ui->btnEdit->setStyleSheet("QPushButton { background-color: #67C23A; color: white; border-radius: 5px; }"
-                                   "QPushButton:hover { background-color: #85ce61; }");
+        ui->btnEdit->setStyleSheet("background-color: #67C23A; color: white; border-radius: 4px;");
         isEditing = true;
-
     } else {
-        // >>>>> 点击了保存 <<<<<
-
-        // 1. 获取输入框内容
+        // ---- 点击了“保存修改” ----
         QString newName = ui->editUsername->text().trimmed();
         QString newPhone = ui->editPhone->text().trimmed();
         QDate newBirth = ui->editBirthday->date();
 
-        // 2. 简单校验
         if (newName.isEmpty()) {
-            QMessageBox::warning(this, "提示", "用户名不能为空！");
+            QMessageBox::warning(this, "输入无效", "用户名不能为空！");
             return;
         }
 
-        // 3. 执行更新 SQL
-        if (ODBC::connectToDB()) {
-            QSqlQuery query;
-            // 只更新 姓名、手机、生日
-            QString sql = "UPDATE user SET username = :u, phone = :p, birthday = :b WHERE id = :id";
+        // 准备带参数绑定的更新SQL语句，更安全
+        QSqlQuery query;
+        query.prepare("UPDATE users SET username = :name, phone = :phone, birthday = :bday WHERE id = :id");
+        query.bindValue(":name", newName);
+        query.bindValue(":phone", newPhone);
+        query.bindValue(":bday", newBirth.toString(Qt::ISODate)); // "YYYY-MM-DD"
+        query.bindValue(":id", m_currentUserId);
 
-            query.prepare(sql);
-            query.bindValue(":u", newName);
-            query.bindValue(":p", newPhone);
-            query.bindValue(":b", newBirth);
-            query.bindValue(":id", m_currentUserId);
-
-            if (query.exec()) {
-                QMessageBox::information(this, "成功", "个人资料已更新！");
-
-                // 4. 恢复界面到只读模式
-                setInputsEnabled(false);
-                ui->btnEdit->setText("编辑资料");
-                // 恢复蓝色按钮样式
-                ui->btnEdit->setStyleSheet("QPushButton { background-color: #409EFF; color: white; border-radius: 5px; }"
-                                           "QPushButton:hover { background-color: #66b1ff; }");
-                isEditing = false;
-            } else {
-                QMessageBox::critical(this, "保存失败", "数据库错误：" + query.lastError().text());
-            }
+        if (query.exec()) {
+            QMessageBox::information(this, "操作成功", "您的个人资料已更新！");
+            // 恢复到非编辑状态
+            setInputsEnabled(false);
+            ui->btnEdit->setText("编辑资料");
+            ui->btnEdit->setStyleSheet(""); // 恢复默认样式
+            isEditing = false;
+        } else {
+            QMessageBox::critical(this, "保存失败", "数据库更新错误：" + query.lastError().text());
         }
     }
 }
 
-// ==========================================
-// 辅助功能：控制输入框锁定/解锁
-// ==========================================
+// 控制输入框是否可编辑
 void UserCenter::setInputsEnabled(bool enable)
 {
-    ui->editUsername->setEnabled(enable);
-    ui->editPhone->setEnabled(enable);
-    ui->editBirthday->setEnabled(enable);
+    ui->editUsername->setReadOnly(!enable);
+    ui->editPhone->setReadOnly(!enable);
+    ui->editBirthday->setReadOnly(!enable);
 
-    // 视觉优化：不可编辑时去掉边框背景，看起来像纯文字；可编辑时显示白色输入框
-    if (enable) {
-        QString editStyle = "QLineEdit, QDateEdit { background-color: #ffffff; border: 1px solid #dcdfe6; border-radius: 4px; padding: 0 5px; }";
-        ui->editUsername->setStyleSheet(editStyle);
-        ui->editPhone->setStyleSheet(editStyle);
-        ui->editBirthday->setStyleSheet(editStyle);
-    } else {
-        QString readStyle = "QLineEdit, QDateEdit { background-color: transparent; border: none; color: #606266; font-weight: bold; }";
-        ui->editUsername->setStyleSheet(readStyle);
-        ui->editPhone->setStyleSheet(readStyle);
-        ui->editBirthday->setStyleSheet(readStyle);
-    }
+    // 视觉样式切换
+    const QString readOnlyStyle = "background-color: transparent; border: none;";
+    const QString editableStyle = "background-color: white; border: 1px solid #DCDFE6; border-radius: 4px;";
+    QString currentStyle = enable ? editableStyle : readOnlyStyle;
+
+    ui->editUsername->setStyleSheet(currentStyle);
+    ui->editPhone->setStyleSheet(currentStyle);
+    ui->editBirthday->setStyleSheet(currentStyle);
 }
 
-// ==========================================
-// 辅助功能：将图片裁剪为圆形并显示
-// ==========================================
-void UserCenter::updateAvatarDisplay(QString path)
+// 更新圆形头像显示
+void UserCenter::updateAvatarDisplay(const QString& path)
 {
-    // 1. 加载图片
     QPixmap src(path);
     if (src.isNull()) {
-        // 如果路径不对，尝试加载默认图
         src.load(":/DefaultAvatar.png");
-        if (src.isNull()) return; // 实在没有就算了
+    }
+    if (src.isNull()) {
+        qWarning() << "Default avatar :/DefaultAvatar.png not found!";
+        return;
     }
 
-    // 2. 准备绘制圆形
-    int size = 100; // 这里的尺寸要和你 UI 文件里 Label 的固定尺寸一致
-    QPixmap circular(size, size);
-    circular.fill(Qt::transparent); // 透明背景
+    int size = qMin(ui->lblAvatarDisplay->width(), ui->lblAvatarDisplay->height());
+    if (size <= 0) size = 100; // 如果控件还没显示，给一个默认尺寸
 
-    QPainter painter(&circular);
-    painter.setRenderHint(QPainter::Antialiasing);           // 抗锯齿
-    painter.setRenderHint(QPainter::SmoothPixmapTransform);  // 平滑变换
+    QPixmap circularPixmap(size, size);
+    circularPixmap.fill(Qt::transparent);
 
-    // 3. 画圆并填充图片
-    QPainterPath clipPath;
-    clipPath.addEllipse(0, 0, size, size);
-    painter.setClipPath(clipPath);
+    QPainter painter(&circularPixmap);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
-    // 将原图缩放填满圆圈
-    painter.drawPixmap(0, 0, size, size, src.scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    QPainterPath path_clip;
+    path_clip.addEllipse(0, 0, size, size);
+    painter.setClipPath(path_clip);
 
-    // 4. 设置给 Label
-    ui->lblAvatarDisplay->setPixmap(circular);
+    // 绘制缩放后的图片以填满圆形区域
+    painter.drawPixmap(0, 0, src.scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+
+    ui->lblAvatarDisplay->setPixmap(circularPixmap);
+    ui->lblAvatarDisplay->setScaledContents(true);
 }
 
-// ==========================================
-// 修改密码（逻辑较复杂，建议弹新窗口）
-// ==========================================
+// "修改密码" 按钮的槽函数
 void UserCenter::onBtnPassClicked()
 {
-    // 这里留给之后做 ModifyPasswordDialog 使用
-    QMessageBox::information(this, "功能提示", "请在此处连接修改密码的弹窗界面。\n当前用户ID: " + m_currentUserId);
+    // 这里应该弹出一个新的对话框来处理修改密码的复杂逻辑
+    // 例如: ModifyPasswordDialog dialog(m_currentUserId, this);
+    // if (dialog.exec() == QDialog::Accepted) {
+    //     QMessageBox::information(this, "成功", "密码修改成功！");
+    // }
+    QMessageBox::information(this, "功能提示", "修改密码功能建议创建一个独立的对话框来实现。");
 }
 
-// ==========================================
-// 退出登录
-// ==========================================
+// "退出登录" 按钮的槽函数
 void UserCenter::onBtnLogoutClicked()
 {
-    QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, "退出系统", "确定要退出登录吗？",
-                                  QMessageBox::Yes | QMessageBox::No);
+    auto reply = QMessageBox::question(this, "确认退出", "您确定要退出当前账号吗？",
+                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        // 发送信号，让 Main.cpp 或 MainWindow 处理界面切换
-        emit logoutSignal();
+        UserSession::instance().setUserId(-1); // 清除全局登录状态
+        emit logoutSignal(); // 发送信号，让主窗口去处理页面切换
     }
 }

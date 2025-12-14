@@ -17,10 +17,10 @@ public:
     ~UserCenter();
 
     /**
-     * @brief 加载当前登录用户的数据
-     * @param userId 用户的ID (对应数据库表中的 id 字段)
+     * @brief [核心] 加载并显示当前登录用户的数据。
+     *        此函数会从 UserSession 获取用户ID。
      */
-    void loadUserData(QString userId);
+    void loadCurrentUserData();
 
 signals:
     // 发送退出登录信号，通知主窗口切换页面
@@ -34,14 +34,11 @@ private slots:
 private:
     Ui::UserCenter *ui;
 
-    bool isEditing;         // 标记当前是否处于编辑模式
-    QString m_currentUserId; // 存储当前用户的ID，用于更新数据时做 WHERE 条件
+    bool isEditing;      // 标记当前是否处于编辑模式
+    int m_currentUserId; // 存储当前用户的ID (int类型)
 
-    // 辅助函数：设置输入框是否可编辑
     void setInputsEnabled(bool enable);
-
-    // 辅助函数：处理圆形头像显示
-    void updateAvatarDisplay(QString path);
+    void updateAvatarDisplay(const QString& path);
 };
 
 #endif // USERCENTER_H
