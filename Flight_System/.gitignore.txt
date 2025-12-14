@@ -1,0 +1,36 @@
+# ============== Qt Creator / Build Files ==============
+# User-specific files
+*.pro.user
+*.pro.user.*
+*.creator.user
+*.creator.user.*
+
+# Build directories
+/build-*/
+/debug/
+/release/
+
+# Generated files by Qt
+/Makefile*
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.exe
+*.app
+*.dmg
+*.so
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# Other generated files
+compile_commands.json
+
+# ============== IDE / System Files ==============
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
