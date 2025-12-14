@@ -26,6 +26,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->destinationWidget->setStyleSheet("border-image: url(:/destinationPic1.png); border-radius: 8px;");
     ui->destinationWidget2->setStyleSheet("border-image: url(:/destinationPic2.png); border-radius: 8px;");
     ui->destinationWidget3->setStyleSheet("border-image: url(:/destinationPic3.png); border-radius: 8px;");
+
+    // 1. 必须先 new 出来！否则 m_favPage 是空的
+    m_favPage = new FavoritesPage(this);
+
+    // 2. 把它加到布局里 (否则显示不出来)
+    QVBoxLayout *layout4 = new QVBoxLayout(ui->page4_Love);
+    layout4->setContentsMargins(0, 0, 0, 0);
+    layout4->addWidget(m_favPage);
 }
 
 MainWindow::~MainWindow()
