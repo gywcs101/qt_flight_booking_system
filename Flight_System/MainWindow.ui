@@ -146,14 +146,14 @@
    <widget class="QStackedWidget" name="stackedWidget">
     <property name="geometry">
      <rect>
-      <x>-10</x>
-      <y>10</y>
+      <x>-150</x>
+      <y>-10</y>
       <width>751</width>
       <height>621</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page0_First">
      <widget class="AdBanner" name="bannerWidget" native="true">
@@ -235,7 +235,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page2_Special"/>
+    <widget class="SpecialOffersPage" name="page2_Special"/>
     <widget class="DiscoveryPage" name="page3_Find"/>
     <widget class="FavoritesPage" name="page4_Love"/>
     <widget class="QWidget" name="page5_Order"/>
@@ -273,7 +273,13 @@
   <customwidget>
    <class>DiscoveryPage</class>
    <extends>QWidget</extends>
-   <header location="global">discoverypage.h</header>
+   <header>discoverypage.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SpecialOffersPage</class>
+   <extends>QWidget</extends>
+   <header location="global">specialofferspage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
