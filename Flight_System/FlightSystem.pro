@@ -27,7 +27,8 @@ HEADERS += \
     UserSession.h \
     adbanner.h \
     homeform.h \
-    UserCenter.h
+    UserCenter.h \
+    FavoritesPage.h
 
 # =========================================================================
 # 2. 源文件列表 (SOURCES)
@@ -48,7 +49,8 @@ SOURCES += \
     ODBC.cpp \
     adbanner.cpp \
     homeform.cpp \
-    UserCenter.cpp
+    UserCenter.cpp \
+    FavoritesPage.cpp
 
 # =========================================================================
 # 3. 界面文件列表 (FORMS)
@@ -61,7 +63,8 @@ FORMS += \
     LoginWidget.ui \
     RegisterWidget.ui \
     homeform.ui \
-    UserCenter.ui
+    UserCenter.ui \
+    FavoritesPage.ui
 
 # =========================================================================
 # 4. 资源文件
