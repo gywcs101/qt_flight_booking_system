@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "adbanner.h"
+#include "AllFlightsPage.h"
+#include "FavoritesPage.h"
 #include <QDesktopServices>
 #include <QUrl>
 #include "UserCenter.h"
@@ -40,7 +42,11 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
     case 1: ui->stackedWidget->setCurrentWidget(ui->page1_Flight);  break; // 全部航班
     case 2: ui->stackedWidget->setCurrentWidget(ui->page2_Special); break; // 特价机票
     case 3: ui->stackedWidget->setCurrentWidget(ui->page3_Find);    break; // 发现
-    case 4: ui->stackedWidget->setCurrentWidget(ui->page4_Love);    break; // 我的收藏
+    case 4:
+        ui->stackedWidget->setCurrentWidget(ui->page4_Love);
+        // 【绝对关键】每次切过来都要刷新
+        if(m_favPage) m_favPage->loadFavoriteFlights();
+        break; // 我的收藏
     case 5: ui->stackedWidget->setCurrentWidget(ui->page5_Order);   break; // 我的订单
     case 6: ui->stackedWidget->setCurrentWidget(ui->page6_User);    break; // 用户中心
     case 7: ui->stackedWidget->setCurrentWidget(ui->page7_About);   break; // 关于我们

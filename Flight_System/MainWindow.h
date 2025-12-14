@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+class AllFlightsPage;
+class FavoritesPage;
+class UserCenter;
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +24,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    AllFlightsPage *m_flightsPage;
+    FavoritesPage *m_favPage;
+    UserCenter *m_userPage;
 };
 
 #endif // MAINWINDOW_H
