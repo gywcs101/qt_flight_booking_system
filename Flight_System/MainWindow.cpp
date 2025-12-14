@@ -11,62 +11,30 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-<<<<<<< Updated upstream
     // 1. 初始化轮播图 (bannerWidget)
-    // 假设你有这些图片，如果没有请换成存在的图片路径
+    // 从资源文件中加载图片
     ui->bannerWidget->addImage(":/adPicture1.png");
     ui->bannerWidget->addImage(":/adPicture2.png");
-    // ui->bannerWidget->addImage(":/adPicture3.png"); // 有更多图片可以继续加
+    // 如果有更多图片可以继续添加
 
-    // 启动轮播
+    // 启动轮播，每3秒切换一次
     ui->bannerWidget->start(3000);
 
+    // 2. 为 destination 区域的控件设置背景图片
     ui->destinationWidget->setStyleSheet("border-image: url(:/destinationPic1.png); border-radius: 8px;");
-
-    // 2. 设置第二个控件
     ui->destinationWidget2->setStyleSheet("border-image: url(:/destinationPic2.png); border-radius: 8px;");
-
-    // 3. 设置第三个控件
     ui->destinationWidget3->setStyleSheet("border-image: url(:/destinationPic3.png); border-radius: 8px;");
-=======
-    // ★★★ 关键修改 ★★★
-    // 你的 UI 截图里，那个控件叫 "widget"，所以这里必须写 ui->widget
-    
-    // 假设 AdBanner 类里有 addImage 这个方法
-    ui->bannerWidget->addImage(":/images/banner1.jpg");
-    ui->bannerWidget->addImage("D:/test/ad2.jpg");
-    ui->bannerWidget->addImage("D:/test/ad3.jpg");
-
-    // 启动轮播
-    ui->bannerWidget->start(3000);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }
-
-
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-// 【新增】实现左侧菜单与右侧页面的联动
+// 实现左侧菜单与右侧页面的联动
 void MainWindow::on_menuList_currentRowChanged(int currentRow)
 {
-    // 根据行号切换到对应的页面
-    // 你的命名非常规范，这里一一对应即可
+    // 根据左侧菜单被选中的行号，切换右侧 stackedWidget 显示的页面
     switch (currentRow) {
     case 0: ui->stackedWidget->setCurrentWidget(ui->page0_First);   break; // 首页
     case 1: ui->stackedWidget->setCurrentWidget(ui->page1_Flight);  break; // 全部航班
@@ -79,11 +47,3 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
     default: break;
     }
 }
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
