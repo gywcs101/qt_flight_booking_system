@@ -1,11 +1,12 @@
 debug/AdminWidget.o
+debug/adbanner.o
 debug/main.o
 debug/LoginWidget.o
 debug/MainWindow.o
 debug/RegisterWidget.o
 debug/LoginFunc.o
 debug/ODBC.o
-debug/adbanner.o
+debug/bannerwidget.o
 debug/homeform.o
 debug/UserCenter.o
 debug/qrc_res.o
