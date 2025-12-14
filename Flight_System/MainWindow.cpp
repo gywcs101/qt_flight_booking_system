@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+<<<<<<< Updated upstream
     // 1. 初始化轮播图 (bannerWidget)
     // 假设你有这些图片，如果没有请换成存在的图片路径
     ui->bannerWidget->addImage(":/adPicture1.png");
@@ -27,6 +28,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // 3. 设置第三个控件
     ui->destinationWidget3->setStyleSheet("border-image: url(:/destinationPic3.png); border-radius: 8px;");
+=======
+    // ★★★ 关键修改 ★★★
+    // 你的 UI 截图里，那个控件叫 "widget"，所以这里必须写 ui->widget
+    
+    // 假设 AdBanner 类里有 addImage 这个方法
+    ui->bannerWidget->addImage(":/images/banner1.jpg");
+    ui->bannerWidget->addImage("D:/test/ad2.jpg");
+    ui->bannerWidget->addImage("D:/test/ad3.jpg");
+
+    // 启动轮播
+    ui->bannerWidget->start(3000);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 }
 
 
@@ -35,6 +54,9 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 // 【新增】实现左侧菜单与右侧页面的联动
 void MainWindow::on_menuList_currentRowChanged(int currentRow)
@@ -53,3 +75,9 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
     default: break;
     }
 }
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
