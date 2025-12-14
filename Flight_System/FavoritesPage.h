@@ -14,6 +14,7 @@ public:
     explicit FavoritesPage(QWidget *parent = nullptr);
     ~FavoritesPage();
 
+
     void loadFavoriteFlights();
 
 private:
