@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+
+// 前置声明
 class AllFlightsPage;
 class FavoritesPage;
 class UserCenter;
@@ -19,11 +21,12 @@ public:
     ~MainWindow();
 
 private slots:
-    // 【新增】左侧菜单点击事件
     void on_menuList_currentRowChanged(int currentRow);
 
 private:
     Ui::MainWindow *ui;
+
+    // 声明页面指针
     AllFlightsPage *m_flightsPage;
     FavoritesPage *m_favPage;
     UserCenter *m_userPage;
