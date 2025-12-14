@@ -8,6 +8,7 @@
 #include "DiscoveryPage.h"    // 确保 DiscoveryPage 类是已知的
 #include "FavoritesPage.h"    // 确保 FavoritesPage 类是已知的
 #include "adbanner.h"         // 确保 AdBanner 类是已知的
+#include "MyOrdersPage.h"
 #include <QDebug>             // 用于调试输出
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -72,7 +73,7 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
 
     case 5: // 我的订单页
         // 如果有订单页面类，在这里调用刷新
-        // ui->page5_Order->loadUserOrders();
+         ui->page5_Order->loadOrders();
         break;
     case 6: // 用户中心页
         // 调用 UserCenter 自己的成员函数来加载和显示当前用户信息
