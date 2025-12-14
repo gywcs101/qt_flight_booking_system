@@ -1,0 +1,4 @@
+#ifndef DETAILDIALOG_H
+#define DETAILDIALOG_H
+
+#endif // DETAILDIALOG_H

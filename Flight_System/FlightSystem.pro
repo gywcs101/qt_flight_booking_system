@@ -13,12 +13,14 @@ HEADERS += \
     AdminWidget.h \
     AllFlightsPage.h \
     DateSelector.h \
+    DetailDialog.h \
     DiscoveryPage.h \
     FlightCard.h \
     FlightData.h \
     LoginWidget.h \
     MainWindow.h \
     PostCard.h \
+    PostData.h \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
@@ -34,6 +36,7 @@ SOURCES += \
     AdminWidget.cpp \
     AllFlightsPage.cpp \
     DateSelector.cpp \
+    DetailDialog.cpp \
     DiscoveryPage.cpp \
     FlightCard.cpp \
     PostCard.cpp \
