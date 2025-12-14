@@ -146,7 +146,7 @@ void SpecialOffersPage::connectDatabase()
 void SpecialOffersPage::loadMap()
 {
     // 请确保路径正确，建议将图片放到资源文件(.qrc)中，路径用 ":/images/..."
-    QPixmap mapPix(":/china_map.jpg");
+    QPixmap mapPix(":/china_map2.png");
 
     if (mapPix.isNull()) {
         m_scene->addText("地图图片加载失败，请检查路径 D:/images/china_map.jpg");
