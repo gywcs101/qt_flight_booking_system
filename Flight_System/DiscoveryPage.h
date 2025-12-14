@@ -3,10 +3,8 @@
 
 #include <QWidget>
 #include <QGridLayout>
-#include <QSqlDatabase>
 #include "PostData.h"
 
-// 1. 引入 UI 命名空间
 namespace Ui {
 class DiscoveryPage;
 }
@@ -19,19 +17,20 @@ public:
     explicit DiscoveryPage(QWidget *parent = nullptr);
     ~DiscoveryPage();
 
+    // [新增] 添加一个公共的刷新函数，供 MainWindow 调用
+    void refreshPosts();
+
 private slots:
     void onCardClicked(const PostData &data);
 
 private:
-    void initUi();          // 初始化布局
-    void connectDatabase(); // 连接数据库
-    void loadData();        // 加载数据
+    void initUi();
+    void loadData(); // 函数名改为 loadData
 
-    // 2. ui 指针
     Ui::DiscoveryPage *ui;
 
-    QSqlDatabase db;
-    QGridLayout *gridLayout; // 我们只需要保留布局指针，容器用ui里的
+    // 不再需要 QSqlDatabase db; 成员变量
+    QGridLayout *gridLayout;
 };
 
 #endif // DISCOVERYPAGE_H

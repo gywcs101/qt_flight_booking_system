@@ -34,7 +34,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="8">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
     <item>
      <widget class="QListWidget" name="menuList">
       <property name="focusPolicy">
@@ -235,13 +235,16 @@
       </property>
      </widget>
     </widget>
+<<<<<<< Updated upstream
+=======
+    <widget class="AllFlightsPage" name="page1_Flight"/>
+>>>>>>> Stashed changes
     <widget class="SpecialOffersPage" name="page2_Special"/>
     <widget class="DiscoveryPage" name="page3_Find"/>
     <widget class="FavoritesPage" name="page4_Love"/>
     <widget class="QWidget" name="page5_Order"/>
-    <widget class="QWidget" name="page7_About"/>
     <widget class="UserCenter" name="page6_User"/>
-    <widget class="AllFlightsPage" name="page1_Flight"/>
+    <widget class="QWidget" name="page7_About"/>
    </widget>
   </widget>
  </widget>
