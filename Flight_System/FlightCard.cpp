@@ -69,7 +69,6 @@ void FlightCard::setupUi() {
     m_btnFav = new QPushButton();
     m_btnFav->setFixedSize(80, 30);
     m_btnFav->setCursor(Qt::PointingHandCursor);
-    // 注意：这里不用 setFlat(true)，我们要自定义边框样式
 
     connect(m_btnFav, &QPushButton::clicked, [this](){
         m_data.isFavorite = !m_data.isFavorite;
@@ -86,23 +85,24 @@ void FlightCard::setupUi() {
 }
 
 void FlightCard::setFavoriteState(bool isFav) {
+    m_data.isFavorite = isFav; // 同步内部状态
     if (isFav) {
         // 已收藏：浅红背景，红字红边框
         m_btnFav->setText("♥ 已收藏");
         m_btnFav->setStyleSheet("QPushButton { "
-                                "   color: #FF4D4F; "
-                                "   border: 1px solid #FF4D4F; "
-                                "   background-color: #FFF1F0; "
-                                "   border-radius: 4px; font-weight: bold;"
+                                " color: #FF4D4F; "
+                                " border: 1px solid #FF4D4F; "
+                                " background-color: #FFF1F0; "
+                                " border-radius: 4px; font-weight: bold;"
                                 "}");
     } else {
         // 未收藏：白底灰字
         m_btnFav->setText("♡ 收藏");
         m_btnFav->setStyleSheet("QPushButton { "
-                                "   color: #606266; "
-                                "   border: 1px solid #DCDFE6; "
-                                "   background-color: white; "
-                                "   border-radius: 4px;"
+                                " color: #606266; "
+                                " border: 1px solid #DCDFE6; "
+                                " background-color: white; "
+                                " border-radius: 4px;"
                                 "}"
                                 "QPushButton:hover { color: #409EFF; border-color: #409EFF; }");
     }
