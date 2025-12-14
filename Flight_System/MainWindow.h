@@ -3,10 +3,7 @@
 
 #include <QWidget>
 
-// 前置声明
-class AllFlightsPage;
-class FavoritesPage;
-class UserCenter;
+// ui 文件已经包含了所有页面类的头文件，这里不再需要向前声明
 
 namespace Ui {
 class MainWindow;
@@ -22,14 +19,11 @@ public:
 
 private slots:
     void on_menuList_currentRowChanged(int currentRow);
+    void handleLogout();
 
 private:
     Ui::MainWindow *ui;
-
-    // 声明页面指针
-    AllFlightsPage *m_flightsPage;
-    FavoritesPage *m_favPage;
-    UserCenter *m_userPage;
+    // 不再需要 m_flightsPage, m_favPage, m_discoveryPage 等成员变量了
 };
 
 #endif // MAINWINDOW_H
