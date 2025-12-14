@@ -19,11 +19,9 @@
         <file>destinationPic1.png</file>
         <file>destinationPic2.png</file>
         <file>destinationPic3.png</file>
-
         <file>heart_checked.png</file>
         <file>heart_unchecked.png</file>
-
         <file>usercenter.png</file>
-
+        <file>china_map.jpg</file>
     </qresource>
 </RCC>

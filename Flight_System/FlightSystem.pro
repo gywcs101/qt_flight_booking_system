@@ -28,7 +28,8 @@ HEADERS += \
     adbanner.h \
     homeform.h \
     UserCenter.h \
-    FavoritesPage.h
+    FavoritesPage.h \
+    specialofferspage.h
 
 # =========================================================================
 # 2. 源文件列表 (SOURCES)
@@ -50,7 +51,8 @@ SOURCES += \
     adbanner.cpp \
     homeform.cpp \
     UserCenter.cpp \
-    FavoritesPage.cpp
+    FavoritesPage.cpp \
+    specialofferspage.cpp
 
 # =========================================================================
 # 3. 界面文件列表 (FORMS)
