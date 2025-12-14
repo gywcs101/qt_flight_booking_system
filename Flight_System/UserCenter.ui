@@ -6,203 +6,279 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
-    <height>617</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="font">
    <font>
-    <pointsize>15</pointsize>
+    <family>Microsoft YaHei UI</family>
+    <pointsize>12</pointsize>
    </font>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>个人中心</string>
   </property>
-  <widget class="QLabel" name="Avatar">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>90</y>
-     <width>201</width>
-     <height>191</height>
-    </rect>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="leftMargin">
+    <number>0</number>
    </property>
-   <property name="text">
-    <string/>
+   <property name="topMargin">
+    <number>0</number>
    </property>
-   <property name="pixmap">
-    <pixmap>../../../Pictures/Screenshots/oo9qhAAmlDAnz7EzCIfhgUzMAeA9TiAIENNJNd~noop.jpeg</pixmap>
+   <property name="rightMargin">
+    <number>0</number>
    </property>
-   <property name="scaledContents">
-    <bool>true</bool>
+   <property name="bottomMargin">
+    <number>0</number>
    </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>156</x>
-     <y>60</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>15</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>头像</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnEdit">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>430</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>编辑资料</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnPass">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>430</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>修改密码</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnLogout">
-   <property name="geometry">
-    <rect>
-     <x>540</x>
-     <y>430</y>
-     <width>91</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>退出登录</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>50</y>
-     <width>167</width>
-     <height>281</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLineEdit" name="lineEdit_3">
-      <property name="minimumSize">
-       <size>
-        <width>144</width>
-        <height>24</height>
-       </size>
+   <item>
+    <widget class="QFrame" name="contentFrame">
+     <property name="styleSheet">
+      <string notr="true">#contentFrame {
+    background-color: #ffffff;
+    border-radius: 10px;
+}</string>
+     </property>
+     <layout class="QVBoxLayout" name="cardLayout">
+      <property name="spacing">
+       <number>30</number>
       </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="phoneNumber">
-      <property name="minimumSize">
-       <size>
-        <width>144</width>
-        <height>24</height>
-       </size>
+      <property name="leftMargin">
+       <number>50</number>
       </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QDateEdit" name="Birthday">
-      <property name="minimumSize">
-       <size>
-        <width>109</width>
-        <height>24</height>
-       </size>
+      <property name="topMargin">
+       <number>40</number>
       </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="phoneNumber_2">
-      <property name="minimumSize">
-       <size>
-        <width>144</width>
-        <height>24</height>
-       </size>
+      <property name="rightMargin">
+       <number>50</number>
       </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>70</y>
-     <width>152</width>
-     <height>241</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="minimumSize">
-       <size>
-        <width>81</width>
-        <height>20</height>
-       </size>
+      <property name="bottomMargin">
+       <number>40</number>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>用户名：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>手机号：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>生日：</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>哈夫币余额：</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+      <item alignment="Qt::AlignmentFlag::AlignHCenter">
+       <widget class="QLabel" name="lblAvatarDisplay">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border-radius: 50px; background-color: #ddd;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="res.qrc">:/DefaultAvatar.png</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="labelAlignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
+        <property name="horizontalSpacing">
+         <number>20</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>15</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lblUser">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>用户名：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="editUsername">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="placeholderText">
+           <string>请输入用户名</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lblPhone">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>手机号：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="editPhone">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lblBirth">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>生日：</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDateEdit" name="editBirthday">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblBalanceTitle">
+        <property name="font">
+         <font>
+          <family>Microsoft YaHei UI</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>哈夫币余额：</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lblBalanceValue">
+        <property name="font">
+         <font>
+          <pointsize>-1</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #FF5722; font-weight: bold; font-size: 16px;</string>
+        </property>
+        <property name="text">
+         <string>0.00</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Buttons">
+        <property name="spacing">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="btnEdit">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #409EFF; color: white; border-radius: 5px;</string>
+          </property>
+          <property name="text">
+           <string>编辑资料</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnPass">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #fff; color: #606266; border: 1px solid #dcdfe6; border-radius: 5px;</string>
+          </property>
+          <property name="text">
+           <string>修改密码</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLogout">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #F56C6C; color: white; border-radius: 5px;</string>
+        </property>
+        <property name="text">
+         <string>退出登录</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>
