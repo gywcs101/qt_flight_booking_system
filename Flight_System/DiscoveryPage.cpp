@@ -1,113 +1,96 @@
 #include "DiscoveryPage.h"
+#include "ui_DiscoveryPage.h" // 1. 必须引入这个由.ui生成的头文件
+#include "PostCard.h"
 #include "DetailDialog.h"
-#include "PostCard.h"      // 必须有
-#include "DetailDialog.h"  // 必须有
-#include <QScrollArea>
-#include <QLabel>
+
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
-#include <QScrollBar>
 
-DiscoveryPage::DiscoveryPage(QWidget *parent) : QWidget(parent) {
+DiscoveryPage::DiscoveryPage(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::DiscoveryPage) // 2. 初始化 ui 指针
+{
+    ui->setupUi(this); // 3. 构建界面 (加载你在设计器里拖的控件)
+
     initUi();
     connectDatabase();
     loadData();
 }
 
-DiscoveryPage::~DiscoveryPage() {
-    if(db.isOpen()) {
-        db.close();
-    }
+DiscoveryPage::~DiscoveryPage()
+{
+    if(db.isOpen()) db.close();
+    delete ui; // 记得删除
 }
 
-void DiscoveryPage::initUi() {
-    // 1. 设置主布局
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    mainLayout->setSpacing(0);
+void DiscoveryPage::initUi()
+{
+    // 【核心修改】
+    // 原来的代码是自己 new 滚动区域，现在直接利用 UI 文件里已经有的控件
 
-    // 2. 顶部标题栏
-    QWidget *topBar = new QWidget(this);
-    topBar->setFixedHeight(60);
-    topBar->setStyleSheet("background-color: white; border-bottom: 1px solid #eee;");
-    QHBoxLayout *topLayout = new QHBoxLayout(topBar);
+    // ui->scrollArea 是外面的框
+    // ui->scrollAreaWidgetContents 是里面那个白色的画布
 
-    QLabel *titleLabel = new QLabel("发现", this);
-    titleLabel->setStyleSheet("font-size: 20px; font-weight: bold; color: #333; margin-left: 10px;");
-    topLayout->addWidget(titleLabel);
-    topLayout->addStretch();
+    // 我们在这个画布上创建一个网格布局
+    // 检查是否已经有布局（防止重复设置）
+    if (!ui->scrollAreaWidgetContents->layout()) {
+        gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
+    } else {
+        gridLayout = qobject_cast<QGridLayout*>(ui->scrollAreaWidgetContents->layout());
+    }
 
-    mainLayout->addWidget(topBar);
+    // 设置布局参数，让卡片排列整齐
+    gridLayout->setContentsMargins(20, 20, 20, 20); // 上下左右留白
+    gridLayout->setSpacing(20); // 卡片之间的间距
 
-    // 3. 滚动区域 (核心部分)
-    QScrollArea *scrollArea = new QScrollArea(this);
-    scrollArea->setWidgetResizable(true); // 关键：让内部控件自适应宽度
-    scrollArea->setFrameShape(QFrame::NoFrame);
-    scrollArea->setStyleSheet("QScrollArea { background-color: #f7f7f7; border: none; }");
-
-    // 优化滚动条样式 (可选)
-    scrollArea->verticalScrollBar()->setStyleSheet(
-        "QScrollBar:vertical { width: 8px; background: transparent; }"
-        "QScrollBar::handle:vertical { background: #ccc; border-radius: 4px; }"
-        );
-
-    // 4. 网格容器
-    gridWidget = new QWidget();
-    gridWidget->setStyleSheet("background-color: #f7f7f7;"); // 背景色
-
-    gridLayout = new QGridLayout(gridWidget);
-    gridLayout->setContentsMargins(20, 20, 20, 20); // 边距
-    gridLayout->setSpacing(15); // 卡片之间的间距
-
-    // 设置列比例，防止卡片被拉伸得很难看 (假设3列)
+    // 设置列拉伸比例 (3列模式)
     gridLayout->setColumnStretch(0, 1);
     gridLayout->setColumnStretch(1, 1);
     gridLayout->setColumnStretch(2, 1);
 
-    scrollArea->setWidget(gridWidget);
-    mainLayout->addWidget(scrollArea);
+    // 这里的 ui->scrollArea 样式可以在这里通过代码加强一下，或者你在设计器里设好了也行
+    ui->scrollArea->setFrameShape(QFrame::NoFrame); // 去掉边框更现代
 }
 
-void DiscoveryPage::connectDatabase() {
-    // 检查是否已有连接，防止重复添加
+void DiscoveryPage::connectDatabase()
+{
+    // 数据库连接逻辑不变
     if (QSqlDatabase::contains("qt_sql_default_connection")) {
         db = QSqlDatabase::database("qt_sql_default_connection");
     } else {
         db = QSqlDatabase::addDatabase("QMYSQL");
-        db.setHostName("localhost");       // 数据库地址
-        db.setDatabaseName("flight_sys");  // 你的数据库名
-        db.setUserName("root");            // 你的用户名
-        db.setPassword("123456");          // 你的密码
-        db.setPort(3306);
+        db.setHostName("localhost");
+        db.setDatabaseName("flight_sys"); // 确认你的库名
+        db.setUserName("root");           // 确认你的用户名
+        db.setPassword("123456");         // 确认你的密码
     }
 
     if (!db.open()) {
-        qDebug() << "Error: Failed to connect database." << db.lastError();
-    } else {
-        qDebug() << "Database connected successfully.";
+        qDebug() << "DB Connect Error:" << db.lastError().text();
     }
 }
 
-void DiscoveryPage::loadData() {
-    if (!db.isOpen()) return;
+void DiscoveryPage::loadData()
+{
+    if(!db.isOpen()) return;
 
-    // 清空现有布局（如果是刷新功能需要）
+    // 清空现有布局（防止刷新时重叠）
     QLayoutItem *child;
     while ((child = gridLayout->takeAt(0)) != 0) {
         if(child->widget()) delete child->widget();
         delete child;
     }
 
-    // 假设你的表名是 discovery_posts
-    QSqlQuery query("SELECT * FROM discovery_posts ORDER BY id DESC");
+    QSqlQuery query("SELECT * FROM discovery_posts");
 
     int row = 0;
     int col = 0;
-    int maxColumns = 3; // 想要每行显示几个卡片，这里设为3
+    int maxCols = 3; // 每行显示3个
 
     while (query.next()) {
         PostData data;
+        // 确保这些字段名和你数据库里的一样
         data.id = query.value("id").toInt();
         data.title = query.value("title").toString();
         data.content = query.value("content").toString();
@@ -115,40 +98,33 @@ void DiscoveryPage::loadData() {
         data.imagePath = query.value("image_path").toString();
         data.avatarPath = query.value("avatar_path").toString();
 
-        // 实例化你写好的 PostCard
-        // 注意：这里假设你的 PostCard 构造函数接受 PostData
-        // 如果你的 PostCard 构造函数不同，请在这里修改传参方式
+        // 创建卡片
         PostCard *card = new PostCard(data);
 
-        // 连接点击信号
-        // 假设你的 PostCard 有一个信号 cardClicked(PostData)
+        // 连接信号槽
         connect(card, &PostCard::cardClicked, this, &DiscoveryPage::onCardClicked);
 
-        // 添加到网格
+        // 【关键】把卡片添加到我们刚才在 initUi 里建好的 gridLayout 中
         gridLayout->addWidget(card, row, col);
 
-        // 计算行列索引
+        // 计算下一个位置
         col++;
-        if (col >= maxColumns) {
+        if (col >= maxCols) {
             col = 0;
             row++;
         }
     }
 
-    // 这是一个占位符，用于把卡片顶到最上面（如果只有一行不满时）
-    if(row == 0 && col == 0) {
-        // 没有数据
-        QLabel *emptyLabel = new QLabel("暂无内容", gridWidget);
-        emptyLabel->setAlignment(Qt::AlignCenter);
-        gridLayout->addWidget(emptyLabel, 0, 0, 1, maxColumns);
-    } else {
+    // 添加弹簧，把卡片顶到顶部（防止只有一行时分散对齐）
+    if (row > 0 || col > 0) {
         gridLayout->setRowStretch(row + 1, 1);
     }
 }
 
-void DiscoveryPage::onCardClicked(const PostData &data) {
-    // 弹出模态对话框
+void DiscoveryPage::onCardClicked(const PostData &data)
+{
+    // 弹窗逻辑不变
     DetailDialog *dialog = new DetailDialog(data, this);
-    dialog->exec(); // 阻塞式显示
-    delete dialog;  // 关闭后删除释放内存
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+    dialog->exec();
 }

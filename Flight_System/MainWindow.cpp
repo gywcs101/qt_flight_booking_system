@@ -40,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // 启动轮播
     ui->bannerWidget->start(3000);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -51,6 +54,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 
@@ -71,6 +75,8 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
     default: break;
     }
 }
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

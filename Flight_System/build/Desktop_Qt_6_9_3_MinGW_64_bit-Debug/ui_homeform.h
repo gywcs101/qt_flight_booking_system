@@ -14,7 +14,11 @@
 #include <QtWidgets/QWidget>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "adbanner.h"
+=======
+#include <adbanner.h>
+>>>>>>> Stashed changes
 =======
 #include <adbanner.h>
 >>>>>>> Stashed changes
