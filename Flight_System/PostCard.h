@@ -6,30 +6,29 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QMouseEvent>
+#include "PostData.h"  // 必须包含这个头文件
 
 class PostCard : public QWidget
 {
     Q_OBJECT
 public:
-    // 构造函数传入帖子数据
-    explicit PostCard(int id, QString title, QString author, QString coverPath, QString avatarPath, QWidget *parent = nullptr);
-
-    int getPostId() const { return m_id; }
+    // 修改构造函数，直接接收 PostData 数据包
+    explicit PostCard(const PostData &data, QWidget *parent = nullptr);
 
 signals:
-    // 点击卡片时发送信号
-    void cardClicked(int postId);
+    // 修改信号，点击时把整个数据包发出去，而不是只发个ID
+    void cardClicked(const PostData &data);
 
 protected:
-    // 鼠标点击事件
     void mousePressEvent(QMouseEvent *event) override;
 
 private:
-    int m_id;
-    QLabel *m_coverLabel;  // 封面图
-    QLabel *m_avatarLabel; // 头像
-    QLabel *m_nameLabel;   // 作者名
-    QLabel *m_titleLabel;  // 标题
+    PostData m_data; // 存储数据，以便点击时发送
+
+    QLabel *m_coverLabel;
+    QLabel *m_avatarLabel;
+    QLabel *m_nameLabel;
+    QLabel *m_titleLabel;
 };
 
 #endif // POSTCARD_H
