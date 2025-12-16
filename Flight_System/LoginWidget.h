@@ -15,15 +15,15 @@ public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
 
-    // --- 必须补上这部分 ---
 signals:
-    void loginSuccess();  // 登录成功的信号
-    void goToRegister();  // 跳转去注册的信号
-    // --------------------
+    void goToRegister();
+    void loginSuccess();
+
+    // [核心修改] 新增一个专门给管理员登录成功时使用的信号
+    void loginSuccessAsAdmin();
 
 private slots:
     void on_btn_login_clicked();
-
     void on_pushButton_2_clicked();
     void on_btn_register_clicked();
 
