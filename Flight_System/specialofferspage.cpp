@@ -26,7 +26,7 @@ void InteractiveMap::wheelEvent(QWheelEvent *event) {
     double currentScale = transform().m11();
 
     // 定义限制范围
-    double minScale = 0.2; // 最小缩放到 20%
+    double minScale = qMin(800.0 / 2354, 600.0 / 1235); // 最小缩放到 20%
     double maxScale = 3.0; // 最大放大到 300%
 
     // 如果想根据图片大小动态决定最小缩放，
@@ -201,25 +201,16 @@ void SpecialOffersPage::loadFlights()
         MapMarkerBtn *tagBtn = new MapMarkerBtn(city, price, imgUrl);
 
         // --- 连接悬浮信号 (要求3) ---
-        connect(tagBtn, &MapMarkerBtn::hoverEntered, this, [this](QString c, int p, QString url, QPoint globalPos){
-            // 1. 设置卡片内容
+        // 在 SpecialOffersPage::loadFlights() 的 connect 部分修改：
+        connect(tagBtn, &MapMarkerBtn::hoverEntered, this, [this, tagBtn](QString c, int p, QString url, QPoint globalPos){
             m_hoverCard->setContent(c, p, url);
-
-            // 2. 计算卡片显示位置
-            // globalPos 是按钮在屏幕上的绝对位置
-            //我们需要把它转换成相对于 SpecialOffersPage (this) 的位置
-            QPoint localPos = this->mapFromGlobal(globalPos);
-
-            // 让卡片显示在按钮的右上方或正上方
-            int cardX = localPos.x() + 40; // 向右偏移
-            int cardY = localPos.y() - 150; // 向上偏移
-
-            // 边界检查（防止卡片跑出窗口）
-            if (cardY < 0) cardY = localPos.y() + 60; // 如果上面没地儿，就显示在下面
-
+            // 原代码用了全局坐标，现在改为：基于按钮在地图中的局部坐标计算
+            QPoint btnLocalPos = tagBtn->pos(); // 按钮在地图场景内的坐标
+            // 让卡片与按钮中心对齐（核心修正）
+            int cardX = btnLocalPos.x() - (m_hoverCard->width() / 2) + (tagBtn->width() / 2);
+            int cardY = btnLocalPos.y() - (m_hoverCard->height() / 2) + (tagBtn->height() / 2);
             m_hoverCard->move(cardX, cardY);
             m_hoverCard->show();
-            m_hoverCard->raise(); // 保证盖住地图
         });
 
         connect(tagBtn, &MapMarkerBtn::hoverLeft, this, [this](){

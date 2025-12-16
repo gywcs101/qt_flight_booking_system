@@ -105,14 +105,11 @@ void MapMarkerBtn::paintEvent(QPaintEvent *event) {
 
 // 【修改点 2】参数类型改为 QEnterEvent
 void MapMarkerBtn::enterEvent(QEnterEvent *event) {
-    // 当鼠标进入，发送信号，并把自己的位置传出去
-    // mapToGlobal(QPoint(0,0)) 获取当前按钮在屏幕上的绝对位置
-    emit hoverEntered(m_city, m_price, m_imgUrl, this->mapToGlobal(QPoint(0, 0)));
-
-    // 【修改点 3】调用父类时，传入正确的 event 类型
     QPushButton::enterEvent(event);
-
-    update(); // 触发重绘变色
+    // 获取按钮在父组件（地图）中的局部位置
+    QPoint localPos = this->pos();
+    emit hoverEntered(m_city, m_price, m_imgUrl, localPos);
+    update();
 }
 
 void MapMarkerBtn::leaveEvent(QEvent *event) {
