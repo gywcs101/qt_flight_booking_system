@@ -19,12 +19,15 @@ QWidget#ResetPasswordWidget {
 /* =================================================================== */
 
 /* 1. 标签 (QLabel) 样式 */
-QLabel {
-    border-image: none;
-    background-color: transparent;
-    color: #303133; /* 统一为深灰色 */
+QWidget#LoginWidget QLabel,
+QWidget#RegisterWidget QLabel {
+    border: none;
+    border-image: none;            /* 彻底清除边框图片影响 */
+    background-color: transparent; /* 背景完全透明 */
+    color: #303133;                /* 强制设置文字颜色 */
     font-weight: bold;
 }
+
 
 /* 2. 输入框 (QLineEdit) 样式 */
 QLineEdit {
