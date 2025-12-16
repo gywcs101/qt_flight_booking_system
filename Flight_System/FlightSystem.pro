@@ -27,7 +27,7 @@ HEADERS += \
     RegisterWidget.h \
     LoginFunc.h \
     ODBC.h \
-    #ResetPasswordWidget.h \
+    ResetPasswordWidget.h \
     UserSession.h \
     adbanner.h \
     flightmapwidgets.h \
@@ -50,8 +50,12 @@ SOURCES += \
     MyOrdersPage.cpp \
     OrderCard.cpp \
     PostCard.cpp \
+<<<<<<< Updated upstream
     #ResetPasswordWidget.cpp \
     flightmapwidgets.cpp \
+=======
+    ResetPasswordWidget.cpp \
+>>>>>>> Stashed changes
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
@@ -76,7 +80,7 @@ FORMS += \
     LoginWidget.ui \
     MyOrdersPage.ui \
     RegisterWidget.ui \
-    #ResetPasswordWidget.ui \
+    ResetPasswordWidget.ui \
     homeform.ui \
     UserCenter.ui \
     FavoritesPage.ui
