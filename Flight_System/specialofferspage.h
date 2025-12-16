@@ -9,6 +9,7 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsProxyWidget> // 如果用了 proxy widget
 #include <QPushButton>
+#include "flightmapwidgets.h"
 
 // 1. 定义支持滚轮缩放的地图视图类
 // (通常建议单独放一个文件，但为了方便先放在这里)
@@ -43,6 +44,7 @@ private:
     QGraphicsScene *m_scene;   // 场景
     InteractiveMap *m_view;    // 视图 (自定义的类)
     QSqlDatabase db;           // 数据库连接对象
+    CityDetailCard *m_hoverCard;
 };
 
 #endif // SPECIALOFFERSPAGE_H

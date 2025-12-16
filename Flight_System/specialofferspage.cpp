@@ -9,7 +9,6 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QScrollBar> // 用于设置滚动条策略
-
 // --- InteractiveMap 类的实现 ---
 
 InteractiveMap::InteractiveMap(QWidget *parent) : QGraphicsView(parent) {
@@ -23,12 +22,25 @@ InteractiveMap::InteractiveMap(QWidget *parent) : QGraphicsView(parent) {
 }
 
 void InteractiveMap::wheelEvent(QWheelEvent *event) {
+    // 获取当前水平方向的缩放比例
+    double currentScale = transform().m11();
+
+    // 定义限制范围
+    double minScale = 0.2; // 最小缩放到 20%
+    double maxScale = 3.0; // 最大放大到 300%
+
+    // 如果想根据图片大小动态决定最小缩放，
+    // 需要在 InteractiveMap 里存一下 scene 的 rect，这里先用固定值演示，效果通常足够。
+
     if (event->angleDelta().y() > 0) {
-        scale(1.1, 1.1); // 放大 10%
+        // --- 准备放大 ---
+        if (currentScale > maxScale) return; // 超过最大值，禁止放大
+        scale(1.1, 1.1);
     } else {
-        scale(1.0 / 1.1, 1.0 / 1.1); // 缩小
+        // --- 准备缩小 ---
+        if (currentScale < minScale) return; // 超过最小值，禁止缩小
+        scale(1.0 / 1.1, 1.0 / 1.1);
     }
-    // 不要调用父类的 wheelEvent，否则会触发滚动条滚动
 }
 void InteractiveMap::mousePressEvent(QMouseEvent *event) {
     // 调用父类，保证拖拽功能正常
@@ -125,6 +137,14 @@ void SpecialOffersPage::initUi()
     // m_view->setGraphicsEffect(shadow);
 
     mainLayout->addWidget(m_view);
+
+    // --- 初始化悬浮卡片 ---
+    m_hoverCard = new CityDetailCard(this); // 父对象设为 this (QWidget)
+    m_hoverCard->hide(); // 默认隐藏
+    // 设置它不接受鼠标事件（让鼠标能穿透它点击下面的东西，可选）
+    m_hoverCard->setAttribute(Qt::WA_TransparentForMouseEvents);
+    // 确保卡片浮在最上层
+    m_hoverCard->raise();
 }
 void SpecialOffersPage::connectDatabase()
 {
@@ -163,53 +183,58 @@ void SpecialOffersPage::loadFlights()
 {
     if (!db.isOpen()) return;
 
-    QSqlQuery query("SELECT * FROM special_offers"); // 确保数据库里有这个表
+    // 清理旧的 items (如果需要刷新功能的话)
+    // m_scene->clear(); // 注意：这会把地图背景也清掉，这里假设只加载一次
+
+    QSqlQuery query("SELECT * FROM special_offers");
     while (query.next()) {
         QString city = query.value("city_name").toString();
         int price = query.value("price").toInt();
-        int x = query.value("pos_x").toInt(); // 数据库里需要存坐标
+        int x = query.value("pos_x").toInt();
         int y = query.value("pos_y").toInt();
 
-        // 创建价格标签按钮
-        QPushButton *tagBtn = new QPushButton();
-        // 设置两行文字：城市\n价格
-        tagBtn->setText(QString("%1\n¥%2").arg(city).arg(price));
-        tagBtn->setFixedSize(60, 45);
-        tagBtn->setCursor(Qt::PointingHandCursor);
+        // 假设数据库里有一列叫 img_url，如果没有，你可以先用假数据
+        // QString imgUrl = query.value("img_url").toString();
+        QString imgUrl = QString(":/images/%1.jpg").arg(city); // 示例：从资源文件加载
 
-        // 样式表
-        tagBtn->setStyleSheet(
-            "QPushButton {"
-            // 渐变蓝色背景
-            "   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #4facfe, stop:1 #00f2fe);"
-            // 或者纯色携程蓝： background-color: #2b92e4;
-            "   color: white;"
-            "   border-radius: 6px;"
-            "   padding: 4px;"
-            "   font-family: 'Microsoft YaHei';"
-            "   font-size: 12px;"
-            "   line-height: 14px;" // 调整行高
-            "   border: 1px solid white;" // 白色描边增加对比度
-            "}"
-            "QPushButton:hover {"
-            "   background-color: #FF9900;" // 悬停变橙色，强调特价
-            "   border-color: #FF9900;"
-            "   margin-top: -2px;" // 悬停时微微上浮效果
-            "}"
-            );
+        // --- 使用自定义的 MapMarkerBtn (要求2) ---
+        MapMarkerBtn *tagBtn = new MapMarkerBtn(city, price, imgUrl);
 
-        connect(tagBtn, &QPushButton::clicked, [city, price](){
-            qDebug() << "Clicked city:" << city << "Price:" << price;
-            // 这里可以弹窗显示详情
+        // --- 连接悬浮信号 (要求3) ---
+        connect(tagBtn, &MapMarkerBtn::hoverEntered, this, [this](QString c, int p, QString url, QPoint globalPos){
+            // 1. 设置卡片内容
+            m_hoverCard->setContent(c, p, url);
+
+            // 2. 计算卡片显示位置
+            // globalPos 是按钮在屏幕上的绝对位置
+            //我们需要把它转换成相对于 SpecialOffersPage (this) 的位置
+            QPoint localPos = this->mapFromGlobal(globalPos);
+
+            // 让卡片显示在按钮的右上方或正上方
+            int cardX = localPos.x() + 40; // 向右偏移
+            int cardY = localPos.y() - 150; // 向上偏移
+
+            // 边界检查（防止卡片跑出窗口）
+            if (cardY < 0) cardY = localPos.y() + 60; // 如果上面没地儿，就显示在下面
+
+            m_hoverCard->move(cardX, cardY);
+            m_hoverCard->show();
+            m_hoverCard->raise(); // 保证盖住地图
         });
 
-        // 将 Widget 添加到 GraphicsScene 中
+        connect(tagBtn, &MapMarkerBtn::hoverLeft, this, [this](){
+            m_hoverCard->hide();
+        });
+
+        // 点击跳转逻辑保持不变
+        connect(tagBtn, &QPushButton::clicked, [city, price](){
+            qDebug() << "查看详情:" << city;
+        });
+
+        // 添加到场景
         QGraphicsProxyWidget *proxy = m_scene->addWidget(tagBtn);
-
-        // 设置位置
-        proxy->setPos(x, y);
-
-        // 确保标签浮在地图上面
+        // 修正坐标：因为按钮坐标是左上角，为了让三角形尖端对准 (x,y)，需要向左偏移宽的一半，向上偏移整个高度
+        proxy->setPos(x - 35, y - 55);
         proxy->setZValue(1);
     }
 }

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+// [核心修正] 向前声明正确的 Ui 类
 namespace Ui {
 class RegisterWidget;
 }
@@ -21,7 +22,9 @@ signals:
 private slots:
     void on_btn_register_clicked();
     void on_btn_cancel_clicked();
+
 private:
+    // [核心修正] 声明正确的 ui 指针类型
     Ui::RegisterWidget *ui;
 };
 
