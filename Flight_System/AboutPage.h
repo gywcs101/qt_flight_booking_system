@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::AboutPage *ui;
+
+    // 【修改】去掉了 role 参数，只传名字和图片路径
+    QWidget* createDevProfile(QString name, QString imagePath);
 };
 
 #endif // ABOUTPAGE_H
