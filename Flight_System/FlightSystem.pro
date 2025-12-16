@@ -50,12 +50,8 @@ SOURCES += \
     MyOrdersPage.cpp \
     OrderCard.cpp \
     PostCard.cpp \
-<<<<<<< Updated upstream
-    #ResetPasswordWidget.cpp \
-    flightmapwidgets.cpp \
-=======
     ResetPasswordWidget.cpp \
->>>>>>> Stashed changes
+    flightmapwidgets.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
