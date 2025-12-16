@@ -28,5 +28,8 @@
         <file>../../dev2.jpg</file>
         <file>../../dev3.jpg</file>
     </qresource>
-    <qresource prefix="/发现图片"/>
+    <qresource prefix="/发现图片">
+        <file>find1_author.png</file>
+        <file>find1_passage.jpg</file>
+    </qresource>
 </RCC>
