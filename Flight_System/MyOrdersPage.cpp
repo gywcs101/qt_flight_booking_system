@@ -40,59 +40,56 @@ void MyOrdersPage::loadOrders()
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
     if (!layout) return;
 
-    // 1. 清空旧列表
+    // 清空旧数据
     QLayoutItem *child;
     while ((child = layout->takeAt(0)) != nullptr) {
-        if (child->widget()) child->widget()->deleteLater();
+        if(child->widget()) child->widget()->deleteLater();
         delete child;
     }
 
-    // 2. 获取用户ID
     int uid = UserSession::instance().getUserId();
-    if (uid == -1) return; // 未登录
+    if (uid == -1) return;
 
-    // 3. 查库：联表查询 (订单表 + 航班表)
-    // 假设订单表叫 orders, 航班表叫 flights
-    QString sql = "SELECT o.id as order_id, o.price as pay_price, f.* "
-                  "FROM orders o "
-                  "JOIN flights f ON o.flight_id = f.flight_id "
-                  "WHERE o.user_id = :uid "
-                  "ORDER BY o.create_time DESC";
+    QString sql = QString("SELECT o.id as order_id, o.price as pay_price, f.* "
+                          "FROM orders o "
+                          "JOIN flights f ON o.flight_id = f.flight_id "
+                          "WHERE o.user_id = %1 "
+                          "ORDER BY o.create_time DESC").arg(uid);
 
-    QSqlQuery query;
-    query.prepare(sql);
-    query.bindValue(":uid", uid);
+    QSqlQuery query = ODBC::query(sql);
 
-    if (query.exec()) {
-        while (query.next()) {
+    if(query.isActive()) {
+        int delayCounter = 0; // 【关键】延迟计数器
+
+        while(query.next()) {
             FlightData data;
-            // 填充数据...
             data.flightId = query.value("flight_id").toString();
-            data.airline  = query.value("airline").toString();
-            data.depCity  = query.value("departure_city").toString();
-            data.arrCity  = query.value("arrival_city").toString();
-            data.depTime  = query.value("departure_time").toDateTime();
-            data.arrTime  = query.value("arrival_time").toDateTime();
+            data.airline = query.value("airline").toString();
+            data.depCity = query.value("departure_city").toString();
+            data.arrCity = query.value("arrival_city").toString();
+            data.depTime = query.value("departure_time").toDateTime();
+            data.arrTime = query.value("arrival_time").toDateTime();
 
-            // 获取订单特有数据
             int orderId = query.value("order_id").toInt();
-            double paidPrice = query.value("pay_price").toDouble(); // 实付价格
+            double paidPrice = query.value("pay_price").toDouble();
 
-            // 创建卡片 (传入 orderId 和 实付价格)
             OrderCard *card = new OrderCard(data, orderId, paidPrice);
             layout->addWidget(card);
 
-            // 连接信号：退票
             connect(card, &OrderCard::refundClicked, this, &MyOrdersPage::handleRefund);
-            // 连接信号：改签
             connect(card, &OrderCard::changeClicked, this, &MyOrdersPage::handleChange);
+
+            // =======================================================
+            // 【核心调用】启动瀑布流动画
+            // 第1张: 0ms, 第2张: 80ms, 第3张: 160ms...
+            // =======================================================
+            card->startEntryAnimation(delayCounter * 80);
+
+            delayCounter++;
         }
-        layout->addStretch(); // 底部弹簧
-    } else {
-        qDebug() << "Load orders error:" << query.lastError().text();
+        layout->addStretch();
     }
 }
-
 // === 退票逻辑 ===
 void MyOrdersPage::handleRefund(int orderId, double price)
 {
