@@ -1,55 +1,64 @@
-/* ======================================================== */
-/* 1. 背景图设置 (只针对最外层窗口)                         */
-/* ======================================================== */
-/* 注意：请确保你的 UI 文件里，最顶层的窗口 objectName 叫 LoginWidget */
+/* =================================================================== */
+/*                          1. 全局与字体设置                          */
+/* =================================================================== */
+* {
+    font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+    /* border: 1px solid red; */ /* 调试时取消注释，查看所有控件边框 */
+}
+
+
+/* =================================================================== */
+/*               2. 登录/注册/重置密码窗口的专属样式                   */
+/* =================================================================== */
+
+/* 2.1. 设置背景图 */
 #LoginWidget, #RegisterWidget, #ResetPasswordWidget {
     border-image: url(:/LoginBackGround.png);
 }
 
-/* ======================================================== */
-/* 2. 防污染重置 (关键步骤！)                               */
-/* ======================================================== */
-/* 强制 LoginWidget 里面的所有子控件，都不许继承背景图 */
+/* 2.2. 防污染重置：确保上述窗口的子控件不继承背景图 */
 #LoginWidget *, #RegisterWidget *, #ResetPasswordWidget * {
     border-image: none;
 }
 
-/* ======================================================== */
-/* 3. 标签 (QLabel) 修复                                    */
-/* ======================================================== */
+/* 2.3. 为上述窗口内的标签设置特定颜色（如果需要的话）*/
+/* 当前版本不需要，因为下面的全局 QLabel 已经设置了颜色 */
+
+
+/* =================================================================== */
+/*                   3. 通用控件样式 (全局应用)                        */
+/* =================================================================== */
+
+/* 3.1. 标签 (QLabel) */
 QLabel {
-    border: none;                  /* 去掉边框 */
-    background: transparent;       /* 背景透明 */
-    color: #000000;                /* 【强制黑色】防止系统主题干扰 */
-    font-weight: bold;             /* 加粗 */
-    font-family: "Microsoft YaHei";
-    font-size: 14px;               /* 设定一个基础字号，防止太小 */
+    background: transparent;
+    color: #303133; /* 全局标签文字颜色：深灰 */
+    font-weight: bold;
+    font-size: 14px;
 }
 
-/* ======================================================== */
-/* 4. 输入框 (QLineEdit)                                    */
-/* ======================================================== */
-QLineEdit {
-    background-color: rgba(255, 255, 255, 0.9); /* 半透明白底 */
+/* 3.2. 输入框 (QLineEdit, QDateEdit 等) */
+QLineEdit, QDateEdit {
+    background-color: white;
     border: 1px solid #DCDFE6;
     border-radius: 4px;
-    padding: 6px;
-    color: #333333;                /* 输入文字颜色：深灰 */
+    padding: 6px 8px;
+    color: #333333;
 }
-QLineEdit:focus {
-    border: 1px solid #409EFF;
+QLineEdit:focus, QDateEdit:focus {
+    border-color: #409EFF;
 }
 
-/* ======================================================== */
-/* 5. 按钮 (QPushButton)                                    */
-/* ======================================================== */
+/* 3.3. 按钮 (QPushButton) */
 QPushButton {
-    background-color: #409EFF;
-    color: white;                  /* 按钮文字颜色：白 */
+    background-color: #409EFF; /* 主题蓝 */
+    color: white;
     border-radius: 4px;
-    padding: 8px;
+    padding: 8px 16px;
     border: none;
     font-weight: bold;
+    min-height: 20px; /* 防止按钮太矮 */
+    min-width: 60px;  /* 防止按钮太窄 */
 }
 QPushButton:hover {
     background-color: #66b1ff;
@@ -58,20 +67,99 @@ QPushButton:pressed {
     background-color: #3a8ee6;
 }
 
-/* 取消按钮单独设置 */
-#btn_cancel {
-    background-color: #F56C6C;
+/* 3.4. 特殊按钮样式 */
+/* 取消/删除按钮 */
+#btn_cancel, #btn_del, #btn_del_2, #btn_del_3 {
+    background-color: #F56C6C; /* 红色 */
 }
-#btn_cancel:hover {
+#btn_cancel:hover, #btn_del:hover, #btn_del_2:hover, #btn_del_3:hover {
     background-color: #f78989;
 }
 
 /* 注册链接按钮 */
 #btn_register {
     background-color: transparent;
-    color: #409EFF; /* 蓝色文字 */
+    color: #409EFF;
     text-align: right;
+    font-weight: normal;
+    padding: 0;
 }
 #btn_register:hover {
     text-decoration: underline;
+}
+
+
+/* =================================================================== */
+/*                   4. AdminWidget 后台管理界面样式                   */
+/* =================================================================== */
+
+/* 4.1. AdminWidget 整体背景 */
+#AdminWidget {
+    background-color: #FFFFFF; /* 主内容区使用白色背景 */
+}
+
+/* 4.2. 左侧菜单容器 */
+/* 请在 UI 文件中，将左侧菜单所在的 QWidget 的 objectName 设为 "leftNavContainer" */
+#leftNavContainer {
+    background-color: #FFFFFF;
+    border-right: 1px solid #EAECEF;
+}
+
+/* 4.3. 左侧菜单 (QListWidget) */
+#listMenu {
+    border: none;
+    background-color: transparent;
+}
+#listMenu::item {
+    padding: 12px 20px;
+    margin: 4px 8px; /* 给每个item一点外边距，更好看 */
+    border-radius: 4px;
+}
+#listMenu::item:hover {
+    background-color: #F5F7FA; /* 悬停时变淡灰 */
+}
+#listMenu::item:selected {
+    background-color: #ECF5FF; /* 选中时变淡蓝 */
+    color: #409EFF; /* 选中时文字变主题蓝 */
+}
+
+/* 4.4. 右侧内容区标题 (如“添加/修改用户信息”) */
+/* 使用方法：在 UI 文件中，为这些标题 QLabel 添加动态属性 class="title-label" */
+QLabel[class="title-label"] {
+    font-size: 18px;
+    font-weight: bold;
+    color: #303133;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+/* 4.5. 表格 (QTableWidget) 样式 */
+QTableWidget {
+    border: 1px solid #EBEEF5;
+    gridline-color: #EBEEF5; /* 表格线颜色 */
+    background-color: white;
+    /* 移除这里的 selection-background-color 和 selection-color，
+       我们将用更精确的选择器来控制它们 */
+}
+
+QHeaderView::section { /* 表头样式 */
+    background-color: #F5F7FA;
+    padding: 10px;
+    border: none;
+    font-weight: bold;
+    color: #909399;
+}
+
+QTableWidget::item {
+    padding-left: 10px;
+    border: none; /* 保持单元格无边框 */
+    /* 默认状态下的文字颜色，会被全局 QLabel 的 color 继承，
+       所以这里通常不需要再设置 color */
+}
+
+
+/* [核心修改] 使用 ::item:selected 伪状态选择器来分别控制选中项的背景和文字颜色 */
+QTableWidget::item:selected {
+    background-color: #ECF5FF; /* ★ 设置选中项的【背景】为淡蓝色 */
+    color: #303133;            /* ★ 设置选中项的【文字】为深灰色 */
 }
