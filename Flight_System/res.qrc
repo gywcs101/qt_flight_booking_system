@@ -24,9 +24,9 @@
         <file>usercenter.png</file>
         <file>china_map.jpg</file>
         <file>china_map2.png</file>
-        <file>../../dev1.jpg</file>
-        <file>../../dev2.jpg</file>
-        <file>../../dev3.jpg</file>
+        <file>dev1.jpg</file>
+        <file>dev2.jpg</file>
+        <file>dev3.jpg</file>
     </qresource>
     <qresource prefix="/发现图片"/>
 </RCC>
