@@ -1,73 +1,55 @@
-/* =================================================================== */
-/*                          全局样式                                   */
-/* =================================================================== */
-QWidget {
-    font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-}
-
-/* =================================================================== */
-/*                特定窗口的背景和内部样式                             */
-/* =================================================================== */
-QWidget#LoginWidget,
-QWidget#RegisterWidget,
-QWidget#ResetPasswordWidget {
+/* ======================================================== */
+/* 1. 背景图设置 (只针对最外层窗口)                         */
+/* ======================================================== */
+/* 注意：请确保你的 UI 文件里，最顶层的窗口 objectName 叫 LoginWidget */
+#LoginWidget, #RegisterWidget, #ResetPasswordWidget {
     border-image: url(:/LoginBackGround.png);
 }
 
-/* =================================================================== */
-/*                     通用控件样式                                    */
-/* =================================================================== */
-
-/* 1. 标签 (QLabel) 样式 */
-QWidget#LoginWidget QLabel,
-QWidget#RegisterWidget QLabel {
-    border: none;
-    border-image: none;            /* 彻底清除边框图片影响 */
-    background-color: transparent; /* 背景完全透明 */
-    color: #303133;                /* 强制设置文字颜色 */
-    font-weight: bold;
+/* ======================================================== */
+/* 2. 防污染重置 (关键步骤！)                               */
+/* ======================================================== */
+/* 强制 LoginWidget 里面的所有子控件，都不许继承背景图 */
+#LoginWidget *, #RegisterWidget *, #ResetPasswordWidget * {
+    border-image: none;
 }
 
+/* ======================================================== */
+/* 3. 标签 (QLabel) 修复                                    */
+/* ======================================================== */
+QLabel {
+    border: none;                  /* 去掉边框 */
+    background: transparent;       /* 背景透明 */
+    color: #000000;                /* 【强制黑色】防止系统主题干扰 */
+    font-weight: bold;             /* 加粗 */
+    font-family: "Microsoft YaHei";
+    font-size: 14px;               /* 设定一个基础字号，防止太小 */
+}
 
-/* 2. 输入框 (QLineEdit) 样式 */
+/* ======================================================== */
+/* 4. 输入框 (QLineEdit)                                    */
+/* ======================================================== */
 QLineEdit {
-    border-image: none;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.9); /* 半透明白底 */
     border: 1px solid #DCDFE6;
     border-radius: 4px;
-    padding: 6px 8px;
-    color: #303133;
+    padding: 6px;
+    color: #333333;                /* 输入文字颜色：深灰 */
 }
 QLineEdit:focus {
-    border-color: #409EFF;
+    border: 1px solid #409EFF;
 }
 
-/* 3. 下拉框 (QComboBox) 样式 */
-QComboBox {
-    border-image: none;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid #DCDFE6;
-    border-radius: 4px;
-    padding: 6px 8px;
-    color: #303133;
-}
-QComboBox:focus {
-    border-color: #409EFF;
-}
-QComboBox::drop-down {
-    border: none;
-    width: 25px;
-}
-
-/* 4. 【通用】按钮 (QPushButton) 样式 */
+/* ======================================================== */
+/* 5. 按钮 (QPushButton)                                    */
+/* ======================================================== */
 QPushButton {
-    border-image: none;
     background-color: #409EFF;
-    color: white;
+    color: white;                  /* 按钮文字颜色：白 */
     border-radius: 4px;
-    padding: 8px 16px;
-    font-weight: bold;
+    padding: 8px;
     border: none;
+    font-weight: bold;
 }
 QPushButton:hover {
     background-color: #66b1ff;
@@ -76,30 +58,20 @@ QPushButton:pressed {
     background-color: #3a8ee6;
 }
 
-/* 5. 【特殊化】为“取消”按钮 (btn_cancel) 设置红色样式 */
-QPushButton#btn_cancel {
+/* 取消按钮单独设置 */
+#btn_cancel {
     background-color: #F56C6C;
 }
-QPushButton#btn_cancel:hover {
+#btn_cancel:hover {
     background-color: #f78989;
 }
-QPushButton#btn_cancel:pressed {
-    background-color: #f54a4a;
-}
 
-/* 6. 【新增】为“立即注册”按钮 (btn_register) 设置链接样式 */
-QPushButton#btn_register {
-    border: none;
-    background-color: transparent; /* 背景透明 */
-    color: #409EFF;               /* 文字颜色：蓝色 */
-    text-align: left;              /* 文字左对齐 */
-    font-weight: normal;           /* 链接通常不加粗 */
-    padding: 0;                    /* 不需要内边距 */
+/* 注册链接按钮 */
+#btn_register {
+    background-color: transparent;
+    color: #409EFF; /* 蓝色文字 */
+    text-align: right;
 }
-QPushButton#btn_register:hover {
-    color: #66b1ff;               /* 悬停时颜色变浅 */
-    text-decoration: underline;    /* 悬停时加下划线 */
-}
-QPushButton#btn_register:pressed {
-    color: #3a8ee6;               /* 按下时颜色变深 */
+#btn_register:hover {
+    text-decoration: underline;
 }
