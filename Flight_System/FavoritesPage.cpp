@@ -76,6 +76,7 @@ void FavoritesPage::loadFavoriteFlights()
     }
 
     int count = 0;
+     int delayCounter = 0;
     while (query.next()) {
         count++;
         FlightData data;
@@ -155,6 +156,8 @@ void FavoritesPage::loadFavoriteFlights()
                 }
             }
         });
+        card->startEntryAnimation(delayCounter * 80);
+        delayCounter++;
     }
 
     if (count == 0) {

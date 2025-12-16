@@ -8,6 +8,26 @@ FlightCard::FlightCard(const FlightData &data, QWidget *parent)
     : QWidget(parent), m_data(data) {
     setupUi();
     setFavoriteState(m_data.isFavorite);
+
+    m_opacityEffect = new QGraphicsOpacityEffect(this);
+    m_opacityEffect->setOpacity(0.0);
+    this->setGraphicsEffect(m_opacityEffect);
+}
+
+void FlightCard::startEntryAnimation(int delay) {
+    QTimer::singleShot(delay, this, [=](){
+        QPropertyAnimation *anim = new QPropertyAnimation(m_opacityEffect, "opacity");
+        anim->setDuration(500);
+        anim->setStartValue(0.0);
+        anim->setEndValue(1.0);
+        anim->setEasingCurve(QEasingCurve::OutQuad);
+
+        // 动画结束后移除特效，保证字体清晰
+        connect(anim, &QPropertyAnimation::finished, [=](){
+            this->setGraphicsEffect(nullptr);
+        });
+        anim->start(QAbstractAnimation::DeleteWhenStopped);
+    });
 }
 
 void FlightCard::setupUi() {

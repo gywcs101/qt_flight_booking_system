@@ -90,6 +90,8 @@ void AllFlightsPage::loadFlightsData()
     }
 
     int count = 0;
+    int delayCounter = 0;
+
     while (query.next()) {
         count++;
         FlightData data;
@@ -165,6 +167,8 @@ void AllFlightsPage::loadFlightsData()
                 }
             }
         });
+        card->startEntryAnimation(delayCounter * 80); // 每个间隔 80ms
+        delayCounter++;
     }
 
     // 暂无数据提示
