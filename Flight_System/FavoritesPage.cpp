@@ -9,8 +9,8 @@
 #include <QDebug>
 #include <QVBoxLayout>
 #include <QLabel>
-#include <QMessageBox>    // [新增]
-#include <QSqlDatabase>   // [新增]
+#include <QMessageBox>
+#include <QSqlDatabase>
 
 FavoritesPage::FavoritesPage(QWidget *parent) :
     QWidget(parent),
@@ -18,12 +18,11 @@ FavoritesPage::FavoritesPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 样式设置
+    // 样式美化
     this->setStyleSheet("QWidget#FavoritesPage { background-color: #F5F7FA; }");
     ui->scrollArea->setStyleSheet("background: transparent; border: none;");
     ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");
 
-    // 布局初始化
     if (!ui->scrollAreaWidgetContents->layout()) {
         QVBoxLayout *vbox = new QVBoxLayout(ui->scrollAreaWidgetContents);
         vbox->setSpacing(15);
@@ -42,7 +41,7 @@ void FavoritesPage::loadFavoriteFlights()
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
     if (!layout) return;
 
-    // 清空
+    // 清空界面
     QLayoutItem *child;
     while ((child = layout->takeAt(0)) != nullptr) {
         if(child->widget()) child->widget()->deleteLater();
@@ -56,10 +55,15 @@ void FavoritesPage::loadFavoriteFlights()
         return;
     }
 
+    // =================================================================
+    // 【核心修改 1】 SQL 查询：排除已预订的航班
+    // =================================================================
+    // 逻辑：在 favorites 表里找，同时排除掉 (NOT IN) 在 orders 表里存在的 flight_id
     QString sql = QString(
                       "SELECT f.* FROM flights f "
                       "INNER JOIN favorites fav ON f.flight_id = fav.flight_id "
                       "WHERE fav.user_id = %1 "
+                      "AND f.flight_id NOT IN (SELECT flight_id FROM orders WHERE user_id = %1) " // <--- 新增这句
                       "ORDER BY fav.create_time DESC"
                       ).arg(uid);
 
@@ -88,19 +92,26 @@ void FavoritesPage::loadFavoriteFlights()
         FlightCard *card = new FlightCard(data, this);
         layout->addWidget(card);
 
-        // --- 1. 取消收藏逻辑 ---
+        // 1. 取消收藏逻辑
         connect(card, &FlightCard::favClicked, [=](const QString& fid, bool isFavNow){
             if (!isFavNow) {
                 QString deleteSql = QString("DELETE FROM favorites WHERE user_id = %1 AND flight_id = '%2'").arg(uid).arg(fid);
                 ODBC::query(deleteSql);
-                card->hide();
+
+                // 移除卡片
+                layout->removeWidget(card);
                 card->deleteLater();
-                // 简单处理：不重新检查是否为空
+
+                // 检查是否删空了，显示空状态
+                // (这里做一个简化的延时检查，或者简单忽略)
             }
         });
 
-        // --- 2. 预订逻辑 (与 AllFlightsPage 逻辑完全一致) ---
+        // =========================================================
+        // 2. 预订逻辑 (自动扣费 + 移除卡片)
+        // =========================================================
         connect(card, &FlightCard::bookClicked, [=](QString fid) {
+            // A. 查余额
             QString balanceSql = QString("SELECT balance FROM users WHERE id = %1").arg(uid);
             QSqlQuery balanceQ = ODBC::query(balanceSql);
             if (balanceQ.next()) {
@@ -112,6 +123,7 @@ void FavoritesPage::loadFavoriteFlights()
                     return;
                 }
 
+                // B. 事务操作
                 QSqlDatabase::database().transaction();
                 bool success = true;
 
@@ -126,10 +138,17 @@ void FavoritesPage::loadFavoriteFlights()
                                        .arg(uid).arg(fid).arg(data.price);
                 if (ODBC::query(orderSql).lastError().isValid()) success = false;
 
+                // C. 结果处理
                 if (success) {
                     QSqlDatabase::database().commit();
+
                     QMessageBox::information(this, "预订成功",
-                                             QString("预订成功！\n已扣除 ¥%1。\n请前往“我的订单”查看。").arg(data.price));
+                                             QString("预订成功！\n已自动扣除 ¥%1。\n您可以在“我的订单”中查看详情。").arg(data.price));
+
+                    // 【核心修改 2】 预订成功后，立即从收藏页移除该卡片
+                    layout->removeWidget(card);
+                    card->deleteLater();
+
                 } else {
                     QSqlDatabase::database().rollback();
                     QMessageBox::critical(this, "预订失败", "交易异常，请重试。");
