@@ -1,12 +1,12 @@
 #include "LoginWidget.h"
 #include "ui_LoginWidget.h"
 #include "LoginFunc.h"
-#include "UserSession.h" // 【新增】引入用户会话管理
+#include "UserSession.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QApplication>
-#include <QSqlQuery>     // 【新增】用于查询ID
-#include <QSqlError>     // 【新增】
+#include <QSqlQuery>
+#include <QSqlError>
 
 LoginWidget::LoginWidget(QWidget *parent) :
     QWidget(parent),
@@ -35,42 +35,35 @@ void LoginWidget::on_btn_login_clicked()
     if(role == "管理员"){
         bool isAdmin = LoginFunc::verifyAdmin(username, password);
         if(isAdmin){
-            // 管理员不需要记录到 UserSession (或者你可以设为0)
-            // UserSession::instance().setUserId(0);
+            // [核心修改] 管理员登录成功
+            qDebug() << "管理员登录成功:" << username;
 
-            QMessageBox::information(this, "提示", "管理员登录成功！\n(后台管理系统开发中...)");
+            // 1. 发射管理员登录成功信号
+            emit loginSuccessAsAdmin();
+
+            // 2. 关闭当前登录窗口
+            this->close();
+
         } else {
             QMessageBox::warning(this, "登录失败", "管理员账号或密码错误！");
         }
     }
-    else{
-        // 1. 先验证账号密码是否正确
+    else { // 用户登录
         bool isUser = LoginFunc::verifyUser(username, password);
-
         if(isUser){
-            // =======================================================
-            // 【核心修改】登录成功后，查询并保存用户 ID
-            // =======================================================
             QSqlQuery query;
-            // 根据用户名和密码查询 ID (确保唯一性)
             query.prepare("SELECT id FROM users WHERE username = :u AND password = :p");
             query.bindValue(":u", username);
             query.bindValue(":p", password);
 
             if(query.exec() && query.next()) {
                 int userId = query.value("id").toInt();
-
-                // 将 ID 存入全局单例，供收藏功能使用
                 UserSession::instance().setUserId(userId);
-
                 qDebug() << "登录成功，当前用户ID:" << userId;
             } else {
                 qDebug() << "警告：验证通过但未查询到ID，数据库可能异常";
-                // 可以在这里处理异常，或者默认给个 -1
             }
-            // =======================================================
 
-            // 发送信号切换窗口
             emit loginSuccess();
             this->close();
         }
