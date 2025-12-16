@@ -26,7 +26,7 @@ void InteractiveMap::wheelEvent(QWheelEvent *event) {
     double currentScale = transform().m11();
 
     // 定义限制范围
-    double minScale = 0.2; // 最小缩放到 20%
+    double minScale = qMin(800.0 / 2354, 600.0 / 1235); // 最小缩放到 20%
     double maxScale = 3.0; // 最大放大到 300%
 
     // 如果想根据图片大小动态决定最小缩放，
