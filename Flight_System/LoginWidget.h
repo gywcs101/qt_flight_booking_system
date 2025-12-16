@@ -24,7 +24,7 @@ signals:
 
 private slots:
     void on_btn_login_clicked();
-    void on_pushButton_2_clicked();
+    void on_btn_cancel_clicked();
     void on_btn_register_clicked();
 
 private:
