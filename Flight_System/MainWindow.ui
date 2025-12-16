@@ -147,7 +147,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>7</number>
       </property>
       <widget class="QWidget" name="page0_First">
        <widget class="AdBanner" name="bannerWidget" native="true">
@@ -216,7 +216,7 @@
       <widget class="FavoritesPage" name="page4_Love"/>
       <widget class="MyOrdersPage" name="page5_Order"/>
       <widget class="UserCenter" name="page6_User"/>
-      <widget class="QWidget" name="page7_About"/>
+      <widget class="AboutPage" name="page7_About"/>
      </widget>
     </item>
    </layout>
@@ -263,6 +263,12 @@
    <class>MyOrdersPage</class>
    <extends>QWidget</extends>
    <header>MyOrdersPage.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AboutPage</class>
+   <extends>QWidget</extends>
+   <header location="global">aboutpage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
