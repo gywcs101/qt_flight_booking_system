@@ -27,6 +27,7 @@
         <file>dev1.jpg</file>
         <file>dev2.jpg</file>
         <file>dev3.jpg</file>
+        <file>logo.png</file>
     </qresource>
     <qresource prefix="/发现图片">
         <file>find1_author.jpg</file>
