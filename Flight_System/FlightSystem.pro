@@ -30,6 +30,7 @@ HEADERS += \
     #ResetPasswordWidget.h \
     UserSession.h \
     adbanner.h \
+    flightmapwidgets.h \
     homeform.h \
     UserCenter.h \
     FavoritesPage.h \
@@ -50,6 +51,7 @@ SOURCES += \
     OrderCard.cpp \
     PostCard.cpp \
     #ResetPasswordWidget.cpp \
+    flightmapwidgets.cpp \
     main.cpp \
     LoginWidget.cpp \
     MainWindow.cpp \
