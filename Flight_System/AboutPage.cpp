@@ -47,7 +47,7 @@ AboutPage::AboutPage(QWidget *parent) :
     QLabel *logo = new QLabel(scrollContent);
     QPixmap pix(":/logo.png");
     if (!pix.isNull()) {
-        logo->setPixmap(pix.scaled(80, 80, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        logo->setPixmap(pix.scaled(160, 160, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     } else {
         logo->setText("✈️");
         logo->setStyleSheet("font-size: 70px; background: transparent;");
