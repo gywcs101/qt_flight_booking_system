@@ -17,7 +17,7 @@ ResetPasswordWidget::ResetPasswordWidget(int userId, QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("修改密码");
-
+    this->setAttribute(Qt::WA_StyledBackground, true);
     // --- 初始化界面 ---
 
     // 1. 设置密码输入框为密码模式 (显示 ●●●)

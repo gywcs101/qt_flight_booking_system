@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <ODBC.h>
 
 MyOrdersPage::MyOrdersPage(QWidget *parent) :
     QWidget(parent),

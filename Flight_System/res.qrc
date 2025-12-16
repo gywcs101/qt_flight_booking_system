@@ -25,4 +25,5 @@
         <file>china_map.jpg</file>
         <file>china_map2.png</file>
     </qresource>
+    <qresource prefix="/发现图片"/>
 </RCC>
