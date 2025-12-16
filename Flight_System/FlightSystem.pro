@@ -10,6 +10,7 @@ TEMPLATE = app
 # 1. 头文件列表 (HEADERS)
 # =========================================================================
 HEADERS += \
+    AboutPage.h \
     AdminWidget.h \
     AllFlightsPage.h \
     ChangeFlightDialog.h \
@@ -40,6 +41,7 @@ HEADERS += \
 # 2. 源文件列表 (SOURCES)
 # =========================================================================
 SOURCES += \
+    AboutPage.cpp \
     AdminWidget.cpp \
     AllFlightsPage.cpp \
     ChangeFlightDialog.cpp \
@@ -68,6 +70,7 @@ SOURCES += \
 # 3. 界面文件列表 (FORMS)
 # =========================================================================
 FORMS += \
+    AboutPage.ui \
     AdminWidget.ui \
     AllFlightsPage.ui \
     ChangeFlightDialog.ui \
