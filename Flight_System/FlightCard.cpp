@@ -9,6 +9,7 @@ FlightCard::FlightCard(const FlightData &data, QWidget *parent)
     setupUi();
     setFavoriteState(m_data.isFavorite);
 
+    // 动画特效初始化
     m_opacityEffect = new QGraphicsOpacityEffect(this);
     m_opacityEffect->setOpacity(0.0);
     this->setGraphicsEffect(m_opacityEffect);
@@ -22,7 +23,6 @@ void FlightCard::startEntryAnimation(int delay) {
         anim->setEndValue(1.0);
         anim->setEasingCurve(QEasingCurve::OutQuad);
 
-        // 动画结束后移除特效，保证字体清晰
         connect(anim, &QPropertyAnimation::finished, [=](){
             this->setGraphicsEffect(nullptr);
         });
@@ -39,11 +39,7 @@ void FlightCard::setupUi() {
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(20, 15, 20, 15);
 
-    // ... (中间布局代码省略，保持你原来的) ...
-    // 这里是你之前写的布局代码，不用动，只需要检查 col1, col2... 是否都 addLayout 进去了
-    // 为了节省篇幅我只写按钮部分，请保留你原来的中间代码
-
-    // 假设这是前面的代码...
+    // --- 第1列：航班号 + 航司 ---
     QVBoxLayout *col1 = new QVBoxLayout;
     QLabel *lblId = new QLabel(m_data.flightId);
     lblId->setStyleSheet("font-weight: bold; color: #0078D7; font-size: 16px;");
@@ -51,29 +47,56 @@ void FlightCard::setupUi() {
     col1->addWidget(new QLabel(m_data.airline));
     mainLayout->addLayout(col1, 2);
 
+    // --- 第2列：出发时间 + 城市 + 日期 ---
     QVBoxLayout *col2 = new QVBoxLayout;
     QLabel *t1 = new QLabel(m_data.depTime.toString("HH:mm"));
-    t1->setStyleSheet("font-weight: bold; font-size: 24px;");
+    t1->setStyleSheet("font-weight: bold; font-size: 24px; color: #333;");
+
+    QLabel *c1 = new QLabel(m_data.depCity);
+    c1->setStyleSheet("color: #666; font-size: 14px;");
+
+    // 【新增】出发日期
+    QLabel *d1 = new QLabel(m_data.depTime.toString("MM-dd"));
+    d1->setStyleSheet("color: #999; font-size: 12px;");
+
     col2->addWidget(t1);
-    col2->addWidget(new QLabel(m_data.depCity));
+    col2->addWidget(c1);
+    col2->addWidget(d1);
+    col2->setAlignment(Qt::AlignCenter); // 居中对齐
     mainLayout->addLayout(col2, 2);
 
-    mainLayout->addWidget(new QLabel("──✈──"), 1, Qt::AlignCenter);
+    // --- 中间：箭头 ---
+    QLabel *arrow = new QLabel("──✈──");
+    // 稍微上移一点，因为两边加了日期变高了
+    arrow->setStyleSheet("color: #DDD; font-size: 10px; margin-bottom: 20px;");
+    mainLayout->addWidget(arrow, 1, Qt::AlignCenter);
 
+    // --- 第3列：到达时间 + 城市 + 日期 ---
     QVBoxLayout *col3 = new QVBoxLayout;
     QLabel *t2 = new QLabel(m_data.arrTime.toString("HH:mm"));
-    t2->setStyleSheet("font-weight: bold; font-size: 24px;");
+    t2->setStyleSheet("font-weight: bold; font-size: 24px; color: #333;");
+
+    QLabel *c2 = new QLabel(m_data.arrCity);
+    c2->setStyleSheet("color: #666; font-size: 14px;");
+
+    // 【新增】到达日期
+    QLabel *d2 = new QLabel(m_data.arrTime.toString("MM-dd"));
+    d2->setStyleSheet("color: #999; font-size: 12px;");
+
     col3->addWidget(t2);
-    col3->addWidget(new QLabel(m_data.arrCity));
+    col3->addWidget(c2);
+    col3->addWidget(d2);
+    col3->setAlignment(Qt::AlignCenter); // 居中对齐
     mainLayout->addLayout(col3, 2);
 
+    // --- 第4列：价格 ---
     QVBoxLayout *col4 = new QVBoxLayout;
     QLabel *price = new QLabel(QString("¥%1").arg(m_data.price));
     price->setStyleSheet("color: #FF6600; font-weight: bold; font-size: 20px;");
     col4->addWidget(price);
     col4->setAlignment(Qt::AlignRight);
 
-    // 按钮区
+    // --- 第5列：按钮区 ---
     QVBoxLayout *btnLayout = new QVBoxLayout;
     btnLayout->setSpacing(5);
 
@@ -102,7 +125,7 @@ void FlightCard::setupUi() {
 }
 
 void FlightCard::setFavoriteState(bool isFav) {
-    m_data.isFavorite = isFav; // 同步数据状态
+    m_data.isFavorite = isFav;
     if (isFav) {
         m_btnFav->setText("♥ 已收藏");
         m_btnFav->setStyleSheet("QPushButton { color: #FF4D4F; border: 1px solid #FF4D4F; background-color: #FFF1F0; border-radius: 4px; font-weight: bold;}");

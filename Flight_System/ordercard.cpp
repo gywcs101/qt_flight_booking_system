@@ -8,28 +8,21 @@ OrderCard::OrderCard(const FlightData &data, int orderId, double paidPrice, QWid
     : QWidget(parent), m_data(data), m_orderId(orderId), m_paidPrice(paidPrice) {
     setupUi();
 
-    // =============================================================
-    // 【关键步骤 1】初始化时设为全透明（隐藏状态，但占位）
-    // =============================================================
+    // 动画特效初始化
     m_opacityEffect = new QGraphicsOpacityEffect(this);
-    m_opacityEffect->setOpacity(0.0); // 0 = 完全透明
+    m_opacityEffect->setOpacity(0.0);
     this->setGraphicsEffect(m_opacityEffect);
 }
 
-// 【新增】实现入场动画
 void OrderCard::startEntryAnimation(int delay)
 {
-    // 使用定时器实现延迟启动（制造瀑布流效果）
     QTimer::singleShot(delay, this, [=](){
-        // 创建动画对象，目标是 opacity 属性
         QPropertyAnimation *anim = new QPropertyAnimation(m_opacityEffect, "opacity");
-        anim->setDuration(500); // 动画持续 500ms
+        anim->setDuration(500);
         anim->setStartValue(0.0);
         anim->setEndValue(1.0);
-        anim->setEasingCurve(QEasingCurve::OutQuad); // 渐出曲线，比较柔和
+        anim->setEasingCurve(QEasingCurve::OutQuad);
 
-        // 【优化】动画结束后移除特效
-        // 原因：如果不移除 QGraphicsEffect，Windows 下文字抗锯齿会变差，导致字体看起来发虚
         connect(anim, &QPropertyAnimation::finished, [=](){
             this->setGraphicsEffect(nullptr);
         });
@@ -38,7 +31,6 @@ void OrderCard::startEntryAnimation(int delay)
     });
 }
 
-// 完整的布局代码 (复用 FlightCard 样式)
 void OrderCard::setupUi() {
     this->setFixedHeight(125);
     this->setAttribute(Qt::WA_StyledBackground, true);
@@ -48,7 +40,7 @@ void OrderCard::setupUi() {
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(20, 15, 20, 15);
 
-    // 1. 航班号 + 航司
+    // --- 第1列：航班号 + 航司 ---
     QVBoxLayout *col1 = new QVBoxLayout;
     QLabel *lblId = new QLabel(m_data.flightId);
     lblId->setStyleSheet("font-weight: bold; color: #0078D7; font-size: 16px;");
@@ -56,36 +48,60 @@ void OrderCard::setupUi() {
     col1->addWidget(new QLabel(m_data.airline));
     mainLayout->addLayout(col1, 2);
 
-    // 2. 出发时间 + 城市
+    // --- 第2列：出发时间 + 城市 + 日期 ---
     QVBoxLayout *col2 = new QVBoxLayout;
     QLabel *t1 = new QLabel(m_data.depTime.toString("HH:mm"));
     t1->setStyleSheet("font-weight: bold; font-size: 24px; color: #333;");
+
+    QLabel *c1 = new QLabel(m_data.depCity);
+    c1->setStyleSheet("color: #666; font-size: 14px;");
+
+    // 【新增】出发日期
+    QLabel *d1 = new QLabel(m_data.depTime.toString("MM-dd"));
+    d1->setStyleSheet("color: #999; font-size: 12px;");
+
     col2->addWidget(t1);
-    col2->addWidget(new QLabel(m_data.depCity));
+    col2->addWidget(c1);
+    col2->addWidget(d1);
+    col2->setAlignment(Qt::AlignCenter);
     mainLayout->addLayout(col2, 2);
 
-    // 3. 箭头
-    mainLayout->addWidget(new QLabel("──✈──"), 1, Qt::AlignCenter);
+    // --- 中间：箭头 ---
+    QLabel *arrow = new QLabel("──✈──");
+    arrow->setStyleSheet("color: #DDD; font-size: 10px; margin-bottom: 20px;");
+    mainLayout->addWidget(arrow, 1, Qt::AlignCenter);
 
-    // 4. 到达时间 + 城市
+    // --- 第3列：到达时间 + 城市 + 日期 ---
     QVBoxLayout *col3 = new QVBoxLayout;
     QLabel *t2 = new QLabel(m_data.arrTime.toString("HH:mm"));
     t2->setStyleSheet("font-weight: bold; font-size: 24px; color: #333;");
+
+    QLabel *c2 = new QLabel(m_data.arrCity);
+    c2->setStyleSheet("color: #666; font-size: 14px;");
+
+    // 【新增】到达日期
+    QLabel *d2 = new QLabel(m_data.arrTime.toString("MM-dd"));
+    d2->setStyleSheet("color: #999; font-size: 12px;");
+
     col3->addWidget(t2);
-    col3->addWidget(new QLabel(m_data.arrCity));
+    col3->addWidget(c2);
+    col3->addWidget(d2);
+    col3->setAlignment(Qt::AlignCenter);
     mainLayout->addLayout(col3, 2);
 
-    // 5. 实付价格 + 状态
+    // --- 第4列：实付价格 + 状态 ---
     QVBoxLayout *col4 = new QVBoxLayout;
     QLabel *price = new QLabel(QString("实付 ¥%1").arg(m_paidPrice));
     price->setStyleSheet("color: #FF6600; font-weight: bold; font-size: 18px;");
+
     QLabel *status = new QLabel("已支付");
     status->setStyleSheet("color: #67C23A; font-weight: bold; font-size: 12px;");
+
     col4->addWidget(price);
     col4->addWidget(status);
     col4->setAlignment(Qt::AlignRight);
 
-    // 6. 按钮区 (改签 + 退票)
+    // --- 第5列：按钮区 (改签 + 退票) ---
     QVBoxLayout *btnLayout = new QVBoxLayout;
     btnLayout->setSpacing(5);
 
