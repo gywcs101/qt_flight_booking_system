@@ -6,8 +6,9 @@
 #include <QVBoxLayout>
 #include <QPainter>
 #include <QPainterPath>
-#include <QEvent>
-#include <QEnterEvent>
+#include <QGraphicsEffect>
+#include <QEvent>       // 【新增】
+#include <QEnterEvent>  // 【新增】针对 Qt 6
 
 // --- 类1：详情展示卡片 ---
 class CityDetailCard : public QWidget {
@@ -29,20 +30,13 @@ public:
 
 protected:
     void enterEvent(QEnterEvent *event) override; // 鼠标进入
-    void leaveEvent(QEvent *event) override;      // 鼠标离开
+    void leaveEvent(QEvent *event) override;     // 鼠标离开
     void paintEvent(QPaintEvent *event) override; // 重绘按钮
 
-    // ================== 【修改点 1：添加信号声明】 ==================
-signals:
-    // 声明鼠标进入和离开的信号，供外部连接
-    void hoverEntered(QString city, int price, QString imgUrl, QPoint localPos);
-    void hoverLeft();
-    // ==============================================================
-
 private:
-    QString m_city;     // 城市名
-    int m_price;        // 价格
-    QString m_imgUrl;   // 图片路径
+    QString m_city;    // 城市名
+    int m_price;       // 价格
+    QString m_imgUrl;  // 图片路径
     bool m_isHover = false; // 标记是否处于悬停状态
 };
 

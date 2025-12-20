@@ -183,9 +183,8 @@ void SpecialOffersPage::loadFlights()
 {
     if (!db.isOpen()) return;
 
-    // 清理旧的 items
-    // m_scene->clear(); // 注意：这会把地图背景也清掉，如果背景是 addItem 加进去的要小心。
-    // 建议只清理按钮，或者重新加载背景。假设这里只加载数据：
+    // 清理旧的 items (如果需要刷新功能的话)
+    // m_scene->clear(); // 注意：这会把地图背景也清掉，这里假设只加载一次
 
     QSqlQuery query("SELECT * FROM special_offers");
     while (query.next()) {
@@ -193,58 +192,40 @@ void SpecialOffersPage::loadFlights()
         int price = query.value("price").toInt();
         int x = query.value("pos_x").toInt();
         int y = query.value("pos_y").toInt();
-        // 确保数据库里有 img_url 字段，且路径正确（例如 ":/images/bj.jpg" 或 "D:/pic/1.jpg"）
-        QString imgUrl = query.value("img_url").toString();
 
-        // --- 创建按钮 ---
+        // 假设数据库里有一列叫 img_url，如果没有，你可以先用假数据
+        // QString imgUrl = query.value("img_url").toString();
+        QString imgUrl = QString(":/images/%1.jpg").arg(city); // 示例：从资源文件加载
+
+        // --- 使用自定义的 MapMarkerBtn (要求2) ---
         MapMarkerBtn *tagBtn = new MapMarkerBtn(city, price, imgUrl);
 
-        // --- 添加到场景 ---
-        // addWidget 会返回一个代理控件 (QGraphicsProxyWidget)
-        QGraphicsProxyWidget *proxy = m_scene->addWidget(tagBtn);
-
-        // 设置代理控件在场景中的位置 (修正坐标：为了让尖端对准点，向左偏移一半宽度，向上偏移整个高度)
-        // 假设按钮宽70，高55(含尖角)，尖角在底部中心
-        proxy->setPos(x - 35, y - 55);
-        proxy->setZValue(1); // 确保按钮在地图图片之上
-
-        // ================== 【修改点 3：核心坐标计算逻辑】 ==================
-        // 连接信号：使用 Lambda 表达式捕获 proxy 指针和 this 指针
-        connect(tagBtn, &MapMarkerBtn::hoverEntered, this, [=](QString c, int p, QString url, QPoint){
-
-            // 1. 设置卡片内容
+        // --- 连接悬浮信号 (要求3) ---
+        // 在 SpecialOffersPage::loadFlights() 的 connect 部分修改：
+        connect(tagBtn, &MapMarkerBtn::hoverEntered, this, [this, tagBtn](QString c, int p, QString url, QPoint globalPos){
             m_hoverCard->setContent(c, p, url);
-
-            // 2. 计算位置：从 场景坐标 -> 视图坐标 -> 父窗口坐标
-            // proxy->scenePos() 获取按钮在地图（场景）上的绝对位置
-            QPointF scenePos = proxy->scenePos();
-
-            // m_view->mapFromScene() 将场景坐标转换为 InteractiveMap 组件内的像素坐标
-            QPoint viewPos = m_view->mapFromScene(scenePos);
-
-            // m_view->mapTo() 将 View 内的坐标转换为 SpecialOffersPage (this) 的坐标
-            // 因为 m_hoverCard 是 SpecialOffersPage 的子控件
-            QPoint pagePos = m_view->mapTo(this, viewPos);
-
-            // 3. 调整卡片位置，使其位于按钮正上方
-            int cardW = m_hoverCard->width();
-            int cardH = m_hoverCard->height();
-            int btnW = tagBtn->width();
-
-            // 计算最终 X：让卡片中心对准按钮中心
-            int finalX = pagePos.x() + (btnW - cardW) / 2;
-
-            // 计算最终 Y：卡片放在按钮上方，稍微留点空隙 (比如 5px)
-            int finalY = pagePos.y() - cardH - 5;
-
-            m_hoverCard->move(finalX, finalY);
-            m_hoverCard->raise(); // 确保卡片在最上层
+            // 原代码用了全局坐标，现在改为：基于按钮在地图中的局部坐标计算
+            QPoint btnLocalPos = tagBtn->pos(); // 按钮在地图场景内的坐标
+            // 让卡片与按钮中心对齐（核心修正）
+            int cardX = btnLocalPos.x() - (m_hoverCard->width() / 2) + (tagBtn->width() / 2);
+            int cardY = btnLocalPos.y() - (m_hoverCard->height() / 2) + (tagBtn->height() / 2);
+            m_hoverCard->move(cardX, cardY);
             m_hoverCard->show();
         });
 
-        connect(tagBtn, &MapMarkerBtn::hoverLeft, this, [=](){
+        connect(tagBtn, &MapMarkerBtn::hoverLeft, this, [this](){
             m_hoverCard->hide();
         });
-        // ==============================================================
+
+        // 点击跳转逻辑保持不变
+        connect(tagBtn, &QPushButton::clicked, [city, price](){
+            qDebug() << "查看详情:" << city;
+        });
+
+        // 添加到场景
+        QGraphicsProxyWidget *proxy = m_scene->addWidget(tagBtn);
+        // 修正坐标：因为按钮坐标是左上角，为了让三角形尖端对准 (x,y)，需要向左偏移宽的一半，向上偏移整个高度
+        proxy->setPos(x - 35, y - 55);
+        proxy->setZValue(1);
     }
 }
