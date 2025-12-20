@@ -33,6 +33,11 @@ protected:
     void leaveEvent(QEvent *event) override;     // 鼠标离开
     void paintEvent(QPaintEvent *event) override; // 重绘按钮
 
+signals:
+    void hoverEntered(QString city, int price, QString imgUrl, QPoint localPos);
+    void hoverLeft();
+
+
 private:
     QString m_city;    // 城市名
     int m_price;       // 价格
