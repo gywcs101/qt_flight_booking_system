@@ -19,43 +19,6 @@ AllFlightsPage::AllFlightsPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 1. 去除边框 (AllFlightsPage 看起来比较干净，通常都有这句)
-    ui->scrollArea->setFrameShape(QFrame::NoFrame);
-
-    // 2. 强制设置滚动条样式表 (这是一个类似于携程/现代App的细长滚动条样式)
-    // 如果你刚才在 UI 文件里没找到样式，把这段代码复制进去，两个界面都会变好看
-    QString scrollStyle = R"(
-        QScrollArea {
-            border: none;
-            background-color: transparent;
-        }
-        QScrollBar:vertical {
-            border: none;
-            background: #F5F5F5;
-            width: 8px; /* 滚动条宽度 */
-            margin: 0px 0 0px 0;
-            border-radius: 4px;
-        }
-        QScrollBar::handle:vertical {
-            background: #CCCCCC; /* 滑块颜色 */
-            min-height: 20px;
-            border-radius: 4px;
-        }
-        QScrollBar::handle:vertical:hover {
-            background: #999999; /* 鼠标悬停变深 */
-        }
-        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-            height: 0px; /* 隐藏上下的箭头 */
-        }
-    )";
-
-    // 应用样式表
-    ui->scrollArea->setStyleSheet(scrollStyle);
-
-    // 3. 确保滚动区域背景透明 (防止白色遮挡)
-    ui->scrollArea->setAttribute(Qt::WA_TranslucentBackground);
-    ui->scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground); // 关键
-    ui->scrollAreaWidgetContents->setAttribute(Qt::WA_TranslucentBackground);
 
     // 1. 布局优化
     if (this->layout()) this->layout()->setContentsMargins(0,0,0,0);
