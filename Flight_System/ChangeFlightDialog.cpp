@@ -16,17 +16,16 @@ ChangeFlightDialog::ChangeFlightDialog(QWidget *parent, QString oldFlightId, QSt
 {
     ui->setupUi(this);
     this->setWindowTitle("选择改签航班");
-    this->resize(850, 600); // 窗口再大一点
+    this->resize(850, 600);
 
-    // =================================================================
-    // 【BUG 修复区】 强制设置 UI 属性，无视 .ui 文件的错误设置
-    // =================================================================
-
-    // 1. 强制让滚动区的内容自动撑开 (如果不写这句，内容区高度可能是0，导致一片白)
+    // =========================================================
+    // 1. 强制初始化 ScrollArea 属性，防止界面显示异常
+    // =========================================================
     ui->scrollArea->setWidgetResizable(true);
+    ui->scrollArea->setStyleSheet("background: transparent; border: none;");
+    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");
 
-    // 2. 暴力重置布局：如果有旧布局先删掉，重新 new 一个
-    // 这能解决“明明有数据但是界面不显示”或者“显示成一坨线”的问题
+    // 2. 暴力重置布局 (确保布局存在且参数正确)
     if (ui->scrollAreaWidgetContents->layout()) {
         delete ui->scrollAreaWidgetContents->layout();
     }
@@ -36,6 +35,7 @@ ChangeFlightDialog::ChangeFlightDialog(QWidget *parent, QString oldFlightId, QSt
     layout->setContentsMargins(20, 20, 20, 20);
     layout->setAlignment(Qt::AlignTop);
 
+    // 3. 加载数据
     loadAlternativeFlights(dep, arr);
 }
 
@@ -43,10 +43,7 @@ ChangeFlightDialog::~ChangeFlightDialog() { delete ui; }
 
 void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
 {
-    // 获取刚才我们在构造函数里强制 new 的布局
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
-
-    // 防御性检查 (虽然上面new了，但为了安全)
     if (!layout) return;
 
     // 清空旧数据
@@ -58,12 +55,9 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
 
     QString nowStr = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
 
-    // 打印调试信息
-    qDebug() << "========================================";
-    qDebug() << "【正在查找改签航班】";
-    qDebug() << "出发:" << dep << " 到达:" << arr;
-    qDebug() << "时间 > " << nowStr;
+    qDebug() << "【改签查询】出发:" << dep << " 到达:" << arr << " 排除:" << m_oldFlightId;
 
+    // SQL: 查找同航线、非原航班、时间在未来的航班
     QString sql = QString(
                       "SELECT * FROM flights "
                       "WHERE departure_city = '%1' "
@@ -77,10 +71,15 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
 
     if (!query.isActive()) {
         qDebug() << "SQL错误:" << query.lastError().text();
+        QLabel *err = new QLabel("系统繁忙，无法加载数据", this);
+        err->setAlignment(Qt::AlignCenter);
+        layout->addWidget(err);
         return;
     }
 
     int count = 0;
+    int delayCounter = 0; // 【关键】动画延迟计数器
+
     while (query.next()) {
         count++;
         FlightData data;
@@ -94,30 +93,29 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
         data.status = query.value("status").toString();
         data.isFavorite = false;
 
-        // 打印查到的数据，确保存活
-        qDebug() << "--> 生成卡片:" << data.flightId << " 价格:" << data.price;
-
+        // 创建卡片 (此时它因为构造函数里的设置，是全透明的)
         FlightCard *card = new FlightCard(data, this);
 
-        // 【关键】强制卡片可见，并设置固定高度 (防止被压缩成0)
-        card->show();
-        card->setMinimumHeight(120);
-
-        // 劫持点击事件
+        // 劫持点击事件：改签不是预订
+        card->disconnect();
         connect(card, &FlightCard::bookClicked, [=](QString id){
             confirmChange(data);
         });
 
         layout->addWidget(card);
+
+        // =============================================================
+        // 【核心修复】 必须调用动画函数，卡片才会从透明变成显示！
+        // =============================================================
+        card->startEntryAnimation(delayCounter * 50);
+        delayCounter++;
+        // =============================================================
     }
 
-    qDebug() << "共生成" << count << "张卡片";
-    qDebug() << "========================================";
-
     if (count == 0) {
-        QLabel *emptyLabel = new QLabel("暂无符合条件的改签航班", this);
+        QLabel *emptyLabel = new QLabel("没有找到可改签的航班\n(请确认是否有未来日期的同航线航班)", this);
         emptyLabel->setAlignment(Qt::AlignCenter);
-        emptyLabel->setStyleSheet("color: #999; font-size: 18px; margin-top: 50px;");
+        emptyLabel->setStyleSheet("color: #999; font-size: 16px; margin-top: 50px; font-weight: bold;");
         layout->addWidget(emptyLabel);
     }
 
@@ -129,11 +127,14 @@ void ChangeFlightDialog::confirmChange(const FlightData &newFlight)
     double diff = newFlight.price - m_oldPrice;
     QString msg;
     if (diff > 0) {
-        msg = QString("改签至 %1\n新票价: ¥%2\n原票价: ¥%3\n\n需补差价: ¥%4\n确定支付并改签吗？")
+        msg = QString("改签至航班: %1\n\n新票价: ¥%2\n原票价: ¥%3\n\n【需补差价: ¥%4】\n\n确定支付并改签吗？")
                   .arg(newFlight.flightId).arg(newFlight.price).arg(m_oldPrice).arg(diff);
-    } else {
-        msg = QString("改签至 %1\n新票价: ¥%2\n原票价: ¥%3\n\n将退还差价: ¥%4\n确定改签吗？")
+    } else if (diff < 0) {
+        msg = QString("改签至航班: %1\n\n新票价: ¥%2\n原票价: ¥%3\n\n【将退还差价: ¥%4】\n\n确定改签吗？")
                   .arg(newFlight.flightId).arg(newFlight.price).arg(m_oldPrice).arg(qAbs(diff));
+    } else {
+        msg = QString("改签至航班: %1\n\n价格相同，无需补差价。\n\n确定改签吗？")
+                  .arg(newFlight.flightId);
     }
 
     QMessageBox::StandardButton reply;
