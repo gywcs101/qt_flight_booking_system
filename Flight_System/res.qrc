@@ -34,6 +34,17 @@
         <file>find1_passage.jpg</file>
         <file>find2_author.jpg</file>
         <file>find2_passage.jpg</file>
+        <file>find15_passage.jpg</file>
+        <file>find16_passage.jpg</file>
+        <file>find17_passage.jpg</file>
+        <file>find18_passage.jpg</file>
+        <file>find19_passage.jpg</file>
+        <file>find20_passage.jpg</file>
+        <file>find21_passage.jpg</file>
+        <file>find22_passage.jpg</file>
+        <file>find23_passage.jpg</file>
+        <file>find24_passage.jpg</file>
+        <file>find25_passage.jpg</file>
     </qresource>
     <qresource prefix="/mapPic">
         <file>DaLian.png</file>
