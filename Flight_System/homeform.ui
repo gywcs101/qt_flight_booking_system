@@ -10,7 +10,7 @@
     <height>600</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="3,0,5">
    <property name="spacing">
     <number>20</number>
    </property>
@@ -32,10 +32,16 @@
    </item>
    <item>
     <widget class="QLabel" name="label">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>40</height>
+      </size>
+     </property>
      <property name="font">
       <font>
        <family>Microsoft YaHei</family>
-       <pointsize>16</pointsize>
+       <pointsize>30</pointsize>
        <bold>true</bold>
       </font>
      </property>
