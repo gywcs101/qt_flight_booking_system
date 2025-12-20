@@ -56,10 +56,10 @@ FavoritesPage::FavoritesPage(QWidget *parent) :
     ui->scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground); // 关键
     ui->scrollAreaWidgetContents->setAttribute(Qt::WA_TranslucentBackground);
 
-    // 样式美化
+    /* // 样式美化
     this->setStyleSheet("QWidget#FavoritesPage { background-color: #F5F7FA; }");
     ui->scrollArea->setStyleSheet("background: transparent; border: none;");
-    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");
+    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");  */
 
     if (!ui->scrollAreaWidgetContents->layout()) {
         QVBoxLayout *vbox = new QVBoxLayout(ui->scrollAreaWidgetContents);

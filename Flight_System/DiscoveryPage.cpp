@@ -13,33 +13,6 @@ DiscoveryPage::DiscoveryPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    initUi();
-    // [修改] 不再自己连接数据库，依赖全局的 ODBC 连接
-    loadData();
-}
-
-DiscoveryPage::~DiscoveryPage()
-{
-    delete ui;
-}
-
-void DiscoveryPage::initUi()
-{
-    // 检查是否已经有布局（防止重复设置）
-    if (!ui->scrollAreaWidgetContents->layout()) {
-        gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
-    } else {
-        gridLayout = qobject_cast<QGridLayout*>(ui->scrollAreaWidgetContents->layout());
-    }
-
-    gridLayout->setContentsMargins(20, 20, 20, 20);
-    gridLayout->setSpacing(20);
-
-    // 设置3列等宽
-    gridLayout->setColumnStretch(0, 1);
-    gridLayout->setColumnStretch(1, 1);
-    gridLayout->setColumnStretch(2, 1);
-
     ui->scrollArea->setFrameShape(QFrame::NoFrame);
 
     // 2. 强制设置滚动条样式表 (这是一个类似于携程/现代App的细长滚动条样式)
@@ -76,6 +49,34 @@ void DiscoveryPage::initUi()
     ui->scrollArea->setAttribute(Qt::WA_TranslucentBackground);
     ui->scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground); // 关键
     ui->scrollAreaWidgetContents->setAttribute(Qt::WA_TranslucentBackground);
+
+    initUi();
+    // [修改] 不再自己连接数据库，依赖全局的 ODBC 连接
+    loadData();
+}
+
+DiscoveryPage::~DiscoveryPage()
+{
+    delete ui;
+}
+
+void DiscoveryPage::initUi()
+{
+    // 检查是否已经有布局（防止重复设置）
+    if (!ui->scrollAreaWidgetContents->layout()) {
+        gridLayout = new QGridLayout(ui->scrollAreaWidgetContents);
+    } else {
+        gridLayout = qobject_cast<QGridLayout*>(ui->scrollAreaWidgetContents->layout());
+    }
+
+    gridLayout->setContentsMargins(20, 20, 20, 20);
+    gridLayout->setSpacing(20);
+
+    // 设置3列等宽
+    gridLayout->setColumnStretch(0, 1);
+    gridLayout->setColumnStretch(1, 1);
+    gridLayout->setColumnStretch(2, 1);
+
 }
 
 // [删除] 不再需要独立的 connectDatabase() 函数
