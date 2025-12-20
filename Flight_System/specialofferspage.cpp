@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <QScrollBar> // 用于设置滚动条策略
+#include <QTimer>
 // --- InteractiveMap 类的实现 ---
 
 InteractiveMap::InteractiveMap(QWidget *parent) : QGraphicsView(parent) {
@@ -60,6 +61,14 @@ SpecialOffersPage::SpecialOffersPage(QWidget *parent) : QWidget(parent)
     connectDatabase();
     loadMap();
     loadFlights();
+
+    QTimer::singleShot(0, this, [this](){
+        if(m_view && m_scene) {
+            // 这一步和你“重置按钮”里的逻辑一模一样
+            m_view->resetTransform();
+            m_view->centerOn(m_scene->sceneRect().center());
+        }
+    });
 }
 
 SpecialOffersPage::~SpecialOffersPage()
