@@ -55,10 +55,10 @@ MyOrdersPage::MyOrdersPage(QWidget *parent) :
     ui->scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground); // 关键
     ui->scrollAreaWidgetContents->setAttribute(Qt::WA_TranslucentBackground);
 
-    // 1. 美化背景 (淡灰色，与主界面融合)
+    /* // 1. 美化背景 (淡灰色，与主界面融合)
     this->setStyleSheet("QWidget#MyOrdersPage { background-color: #F5F7FA; }");
     ui->scrollArea->setStyleSheet("background: transparent; border: none;");
-    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");
+    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;"); */
 
     // 2. 确保滚动区内部有布局
     if (!ui->scrollAreaWidgetContents->layout()) {
