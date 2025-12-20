@@ -109,13 +109,14 @@ void DiscoveryPage::loadData()
 
     while (query.next()) {
         PostData data;
-        // 确保这些列名与您的数据库表完全一致
         data.id = query.value("id").toInt();
-        data.title = query.value("title").toString();
-        data.content = query.value("content").toString();
-        data.authorName = query.value("author_name").toString(); // 假设有 author_name 列
-        data.imagePath = query.value("image_path").toString();   // 假设有 image_path 列
-        data.avatarPath = query.value("avatar_path").toString(); // 假设有 avatar_path 列
+
+        // ⭐⭐ 全部改用 fromUtf8 ⭐⭐
+        data.title = QString::fromUtf8(query.value("title").toByteArray());
+        data.content = QString::fromUtf8(query.value("content").toByteArray());
+        data.authorName = QString::fromUtf8(query.value("author_name").toByteArray());
+        data.imagePath = QString::fromUtf8(query.value("image_path").toByteArray());
+        data.avatarPath = QString::fromUtf8(query.value("avatar_path").toByteArray());
 
         PostCard *card = new PostCard(data);
         connect(card, &PostCard::cardClicked, this, &DiscoveryPage::onCardClicked);
