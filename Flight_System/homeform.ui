@@ -41,12 +41,26 @@
      <property name="font">
       <font>
        <family>Microsoft YaHei</family>
-       <pointsize>30</pointsize>
+       <pointsize>-1</pointsize>
        <bold>true</bold>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+    font-family: &quot;Microsoft YaHei&quot;; /* 使用微软雅黑，由细变粗的关键 */
+    font-size: 28px;                /* 字号调大 */
+    font-weight: bold;              /* 加粗 */
+    color: #333333;                 /* 深灰色，比纯黑更有质感 */
+    padding-left: 10px;             /* 左边留点空隙，不要贴着屏幕边缘 */
+    margin-top: 10px;               /* 顶部留点空隙 */
+    margin-bottom: 10px;            /* 底部留点空隙 */
+}</string>
+     </property>
      <property name="text">
       <string>热门速报</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>
