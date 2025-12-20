@@ -35,4 +35,14 @@
         <file>find2_author.jpg</file>
         <file>find2_passage.jpg</file>
     </qresource>
+    <qresource prefix="/mapPic">
+        <file>DaLian.png</file>
+        <file>EnShi.png</file>
+        <file>HangZhou.png</file>
+        <file>NanJing.png</file>
+        <file>TaiYuan.png</file>
+        <file>WuHan.png</file>
+        <file>XiaMen.png</file>
+        <file>XiAn.png</file>
+    </qresource>
 </RCC>

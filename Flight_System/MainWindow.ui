@@ -22,12 +22,24 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QWidget" name="leftContainer" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="QListWidget" name="menuList">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>600</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
-          <width>500</width>
+          <width>450</width>
           <height>16777215</height>
          </size>
         </property>
@@ -126,22 +138,10 @@
    <item>
     <widget class="QWidget" name="rightContainer" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>7</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="page0_First">
          <widget class="AdBanner" name="bannerWidget" native="true">
