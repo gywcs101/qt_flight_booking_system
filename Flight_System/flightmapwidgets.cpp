@@ -28,6 +28,19 @@ CityDetailCard::CityDetailCard(QWidget *parent) : QWidget(parent) {
     layout->addWidget(infoLabel);
 }
 
+void CityDetailCard::setContent(const QString &city, int price, const QString &imagePath) {
+    // 如果没有图片就显示默认文字
+    QPixmap pix(imagePath);
+    if (pix.isNull()) {
+        imgLabel->setText("暂无图片");
+    } else {
+        imgLabel->setPixmap(pix);
+    }
+
+    // 设置文本一某表示城市和价格
+    infoLabel->setText(QString("<b>%1</b>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#6688ff; font-size:16px;'>¥%2</span>").arg(city).arg(price));
+}
+
 // ======================= MapMarkerBtn 实现 =======================
 
 MapMarkerBtn::MapMarkerBtn(const QString &city, int price, const QString &imgUrl, QWidget *parent)
