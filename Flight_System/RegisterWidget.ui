@@ -127,7 +127,7 @@
   <widget class="QPushButton" name="btn_register">
    <property name="geometry">
     <rect>
-     <x>70</x>
+     <x>50</x>
      <y>270</y>
      <width>56</width>
      <height>31</height>

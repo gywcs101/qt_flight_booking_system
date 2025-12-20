@@ -32,5 +32,7 @@
     <qresource prefix="/发现图片">
         <file>find1_author.jpg</file>
         <file>find1_passage.jpg</file>
+        <file>find2_author.jpg</file>
+        <file>find2_passage.jpg</file>
     </qresource>
 </RCC>

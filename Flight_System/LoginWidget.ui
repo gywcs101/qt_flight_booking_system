@@ -28,7 +28,7 @@
   <widget class="QPushButton" name="btn_login">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>30</x>
      <y>240</y>
      <width>56</width>
      <height>31</height>
@@ -38,7 +38,7 @@
     <string>登录</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="btn_cancel">
    <property name="geometry">
     <rect>
      <x>150</x>

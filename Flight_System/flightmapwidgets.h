@@ -26,25 +26,18 @@ private:
 class MapMarkerBtn : public QPushButton {
     Q_OBJECT
 public:
-    MapMarkerBtn(const QString &city, int price, const QString &imgUrl, QWidget *parent = nullptr);
-
-signals:
-    void hoverEntered(QString city, int price, QString imgUrl, QPoint globalPos);
-    void hoverLeft();
+    explicit MapMarkerBtn(const QString &city, int price, const QString &imgUrl, QWidget *parent = nullptr);
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
-
-    // 【修改点 1】注意这里参数变成了 QEnterEvent
-    void enterEvent(QEnterEvent *event) override;
-
-    // 【注意】leaveEvent 依然是用 QEvent，不需要改
-    void leaveEvent(QEvent *event) override;
+    void enterEvent(QEnterEvent *event) override; // 鼠标进入
+    void leaveEvent(QEvent *event) override;     // 鼠标离开
+    void paintEvent(QPaintEvent *event) override; // 重绘按钮
 
 private:
-    QString m_city;
-    int m_price;
-    QString m_imgUrl;
+    QString m_city;    // 城市名
+    int m_price;       // 价格
+    QString m_imgUrl;  // 图片路径
+    bool m_isHover = false; // 标记是否处于悬停状态
 };
 
 #endif // FLIGHTMAPWIDGETS_H

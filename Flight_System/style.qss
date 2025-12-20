@@ -3,27 +3,17 @@
 /* =================================================================== */
 * {
     font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-    /* border: 1px solid red; */ /* 调试时取消注释，查看所有控件边框 */
 }
-
 
 /* =================================================================== */
 /*               2. 登录/注册/重置密码窗口的专属样式                   */
 /* =================================================================== */
-
-/* 2.1. 设置背景图 */
 #LoginWidget, #RegisterWidget, #ResetPasswordWidget {
     border-image: url(:/LoginBackGround.png);
 }
-
-/* 2.2. 防污染重置：确保上述窗口的子控件不继承背景图 */
 #LoginWidget *, #RegisterWidget *, #ResetPasswordWidget * {
     border-image: none;
 }
-
-/* 2.3. 为上述窗口内的标签设置特定颜色（如果需要的话）*/
-/* 当前版本不需要，因为下面的全局 QLabel 已经设置了颜色 */
-
 
 /* =================================================================== */
 /*                   3. 通用控件样式 (全局应用)                        */
@@ -32,24 +22,25 @@
 /* 3.1. 标签 (QLabel) */
 QLabel {
     background: transparent;
-    color: #303133; /* 全局标签文字颜色：深灰 */
+    color: #303133;
     font-weight: bold;
     font-size: 14px;
 }
 
-/* 3.2. 输入框 (QLineEdit, QDateEdit 等) */
-QLineEdit, QDateEdit {
+/* 3.2. 输入框 (QLineEdit) */
+QLineEdit {
     background-color: white;
     border: 1px solid #DCDFE6;
     border-radius: 4px;
     padding: 6px 8px;
     color: #333333;
 }
-QLineEdit:focus, QDateEdit:focus {
+QLineEdit:focus {
     border-color: #409EFF;
 }
 
 /* 3.3. 按钮 (QPushButton) */
+/* --- 这是所有按钮的【默认】样式 --- */
 QPushButton {
     background-color: #409EFF; /* 主题蓝 */
     color: white;
@@ -57,8 +48,8 @@ QPushButton {
     padding: 8px 16px;
     border: none;
     font-weight: bold;
-    min-height: 20px; /* 防止按钮太矮 */
-    min-width: 60px;  /* 防止按钮太窄 */
+    min-height: 20px;
+    min-width: 60px;
 }
 QPushButton:hover {
     background-color: #66b1ff;
@@ -67,70 +58,35 @@ QPushButton:pressed {
     background-color: #3a8ee6;
 }
 
-/* 3.4. 特殊按钮样式 */
-/* 取消/删除按钮 */
-#btn_cancel, #btn_del, #btn_del_2, #btn_del_3 {
+/* --- [核心修改] 特殊化按钮样式 --- */
+
+/* 3.3.1. 为所有 objectName 是 'btn_cancel' 的按钮设置红色样式 */
+QPushButton#btn_cancel {
     background-color: #F56C6C; /* 红色 */
 }
-#btn_cancel:hover, #btn_del:hover, #btn_del_2:hover, #btn_del_3:hover {
+QPushButton#btn_cancel:hover {
     background-color: #f78989;
 }
+QPushButton#btn_cancel:pressed {
+    background-color: #f54a4a;
+}
 
-/* 注册链接按钮 */
-#btn_register {
+/* 3.3.2. 【只】为登录窗口里的 'btn_register' 设置链接样式 */
+/* 使用父子选择器，确保这条规则的范围被限定在 LoginWidget 内部 */
+#LoginWidget QPushButton#btn_register {
     background-color: transparent;
     color: #409EFF;
     text-align: right;
     font-weight: normal;
     padding: 0;
-}
-#btn_register:hover {
-    text-decoration: underline;
-}
-
-
-/* =================================================================== */
-/*                   4. AdminWidget 后台管理界面样式                   */
-/* =================================================================== */
-
-/* 4.1. AdminWidget 整体背景 */
-#AdminWidget {
-    background-color: #FFFFFF; /* 主内容区使用白色背景 */
-}
-
-/* 4.2. 左侧菜单容器 */
-/* 请在 UI 文件中，将左侧菜单所在的 QWidget 的 objectName 设为 "leftNavContainer" */
-#leftNavContainer {
-    background-color: #FFFFFF;
-    border-right: 1px solid #EAECEF;
-}
-
-/* 4.3. 左侧菜单 (QListWidget) */
-#listMenu {
     border: none;
-    background-color: transparent;
 }
-#listMenu::item {
-    padding: 12px 20px;
-    margin: 4px 8px; /* 给每个item一点外边距，更好看 */
-    border-radius: 4px;
+#LoginWidget QPushButton#btn_register:hover {
+    text-decoration: underline;
+    color: #66b1ff;
 }
-#listMenu::item:hover {
-    background-color: #F5F7FA; /* 悬停时变淡灰 */
-}
-#listMenu::item:selected {
-    background-color: #ECF5FF; /* 选中时变淡蓝 */
-    color: #409EFF; /* 选中时文字变主题蓝 */
-}
-
-/* 4.4. 右侧内容区标题 (如“添加/修改用户信息”) */
-/* 使用方法：在 UI 文件中，为这些标题 QLabel 添加动态属性 class="title-label" */
-QLabel[class="title-label"] {
-    font-size: 18px;
-    font-weight: bold;
-    color: #303133;
-    padding-top: 10px;
-    padding-bottom: 15px;
+#LoginWidget QPushButton#btn_register:pressed {
+    color: #3a8ee6;
 }
 
 /* 4.5. 表格 (QTableWidget) 样式 */
