@@ -17,9 +17,15 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    // [新增] 注销信号
+    void logout();
+
 private slots:
     void on_menuList_currentRowChanged(int currentRow);
-    void handleLogout();
+
+    // [新增] 处理来自 UserCenter 的注销请求
+    void handleUserLogout();
 
 private:
     Ui::MainWindow *ui;

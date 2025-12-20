@@ -2,65 +2,54 @@
 #include <QDebug>
 #include <QSqlError>
 
-// 【重要】删除了 QSqlDatabase db; 全局变量
+// 定义唯一的连接名称，防止混淆
+const QString CONNECTION_NAME = "FlightSystemConnection";
 
 bool ODBC::connectToDB()
 {
-    // 1. 检查默认连接是否已存在
-    if (QSqlDatabase::contains("qt_sql_default_connection")) {
-        QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
+    // 1. 检查连接是否已存在
+    if (QSqlDatabase::contains(CONNECTION_NAME)) {
+        QSqlDatabase db = QSqlDatabase::database(CONNECTION_NAME);
         if (db.isOpen()) {
             return true;
         }
-        // 如果存在但没打开，尝试打开
+        // 存在但关闭了，尝试重新打开
         if (db.open()) return true;
     }
 
-    // 2. 如果不存在，创建新连接
-    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC"); // 使用默认连接名
-    db.setDatabaseName("flight_system_database");
+    // 2. 创建新连接 (指定连接名，不使用默认连接)
+    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC", CONNECTION_NAME);
+    db.setDatabaseName("flight_system_database"); // 你的数据源名称
 
     if (!db.open()) {
         qDebug() << "数据库连接失败:" << db.lastError().text();
         return false;
     }
 
-    qDebug() << "✅ 数据库连接成功 (ODBC)";
+    qDebug() << "✅ 数据库连接成功:" << CONNECTION_NAME;
     return true;
 }
 
-// 获取数据库连接的辅助函数
-QSqlDatabase ODBC::getDB() {
-    if (QSqlDatabase::contains("qt_sql_default_connection")) {
-        return QSqlDatabase::database("qt_sql_default_connection");
+QSqlDatabase ODBC::getDB()
+{
+    if (QSqlDatabase::contains(CONNECTION_NAME)) {
+        return QSqlDatabase::database(CONNECTION_NAME);
     } else {
-        // 如果连接丢了，重新连接
         connectToDB();
-        return QSqlDatabase::database("qt_sql_default_connection");
+        return QSqlDatabase::database(CONNECTION_NAME);
     }
 }
 
 QSqlQuery ODBC::query(const QString &sql)
 {
-    // 1. 获取连接 (局部变量，用完即焚)
+    // [核心修复] 创建 Query 时显式传入我们的数据库连接
+    // 否则它会去抓默认连接，导致第二次登录时找不到驱动而闪退
     QSqlDatabase db = getDB();
-
-    // 2. 双重检查
-    if (!db.isOpen()) {
-        if (!connectToDB()) {
-            return QSqlQuery(); // 返回无效对象
-        }
-        db = getDB(); // 刷新
-    }
-
-    // 3. 创建查询 (关联到 db)
     QSqlQuery sqlQuery(db);
 
-    // 4. 执行
     if (!sqlQuery.exec(sql)) {
-        qWarning() << "SQL Error:" << sqlQuery.lastError().text();
-        qWarning() << "SQL String:" << sql;
+        qWarning() << "SQL执行失败:" << sqlQuery.lastError().text();
+        qWarning() << "SQL内容:" << sql;
     }
-
     return sqlQuery;
 }
