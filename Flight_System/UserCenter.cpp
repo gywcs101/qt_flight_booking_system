@@ -11,6 +11,9 @@
 #include <QPainterPath>
 #include <QMouseEvent> // 【关键】用于捕获鼠标点击
 #include <QFileDialog> // 【关键】用于打开文件选择框
+#include "LoginWidget.h"
+#include "MainWindow.h" // 必须包含主窗口头文件，否则无法创建新主窗
+#include <QApplication> // 用于获取当前程序实例（可选）
 
 UserCenter::UserCenter(QWidget *parent) :
     QWidget(parent),
@@ -240,10 +243,22 @@ void UserCenter::onBtnPassClicked()
 
 void UserCenter::onBtnLogoutClicked()
 {
-    auto reply = QMessageBox::question(this, "确认退出", "您确定要退出当前账号吗？",
-                                       QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-    if (reply == QMessageBox::Yes) {
-        UserSession::instance().setUserId(-1);
-        emit logoutSignal();
-    }
+    this->window()->close();
+
+    // 2. 创建一个新的登录窗口
+    LoginWidget *newLogin = new LoginWidget();
+
+    // 3. 【核心修复】为这个新窗口连接信号！
+    // 当新登录窗口发出 loginSuccess 信号时，执行 {} 里的代码
+    connect(newLogin, &LoginWidget::loginSuccess, [=](){
+        // 创建新的主窗口
+        MainWindow *newMain = new MainWindow();
+        newMain->show();
+
+        // 登录窗口会自动调用 close()，这里为了保险可以加上 deleteLater
+        newLogin->deleteLater();
+    });
+
+    // 4. 显示登录窗口
+    newLogin->show();
 }
