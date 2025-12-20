@@ -58,7 +58,7 @@
      <item>
       <widget class="QWidget" name="dest1" native="true">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -66,7 +66,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>250</height>
+         <height>252</height>
         </size>
        </property>
       </widget>
@@ -74,7 +74,7 @@
      <item>
       <widget class="QWidget" name="dest2" native="true">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -90,7 +90,7 @@
      <item>
       <widget class="QWidget" name="dest3" native="true">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
