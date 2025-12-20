@@ -4,17 +4,16 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 
+// 【重要】删除了 extern QSqlDatabase db;  <-- 绝对不能有这个
+
 class ODBC
 {
 public:
-    // 连接数据库
     static bool connectToDB();
-
-    // [核心] 获取数据库实例的统一接口
-    static QSqlDatabase getDB();
-
-    // 执行查询的通用接口
     static QSqlQuery query(const QString &sql);
+
+    // 辅助函数：获取当前连接
+    static QSqlDatabase getDB();
 };
 
 #endif // ODBC_H
