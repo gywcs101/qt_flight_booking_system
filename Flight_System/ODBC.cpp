@@ -2,58 +2,66 @@
 #include <QDebug>
 #include <QSqlError>
 
-// 定义全局数据库对象的实体
-QSqlDatabase db;
 
-/**
- * @brief 建立与数据库的连接 (保留您原来的函数名)
- * @return true 连接成功, false 连接失败
- */
 bool ODBC::connectToDB()
 {
-    // 检查默认连接是否已存在且打开
-    if (QSqlDatabase::contains("qt_sql_default_connection") && QSqlDatabase::database("qt_sql_default_connection").isOpen()) {
-        db = QSqlDatabase::database("qt_sql_default_connection");
-        return true;
+    // 1. 检查默认连接是否已经存在
+    if (QSqlDatabase::contains("qt_sql_default_connection")) {
+        QSqlDatabase db = QSqlDatabase::database("qt_sql_default_connection");
+        if (db.isOpen()) {
+            return true; // 连接已存在且打开，直接返回
+        } else {
+            // 连接存在但关闭了，尝试重新打开
+            if (db.open()) return true;
+        }
     }
 
-    // 添加数据库驱动
-    db = QSqlDatabase::addDatabase("QODBC");
-
-    // 设置你在ODBC数据源管理器中配置好的DSN名称
+    // 2. 如果不存在，创建新连接
+    // 注意：这里使用的是局部变量 db，但 addDatabase 会把它注册到 Qt 的全局管理中
+    QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
     db.setDatabaseName("flight_system_database");
-    // db.setUserName("your_username");
-    // db.setPassword("your_password");
+    // db.setUserName("root");
+    // db.setPassword("123456");
 
     if (!db.open()) {
         qDebug() << "数据库连接失败:" << db.lastError().text();
         return false;
     }
 
-    qDebug() << "✅ 成功连接到 flight_system_database via ODBC!";
+    qDebug() << "✅ 成功连接到数据库!";
     return true;
 }
 
-/**
- * @brief [补全] 执行一条SQL查询语句
- * @param sql 要执行的SQL语句
- * @return 返回QSqlQuery对象，用于获取结果或检查错误
- */
+// [新增] 辅助函数，安全获取数据库连接
+QSqlDatabase ODBC::getDB() {
+    if (QSqlDatabase::contains("qt_sql_default_connection")) {
+        return QSqlDatabase::database("qt_sql_default_connection");
+    } else {
+        // 如果连接丢了，尝试重连
+        connectToDB();
+        return QSqlDatabase::database("qt_sql_default_connection");
+    }
+}
+
 QSqlQuery ODBC::query(const QString &sql)
 {
-    // 确保数据库是连接状态，如果不是，尝试连接
+    // 1. 获取连接
+    QSqlDatabase db = getDB();
+
+    // 2. 再次检查是否打开
     if (!db.isOpen()) {
         qWarning() << "数据库未连接，正在尝试重新连接...";
-        if (!connectToDB()) { // 调用您自己的连接函数
+        if (!connectToDB()) {
             qWarning() << "重新连接失败，无法执行查询!";
-            return QSqlQuery(); // 返回一个无效的query对象
+            return QSqlQuery(); // 返回无效查询对象
         }
+        db = getDB(); // 刷新 db 对象
     }
 
-    // 创建一个查询对象，它会自动使用全局的db连接
+    // 3. 创建查询对象 (传入 db 确保使用正确的连接)
     QSqlQuery sqlQuery(db);
 
-    // 执行查询
+    // 4. 执行
     if (!sqlQuery.exec(sql)) {
         qWarning() << "SQL执行失败:" << sqlQuery.lastError().text();
         qWarning() << "失败的SQL语句:" << sql;
