@@ -69,5 +69,3 @@ QSqlQuery ODBC::query(const QString &sql)
 
     return sqlQuery;
 }
-
-
