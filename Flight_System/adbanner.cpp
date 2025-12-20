@@ -10,7 +10,9 @@
 #include <QSizePolicy> // 【新增】必须引入这个头文件
 
 AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
+
 {
+     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     // 1. 设置主布局
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
