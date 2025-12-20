@@ -22,105 +22,121 @@
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QWidget" name="leftContainer" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>0</height>
+      </size>
+     </property>
+     <widget class="QListWidget" name="menuList">
+      <property name="geometry">
+       <rect>
+        <x>6</x>
+        <y>6</y>
+        <width>256</width>
+        <height>711</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>400</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::FocusPolicy::NoFocus</enum>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="spacing">
+       <number>8</number>
+      </property>
       <item>
-       <widget class="QListWidget" name="menuList">
-        <property name="maximumSize">
-         <size>
-          <width>500</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::FocusPolicy::NoFocus</enum>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Shape::NoFrame</enum>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>24</width>
-          <height>24</height>
-         </size>
-        </property>
-        <property name="spacing">
-         <number>8</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>首页</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/main.png</normaloff>:/main.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>全部航班</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/flight3.png</normaloff>:/flight3.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>特价机票</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/account.png</normaloff>:/account.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>发现</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/find.png</normaloff>:/find.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>我的收藏</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/like.png</normaloff>:/like.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>我的订单</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/dingdan.png</normaloff>:/dingdan.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>用户中心</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/user.png</normaloff>:/user.png</iconset>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>关于我们</string>
-         </property>
-         <property name="icon">
-          <iconset resource="res.qrc">
-           <normaloff>:/about.png</normaloff>:/about.png</iconset>
-         </property>
-        </item>
-       </widget>
+       <property name="text">
+        <string>首页</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/main.png</normaloff>:/main.png</iconset>
+       </property>
       </item>
-     </layout>
+      <item>
+       <property name="text">
+        <string>全部航班</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/flight3.png</normaloff>:/flight3.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>特价机票</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/account.png</normaloff>:/account.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>发现</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/find.png</normaloff>:/find.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>我的收藏</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/like.png</normaloff>:/like.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>我的订单</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/dingdan.png</normaloff>:/dingdan.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>用户中心</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/user.png</normaloff>:/user.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>关于我们</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>:/about.png</normaloff>:/about.png</iconset>
+       </property>
+      </item>
+     </widget>
     </widget>
    </item>
    <item>
@@ -141,7 +157,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>7</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="page0_First">
          <widget class="AdBanner" name="bannerWidget" native="true">
@@ -268,8 +284,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
