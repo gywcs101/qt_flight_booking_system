@@ -18,10 +18,48 @@ FavoritesPage::FavoritesPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // 样式美化
+    this->setStyleSheet("QWidget#MyOrdersPage { background-color: #F5F7FA; }");
+
+    // ================== 【通用滚动条样式开始】 ==================
+    // 1. 设置滚动区无边框，背景透明
+    ui->scrollArea->setFrameShape(QFrame::NoFrame);
+    ui->scrollArea->setAttribute(Qt::WA_TranslucentBackground);
+    ui->scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground);
+
+    // 2. 现代风格滚动条样式表 (所有界面统一)
+    QString commonStyle = R"(
+        QScrollArea { border: none; background: transparent; }
+        QScrollBar:vertical {
+            border: none;
+            background: #F5F5F5;      /* 浅灰轨道 */
+            width: 8px;               /* 宽度8像素 */
+            margin: 0px 0 0px 0;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical {
+            background: #C0C0C0;      /* 银灰滑块 */
+            min-height: 20px;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background: #909090;      /* 悬停变深 */
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            height: 0px;              /* 隐藏箭头 */
+        }
+        QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+            background: none;
+        }
+    )";
+
+    // 3. 应用样式
+    ui->scrollArea->setStyleSheet(commonStyle);
+    // ================== 【通用滚动条样式结束】 ==================
+
+    /*// 样式美化
     this->setStyleSheet("QWidget#FavoritesPage { background-color: #F5F7FA; }");
     ui->scrollArea->setStyleSheet("background: transparent; border: none;");
-    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");
+    ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;"); */
 
     if (!ui->scrollAreaWidgetContents->layout()) {
         QVBoxLayout *vbox = new QVBoxLayout(ui->scrollAreaWidgetContents);
