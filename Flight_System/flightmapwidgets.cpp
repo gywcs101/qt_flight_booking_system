@@ -1,7 +1,32 @@
 #include "flightmapwidgets.h"
 #include <QDebug>
 
-// ... (CityDetailCard 的实现保持不变，此处省略) ...
+CityDetailCard::CityDetailCard(QWidget *parent) : QWidget(parent) {
+    // 设置卡片固定大小
+    this->setFixedSize(200, 180);
+    // 设置背景和阴影样式，或者用QSS
+    // this->setStyleSheet("QWidget#CityDetailCard { background-color: white; border-radius: 8px; border: 1px solid #ccc; }");
+
+    // 布局
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0,0,0,0);
+    layout->setSpacing(0);
+
+    // 1、图片
+    imgLabel = new QLabel(this);
+    imgLabel->setFixedHeight(120);
+    imgLabel->setStyleSheet("border: top-left-radius: 8px; border-top-right-radius: 8px; background-color: #eee;");
+    imgLabel->setAlignment(Qt::AlignCenter); // 图片居中
+    imgLabel->setScaledContents(true); // 图片自适应
+
+    // 2、文字
+    infoLabel = new QLabel(this);
+    infoLabel->setAlignment(Qt::AlignCenter);
+    infoLabel->setStyleSheet("font-family: 'Microsoft Yahei'; font-size: 14px; padding: 16px; color: #333;");
+
+    layout->addWidget(imgLabel);
+    layout->addWidget(infoLabel);
+}
 
 // ======================= MapMarkerBtn 实现 =======================
 
