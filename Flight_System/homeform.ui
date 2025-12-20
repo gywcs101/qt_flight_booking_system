@@ -10,7 +10,7 @@
     <height>600</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0,3,0">
    <property name="spacing">
     <number>20</number>
    </property>
@@ -60,7 +60,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>180</height>
+         <height>250</height>
         </size>
        </property>
       </widget>
@@ -76,7 +76,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>180</height>
+         <height>250</height>
         </size>
        </property>
       </widget>
@@ -92,7 +92,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>180</height>
+         <height>250</height>
         </size>
        </property>
       </widget>
@@ -102,7 +102,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
