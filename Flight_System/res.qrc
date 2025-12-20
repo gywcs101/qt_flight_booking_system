@@ -35,4 +35,6 @@
         <file>find2_author.jpg</file>
         <file>find2_passage.jpg</file>
     </qresource>
+    <qresource prefix="/mapPic"/>
+    <qresource prefix="/map"/>
 </RCC>
