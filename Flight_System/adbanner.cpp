@@ -43,7 +43,7 @@ AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
 
     m_btnGroup = new QButtonGroup(this);
     // 注意：QButtonGroup::buttonClicked(int) 是 Qt5/6 通用的重载信号，建议用旧式宏或函数指针转换
-    connect(m_btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onDotClicked(int)));
+   connect(m_btnGroup, &QButtonGroup::idClicked, this, &AdBanner::onDotClicked);
 
     // 4. 添加到主布局
     mainLayout->addWidget(m_imageLabel);

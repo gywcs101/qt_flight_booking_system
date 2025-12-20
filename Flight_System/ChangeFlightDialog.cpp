@@ -31,15 +31,11 @@ ChangeFlightDialog::ChangeFlightDialog(QWidget *parent, QString oldFlightId, QSt
         delete ui->scrollAreaWidgetContents->layout();
     }
 
-    // 3. 创建全新的垂直布局
     QVBoxLayout *layout = new QVBoxLayout(ui->scrollAreaWidgetContents);
     layout->setSpacing(15);
     layout->setContentsMargins(20, 20, 20, 20);
-    layout->setAlignment(Qt::AlignTop); // 顶端对齐
+    layout->setAlignment(Qt::AlignTop);
 
-    // =================================================================
-
-    // 加载数据
     loadAlternativeFlights(dep, arr);
 }
 
@@ -108,7 +104,6 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
         card->setMinimumHeight(120);
 
         // 劫持点击事件
-        card->disconnect();
         connect(card, &FlightCard::bookClicked, [=](QString id){
             confirmChange(data);
         });
