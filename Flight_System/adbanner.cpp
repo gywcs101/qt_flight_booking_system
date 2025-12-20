@@ -7,12 +7,13 @@
 #include <QPixmap>
 #include <QShowEvent>
 #include <QHideEvent>
+#include <QResizeEvent>
 #include <QSizePolicy> // 【新增】必须引入这个头文件
 
 AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
 
 {
-     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     // 1. 设置主布局
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -153,4 +154,12 @@ void AdBanner::hideEvent(QHideEvent *e) {
     // 窗口隐藏时自动停止轮播，节省CPU
     m_timer->stop();
     QWidget::hideEvent(e);
+}
+
+void AdBanner::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    // 尺寸变化时，重新按当前 QLabel 大小设置图片
+    updateImage();
 }
