@@ -42,7 +42,7 @@ ResetPasswordWidget::~ResetPasswordWidget()
 }
 
 // 槽函数对应您的 “注册” (btn_register) 按钮
-void ResetPasswordWidget::on_btn_confirm_clicked()
+void ResetPasswordWidget::on_btn_register_clicked()
 {
     // 1. 获取所有输入框的内容
     QString originalPass = ui->lineEdit_originalPassword->text();

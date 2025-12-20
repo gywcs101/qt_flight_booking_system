@@ -92,7 +92,7 @@ void LoginWidget::on_btn_login_clicked()
     }
 }
 
-void LoginWidget::on_pushButton_2_clicked()
+void LoginWidget::on_btn_cancel_clicked()
 {
     // 退出程序
     qApp->quit();

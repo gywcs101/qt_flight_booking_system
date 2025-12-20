@@ -27,7 +27,7 @@ signals:
 
 private slots:
     void on_btn_login_clicked();
-    void on_pushButton_2_clicked(); // 退出程序
+    void on_btn_cancel_clicked(); // 退出程序
     void on_btn_register_clicked(); // 注册
 
 private:

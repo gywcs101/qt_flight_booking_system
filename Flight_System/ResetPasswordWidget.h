@@ -24,7 +24,7 @@ private slots:
     // --- [核心修改 3] ---
     // 在这里声明您在 .cpp 文件中实现的两个槽函数
     // 这样编译器就知道这个类确实有这两个成员函数
-    void on_btn_confirm_clicked();
+    void on_btn_register_clicked();
     void on_btn_cancel_clicked();
 
 private:
