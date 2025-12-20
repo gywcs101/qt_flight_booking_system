@@ -243,22 +243,47 @@ void UserCenter::onBtnPassClicked()
 
 void UserCenter::onBtnLogoutClicked()
 {
-    this->window()->close();
+    // 1. 弹出询问对话框
+    // 参数依次是：父窗口(this)，标题，内容，按钮组合(Yes/No)
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this,
+                                  "退出确认",
+                                  "您确定要退出登录并返回主界面吗？",
+                                  QMessageBox::Yes | QMessageBox::No);
 
-    // 2. 创建一个新的登录窗口
-    LoginWidget *newLogin = new LoginWidget();
+    // 2. 判断用户的选择
+    if (reply == QMessageBox::Yes) {
+        // --- 用户点击了“Yes”，执行退出逻辑 ---
 
-    // 3. 【核心修复】为这个新窗口连接信号！
-    // 当新登录窗口发出 loginSuccess 信号时，执行 {} 里的代码
-    connect(newLogin, &LoginWidget::loginSuccess, [=](){
-        // 创建新的主窗口
-        MainWindow *newMain = new MainWindow();
-        newMain->show();
+        // A. 关闭当前的主窗口（包含UserCenter的那个大窗口）
+        if (this->window()) {
+            this->window()->close();
+        }
 
-        // 登录窗口会自动调用 close()，这里为了保险可以加上 deleteLater
-        newLogin->deleteLater();
-    });
+        // B. 创建新的登录窗口
+        LoginWidget *newLogin = new LoginWidget();
 
-    // 4. 显示登录窗口
-    newLogin->show();
+        // C. 【关键】重新连接信号槽
+        // 这一步是为了解决你刚才遇到的“第二次登录进不去”的问题
+        connect(newLogin, &LoginWidget::loginSuccess, [=](){
+            MainWindow *newMain = new MainWindow();
+            newMain->show();
+            newLogin->deleteLater(); // 登录成功后销毁登录窗口
+        });
+
+        // 同样处理管理员登录信号（如果有的话）
+        connect(newLogin, &LoginWidget::loginSuccessAsAdmin, [=](){
+            MainWindow *newMain = new MainWindow();
+            // 如果管理员界面不一样，这里new对应的窗口
+            newMain->show();
+            newLogin->deleteLater();
+        });
+
+        // D. 显示登录窗口
+        newLogin->show();
+
+    } else {
+        // --- 用户点击了“No”，什么都不做 ---
+        return;
+    }
 }
