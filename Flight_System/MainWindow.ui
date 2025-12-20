@@ -19,7 +19,88 @@
   <property name="windowTitle">
    <string>哈夫克航班系统</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QWidget" name="rightContainer" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page0_First">
+         <widget class="AdBanner" name="bannerWidget" native="true">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>0</y>
+            <width>731</width>
+            <height>161</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QWidget" name="destinationWidget" native="true">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>270</y>
+            <width>231</width>
+            <height>301</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>210</y>
+            <width>101</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>华文琥珀</family>
+            <pointsize>25</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;热门速报&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+         <widget class="QWidget" name="destinationWidget2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>260</x>
+            <y>270</y>
+            <width>231</width>
+            <height>301</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QWidget" name="destinationWidget3" native="true">
+          <property name="geometry">
+           <rect>
+            <x>510</x>
+            <y>270</y>
+            <width>231</width>
+            <height>301</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+        <widget class="AllFlightsPage" name="page1_Flight"/>
+        <widget class="SpecialOffersPage" name="page2_Special"/>
+        <widget class="DiscoveryPage" name="page3_Find"/>
+        <widget class="FavoritesPage" name="page4_Love"/>
+        <widget class="MyOrdersPage" name="page5_Order"/>
+        <widget class="UserCenter" name="page6_User"/>
+        <widget class="AboutPage" name="page7_About"/>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item>
     <widget class="QWidget" name="leftContainer" native="true">
      <property name="minimumSize">
@@ -135,30 +216,15 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <widget class="QWidget" name="rightContainer" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QStackedWidget" name="stackedWidget">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="homeForm" name="page0_First"/>
-        <widget class="AllFlightsPage" name="page1_Flight"/>
-        <widget class="SpecialOffersPage" name="page2_Special"/>
-        <widget class="DiscoveryPage" name="page3_Find"/>
-        <widget class="FavoritesPage" name="page4_Love"/>
-        <widget class="MyOrdersPage" name="page5_Order"/>
-        <widget class="UserCenter" name="page6_User"/>
-        <widget class="AboutPage" name="page7_About"/>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>AdBanner</class>
+   <extends>QWidget</extends>
+   <header>adbanner.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>AllFlightsPage</class>
    <extends>QWidget</extends>
@@ -199,12 +265,6 @@
    <class>AboutPage</class>
    <extends>QWidget</extends>
    <header>aboutpage.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>homeForm</class>
-   <extends>QWidget</extends>
-   <header location="global">homeform.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
