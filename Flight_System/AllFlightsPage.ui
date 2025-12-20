@@ -138,6 +138,18 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QFrame" name="topBar">
      <property name="minimumSize">
@@ -275,8 +287,8 @@ QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>770</width>
-        <height>381</height>
+        <width>782</width>
+        <height>393</height>
        </rect>
       </property>
      </widget>
