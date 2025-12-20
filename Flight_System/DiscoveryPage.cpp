@@ -13,6 +13,43 @@ DiscoveryPage::DiscoveryPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->scrollArea->setFrameShape(QFrame::NoFrame);
+
+    // 2. 强制设置滚动条样式表 (这是一个类似于携程/现代App的细长滚动条样式)
+    // 如果你刚才在 UI 文件里没找到样式，把这段代码复制进去，两个界面都会变好看
+    QString scrollStyle = R"(
+        QScrollArea {
+            border: none;
+            background-color: transparent;
+        }
+        QScrollBar:vertical {
+            border: none;
+            background: #F5F5F5;
+            width: 8px; /* 滚动条宽度 */
+            margin: 0px 0 0px 0;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical {
+            background: #CCCCCC; /* 滑块颜色 */
+            min-height: 20px;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background: #999999; /* 鼠标悬停变深 */
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            height: 0px; /* 隐藏上下的箭头 */
+        }
+    )";
+
+    // 应用样式表
+    ui->scrollArea->setStyleSheet(scrollStyle);
+
+    // 3. 确保滚动区域背景透明 (防止白色遮挡)
+    ui->scrollArea->setAttribute(Qt::WA_TranslucentBackground);
+    ui->scrollArea->viewport()->setAttribute(Qt::WA_TranslucentBackground); // 关键
+    ui->scrollAreaWidgetContents->setAttribute(Qt::WA_TranslucentBackground);
+
     initUi();
     // [修改] 不再自己连接数据库，依赖全局的 ODBC 连接
     loadData();
@@ -40,7 +77,6 @@ void DiscoveryPage::initUi()
     gridLayout->setColumnStretch(1, 1);
     gridLayout->setColumnStretch(2, 1);
 
-    ui->scrollArea->setFrameShape(QFrame::NoFrame);
 }
 
 // [删除] 不再需要独立的 connectDatabase() 函数
@@ -74,13 +110,14 @@ void DiscoveryPage::loadData()
 
     while (query.next()) {
         PostData data;
-        // 确保这些列名与您的数据库表完全一致
         data.id = query.value("id").toInt();
-        data.title = query.value("title").toString();
-        data.content = query.value("content").toString();
-        data.authorName = query.value("author_name").toString(); // 假设有 author_name 列
-        data.imagePath = query.value("image_path").toString();   // 假设有 image_path 列
-        data.avatarPath = query.value("avatar_path").toString(); // 假设有 avatar_path 列
+
+        // ⭐⭐ 全部改用 fromUtf8 ⭐⭐
+        data.title = QString::fromUtf8(query.value("title").toByteArray());
+        data.content = QString::fromUtf8(query.value("content").toByteArray());
+        data.authorName = QString::fromUtf8(query.value("author_name").toByteArray());
+        data.imagePath = QString::fromUtf8(query.value("image_path").toByteArray());
+        data.avatarPath = QString::fromUtf8(query.value("avatar_path").toByteArray());
 
         PostCard *card = new PostCard(data);
         connect(card, &PostCard::cardClicked, this, &DiscoveryPage::onCardClicked);

@@ -32,19 +32,13 @@ protected:
     void leaveEvent(QEvent *event) override;      // 鼠标离开
     void paintEvent(QPaintEvent *event) override; // 重绘按钮
 
-<<<<<<< HEAD
-signals:
-    void hoverEntered(QString city, int price, QString imgUrl, QPoint localPos);
-    void hoverLeft();
 
-=======
     // ================== 【修改点 1：添加信号声明】 ==================
 signals:
     // 声明鼠标进入和离开的信号，供外部连接
     void hoverEntered(QString city, int price, QString imgUrl, QPoint localPos);
     void hoverLeft();
     // ==============================================================
->>>>>>> parent of fa23cea (Revert "Merge branch 'main' of https://github.com/gywcs101/qt_flight_booking_system")
 
 private:
     QString m_city;     // 城市名
