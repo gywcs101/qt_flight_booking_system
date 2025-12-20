@@ -3,6 +3,7 @@
 #include "FlightCard.h"
 #include "FlightData.h"
 #include "ODBC.h"
+#include "UserSession.h" // 【修复】必须引入用户会话，否则没法存收藏
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
@@ -18,14 +19,11 @@ ChangeFlightDialog::ChangeFlightDialog(QWidget *parent, QString oldFlightId, QSt
     this->setWindowTitle("选择改签航班");
     this->resize(850, 600);
 
-    // =========================================================
-    // 1. 强制初始化 ScrollArea 属性，防止界面显示异常
-    // =========================================================
+    // 1. 初始化布局
     ui->scrollArea->setWidgetResizable(true);
     ui->scrollArea->setStyleSheet("background: transparent; border: none;");
     ui->scrollAreaWidgetContents->setStyleSheet("background: transparent;");
 
-    // 2. 暴力重置布局 (确保布局存在且参数正确)
     if (ui->scrollAreaWidgetContents->layout()) {
         delete ui->scrollAreaWidgetContents->layout();
     }
@@ -35,7 +33,7 @@ ChangeFlightDialog::ChangeFlightDialog(QWidget *parent, QString oldFlightId, QSt
     layout->setContentsMargins(20, 20, 20, 20);
     layout->setAlignment(Qt::AlignTop);
 
-    // 3. 加载数据
+    // 2. 加载数据
     loadAlternativeFlights(dep, arr);
 }
 
@@ -46,39 +44,41 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
     if (!layout) return;
 
-    // 清空旧数据
     QLayoutItem *child;
     while ((child = layout->takeAt(0)) != nullptr) {
         if(child->widget()) delete child->widget();
         delete child;
     }
 
+    // 【修复 1】获取当前用户ID
+    int uid = UserSession::instance().getUserId();
+
     QString nowStr = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
 
-    qDebug() << "【改签查询】出发:" << dep << " 到达:" << arr << " 排除:" << m_oldFlightId;
-
-    // SQL: 查找同航线、非原航班、时间在未来的航班
+    // =================================================================
+    // 【修复 2】修改 SQL，增加 is_fav 字段查询
+    // 这样如果航班已经是收藏状态，心形图标就会自动变红
+    // =================================================================
     QString sql = QString(
-                      "SELECT * FROM flights "
-                      "WHERE departure_city = '%1' "
-                      "AND arrival_city = '%2' "
-                      "AND flight_id != '%3' "
-                      "AND departure_time > '%4' "
+                      "SELECT f.*, "
+                      "(SELECT COUNT(*) FROM favorites WHERE user_id = %1 AND flight_id = f.flight_id) as is_fav "
+                      "FROM flights f "
+                      "WHERE departure_city = '%2' "
+                      "AND arrival_city = '%3' "
+                      "AND flight_id != '%4' "
+                      "AND departure_time > '%5' "
                       "ORDER BY departure_time ASC"
-                      ).arg(dep).arg(arr).arg(m_oldFlightId).arg(nowStr);
+                      ).arg(uid).arg(dep).arg(arr).arg(m_oldFlightId).arg(nowStr);
 
     QSqlQuery query = ODBC::query(sql);
 
     if (!query.isActive()) {
-        qDebug() << "SQL错误:" << query.lastError().text();
-        QLabel *err = new QLabel("系统繁忙，无法加载数据", this);
-        err->setAlignment(Qt::AlignCenter);
-        layout->addWidget(err);
+        qDebug() << "改签查询SQL失败:" << query.lastError().text();
         return;
     }
 
     int count = 0;
-    int delayCounter = 0; // 【关键】动画延迟计数器
+    int delayCounter = 0;
 
     while (query.next()) {
         count++;
@@ -91,31 +91,51 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
         data.arrTime = query.value("arrival_time").toDateTime();
         data.price = query.value("price").toDouble();
         data.status = query.value("status").toString();
-        data.isFavorite = false;
 
-        // 创建卡片 (此时它因为构造函数里的设置，是全透明的)
+        // 【修复 3】正确读取收藏状态
+        data.isFavorite = query.value("is_fav").toInt() > 0;
+
         FlightCard *card = new FlightCard(data, this);
 
-        // 劫持点击事件：改签不是预订
+        // 劫持预订按钮（改签逻辑）
         card->disconnect();
         connect(card, &FlightCard::bookClicked, [=](QString id){
             confirmChange(data);
         });
 
-        layout->addWidget(card);
+        // =================================================================
+        // 【修复 4】添加收藏功能的信号连接
+        // 之前这里漏掉了，所以点击没反应
+        // =================================================================
+        connect(card, &FlightCard::favClicked, [=](const QString& fid, bool isFav){
+            if (uid == -1) return;
 
-        // =============================================================
-        // 【核心修复】 必须调用动画函数，卡片才会从透明变成显示！
-        // =============================================================
+            QString favSql;
+            if (isFav) {
+                // 插入收藏
+                favSql = QString("INSERT INTO favorites (user_id, flight_id) VALUES (%1, '%2')")
+                             .arg(uid).arg(fid);
+            } else {
+                // 取消收藏
+                favSql = QString("DELETE FROM favorites WHERE user_id = %1 AND flight_id = '%2'")
+                             .arg(uid).arg(fid);
+            }
+
+            // 执行数据库操作
+            ODBC::query(favSql);
+            qDebug() << "改签界面更新收藏状态:" << fid << isFav;
+        });
+        // =================================================================
+
+        layout->addWidget(card);
         card->startEntryAnimation(delayCounter * 50);
         delayCounter++;
-        // =============================================================
     }
 
     if (count == 0) {
-        QLabel *emptyLabel = new QLabel("没有找到可改签的航班\n(请确认是否有未来日期的同航线航班)", this);
+        QLabel *emptyLabel = new QLabel("没有找到可改签的航班", this);
         emptyLabel->setAlignment(Qt::AlignCenter);
-        emptyLabel->setStyleSheet("color: #999; font-size: 16px; margin-top: 50px; font-weight: bold;");
+        emptyLabel->setStyleSheet("color: #999; font-size: 16px; margin-top: 50px;");
         layout->addWidget(emptyLabel);
     }
 
@@ -124,17 +144,18 @@ void ChangeFlightDialog::loadAlternativeFlights(QString dep, QString arr)
 
 void ChangeFlightDialog::confirmChange(const FlightData &newFlight)
 {
+    // ... 保持原有逻辑不变 ...
     double diff = newFlight.price - m_oldPrice;
     QString msg;
     if (diff > 0) {
-        msg = QString("改签至航班: %1\n\n新票价: ¥%2\n原票价: ¥%3\n\n【需补差价: ¥%4】\n\n确定支付并改签吗？")
+        msg = QString("改签至 %1\n新票价: ¥%2\n原票价: ¥%3\n\n需补差价: ¥%4\n确定支付并改签吗？")
                   .arg(newFlight.flightId).arg(newFlight.price).arg(m_oldPrice).arg(diff);
     } else if (diff < 0) {
-        msg = QString("改签至航班: %1\n\n新票价: ¥%2\n原票价: ¥%3\n\n【将退还差价: ¥%4】\n\n确定改签吗？")
+        msg = QString("改签至 %1\n新票价: ¥%2\n原票价: ¥%3\n\n将退还差价: ¥%4\n确定改签吗？")
                   .arg(newFlight.flightId).arg(newFlight.price).arg(m_oldPrice).arg(qAbs(diff));
     } else {
-        msg = QString("改签至航班: %1\n\n价格相同，无需补差价。\n\n确定改签吗？")
-                  .arg(newFlight.flightId);
+        msg = QString("改签至 %1\n新票价: ¥%2\n原票价: ¥%3\n\n价格相同\n确定改签吗？")
+                  .arg(newFlight.flightId).arg(newFlight.price).arg(m_oldPrice);
     }
 
     QMessageBox::StandardButton reply;
