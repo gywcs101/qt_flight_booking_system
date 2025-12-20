@@ -25,6 +25,9 @@ protected:
     void showEvent(QShowEvent *event) override;
     void hideEvent(QHideEvent *event) override;
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 private slots:
     void showNextImage();
     void onDotClicked(int index);

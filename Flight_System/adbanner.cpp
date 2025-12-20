@@ -7,12 +7,13 @@
 #include <QPixmap>
 #include <QShowEvent>
 #include <QHideEvent>
+#include <QResizeEvent>
 #include <QSizePolicy> // 【新增】必须引入这个头文件
 
 AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
 
 {
-     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     // 1. 设置主布局
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
@@ -21,7 +22,7 @@ AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
     // 2. 图片显示区域
     m_imageLabel = new QLabel(this);
     m_imageLabel->setAlignment(Qt::AlignCenter);
-    m_imageLabel->setScaledContents(true); // 允许图片缩放填充
+    m_imageLabel->setScaledContents(false); // 允许图片缩放填充
 
     // ==========================================================
     // 【核心修改】设置尺寸策略，让图片随窗口拉伸
@@ -34,7 +35,10 @@ AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
 
     // 3. 底部小圆点区域
     m_indicatorContainer = new QWidget(this);
-    m_indicatorContainer->setFixedHeight(30); // 固定高度，不随窗口变大
+    m_indicatorContainer->setSizePolicy(
+        QSizePolicy::Expanding,
+        QSizePolicy::Minimum
+        );
     m_indicatorContainer->setStyleSheet("background-color: rgba(0,0,0,50);");
 
     m_indicatorLayout = new QHBoxLayout(m_indicatorContainer);
@@ -43,7 +47,7 @@ AdBanner::AdBanner(QWidget *parent) : QWidget(parent), m_currentIndex(0)
 
     m_btnGroup = new QButtonGroup(this);
     // 注意：QButtonGroup::buttonClicked(int) 是 Qt5/6 通用的重载信号，建议用旧式宏或函数指针转换
-    connect(m_btnGroup, SIGNAL(buttonClicked(int)), this, SLOT(onDotClicked(int)));
+   connect(m_btnGroup, &QButtonGroup::idClicked, this, &AdBanner::onDotClicked);
 
     // 4. 添加到主布局
     mainLayout->addWidget(m_imageLabel);
@@ -106,15 +110,21 @@ void AdBanner::showNextImage()
 void AdBanner::updateImage()
 {
     if (m_imagePaths.isEmpty()) return;
-
-    // 防止索引越界
     if (m_currentIndex >= m_imagePaths.count()) m_currentIndex = 0;
 
     QPixmap pix(m_imagePaths[m_currentIndex]);
-    m_imageLabel->setPixmap(pix);
+    if (pix.isNull()) return;
 
-    // 同步小圆点状态
-    if(m_btnGroup->button(m_currentIndex)) {
+    // 🔥 核心修复：按当前 QLabel 尺寸缩放
+    QPixmap scaled = pix.scaled(
+        m_imageLabel->size(),
+        Qt::IgnoreAspectRatio,          // 铺满（不管比例）
+        Qt::SmoothTransformation
+        );
+
+    m_imageLabel->setPixmap(scaled);
+
+    if (m_btnGroup->button(m_currentIndex)) {
         m_btnGroup->button(m_currentIndex)->setChecked(true);
     }
 }
@@ -153,4 +163,12 @@ void AdBanner::hideEvent(QHideEvent *e) {
     // 窗口隐藏时自动停止轮播，节省CPU
     m_timer->stop();
     QWidget::hideEvent(e);
+}
+
+void AdBanner::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+
+    // 尺寸变化时，重新按当前 QLabel 大小设置图片
+    updateImage();
 }
