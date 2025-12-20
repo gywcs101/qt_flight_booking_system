@@ -66,18 +66,15 @@ void LoginWidget::on_btn_login_clicked()
         bool isUser = LoginFunc::verifyUser(username, password);
 
         if(isUser){
-            // 5. 【关键】获取并保存用户 ID
-            // 既然 verifyUser 成功了，说明账号密码是对的，现在查一下 ID
-            QSqlQuery query;
+            // 【关键】指定连接
+            QSqlQuery query(ODBC::getDB());
+
             query.prepare("SELECT id FROM users WHERE username = :u");
             query.bindValue(":u", username);
 
             if(query.exec() && query.next()) {
                 int userId = query.value("id").toInt();
-
-                // 将 ID 存入单例，供后续“我的订单”、“收藏”使用
                 UserSession::instance().setUserId(userId);
-
                 qDebug() << "用户登录成功，ID:" << userId;
             } else {
                 // 极少见的情况：验证通过但查不到ID
