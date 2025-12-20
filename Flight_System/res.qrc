@@ -28,12 +28,37 @@
         <file>dev2.jpg</file>
         <file>dev3.jpg</file>
         <file>logo.png</file>
+        <file>find4_passage.jpg</file>
+        <file>find5_passage.jpg</file>
+        <file>find6_passage.jpg</file>
+        <file>find7_passage.jpg</file>
+        <file>find8_passage.jpg</file>
+        <file>find9_passage.jpg</file>
+        <file>find10_passage.jpg</file>
+        <file>find11_passage.jpg</file>
+        <file>find12_passage.jpg</file>
+        <file>find13_passage.jpg</file>
+        <file>find14_passage.jpg</file>
     </qresource>
     <qresource prefix="/发现图片">
-        <file>find1_author.jpg</file>
         <file>find1_passage.jpg</file>
-        <file>find2_author.jpg</file>
         <file>find2_passage.jpg</file>
+        <file>find3_passage.jpg</file>
+        <file>find100_author.jpg</file>
+        <file>find100_passage.jpg</file>
+        <file>find101_author.jpg</file>
+        <file>find101_passage.jpg</file>
+        <file>find4_passage.jpg</file>
+        <file>find5_passage.jpg</file>
+        <file>find6_passage.jpg</file>
+        <file>find7_passage.jpg</file>
+        <file>find8_passage.jpg</file>
+        <file>find9_passage.jpg</file>
+        <file>find10_passage.jpg</file>
+        <file>find11_passage.jpg</file>
+        <file>find12_passage.jpg</file>
+        <file>find13_passage.jpg</file>
+        <file>find14_passage.jpg</file>
     </qresource>
     <qresource prefix="/mapPic">
         <file>DaLian.png</file>
