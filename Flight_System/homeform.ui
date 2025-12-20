@@ -19,7 +19,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
+   <property name="spacing">
+    <number>4</number>
+   </property>
    <item>
     <widget class="AdBanner" name="adbanner" native="true">
      <property name="sizePolicy">
