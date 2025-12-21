@@ -1,6 +1,6 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-
+#include"UserSession.h"
 // 引入子页面头文件
 #include "LoginWidget.h"
 #include "UserCenter.h"
@@ -72,7 +72,7 @@ void MainWindow::on_menuList_currentRowChanged(int currentRow)
         break;
     }
 }
-
+/*
 // 处理退出登录信号的槽函数 (保留你原本的逻辑)
 void MainWindow::handleLogout()
 {
@@ -82,4 +82,25 @@ void MainWindow::handleLogout()
     // 2. 创建一个新的登录窗口实例并显示它
     LoginWidget *loginWindow = new LoginWidget();
     loginWindow->show();
+}
+*/
+
+void MainWindow::handleLogout()
+{
+    // 1. 清除全局用户ID
+    UserSession::instance().setUserId(-1);
+
+    // 2. 【核心修复】重置 StackedWidget 到首页 (Page 0)
+    // 这样下次 show() 的时候，就不会显示还留着旧数据的 UserCenter 了
+    ui->menuList->setCurrentRow(0);
+    ui->stackedWidget->setCurrentIndex(0);
+
+    // 如果首页有状态，也可以在这里重置，例如：
+    // if(m_homeForm) m_homeForm->reset();
+
+    // 3. 隐藏主窗口
+    this->hide();
+
+    // 4. 发信号给 main.cpp
+    emit logout();
 }

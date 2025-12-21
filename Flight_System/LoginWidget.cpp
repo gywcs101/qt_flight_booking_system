@@ -2,7 +2,7 @@
 #include "ui_LoginWidget.h"
 #include "LoginFunc.h"
 #include "UserSession.h"
-#include "ODBC.h" // 【重要】引入 ODBC 确保连接
+#include "ODBC.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QApplication>
@@ -16,8 +16,10 @@ LoginWidget::LoginWidget(QWidget *parent) :
     ui->setupUi(this);
     this->setAttribute(Qt::WA_StyledBackground);
 
-    // 可以在这里预先连接一次数据库，或者在点击按钮时连接
-    // ODBC::connectToDB();
+    // 强制设置第一项为用户，第二项为管理员，防止顺序错乱
+    ui->comboBox->clear();
+    ui->comboBox->addItem("用户");
+    ui->comboBox->addItem("管理员");
 }
 
 LoginWidget::~LoginWidget()
@@ -25,84 +27,68 @@ LoginWidget::~LoginWidget()
     delete ui;
 }
 
+void LoginWidget::showEvent(QShowEvent *event)
+{
+    QWidget::showEvent(event);
+    ui->lineEdit_username->clear();
+    ui->lineEdit_password->clear();
+    ui->lineEdit_username->setFocus();
+}
 void LoginWidget::on_btn_login_clicked()
 {
-    // 1. 获取输入
     QString username = ui->lineEdit_username->text().trimmed();
     QString password = ui->lineEdit_password->text();
-    QString role = ui->comboBox->currentText();
 
-    // 2. 非空校验
+    // 【核心修复】使用索引判断，不要用 text() == "管理员"
+    // 防止因为空格、中文编码导致判断失败从而进入 else 分支
+    int roleIndex = ui->comboBox->currentIndex();
+
     if(username.isEmpty() || password.isEmpty()){
         QMessageBox::warning(this, "提示", "请输入用户名和密码");
         return;
     }
 
-    // 3. 【关键修复】确保数据库连接正常
-    // 如果之前断开了，这里会重新连接。如果没有这一步，直接查库可能会崩。
-    if (!ODBC::connectToDB()) {
-        QMessageBox::critical(this, "错误", "无法连接到数据库，请检查网络或配置！");
-        return;
-    }
+    if (!ODBC::connectToDB()) return;
 
-    // 4. 分角色登录逻辑
-    if(role == "管理员"){
-        // 验证管理员
+    // --- 管理员逻辑 (索引 1) ---
+    if (roleIndex == 1) {
         bool isAdmin = LoginFunc::verifyAdmin(username, password);
         if(isAdmin){
-            qDebug() << "管理员登录成功:" << username;
+            // 管理员不需要 UserSession ID，设为 0
+            UserSession::instance().setUserId(0);
 
-            // 管理员不需要记录 UserSession ID (或者设为0/特殊值)
-            // UserSession::instance().setUserId(0);
-
-            emit loginSuccessAsAdmin();
+            qDebug() << "管理员验证通过，发送 loginSuccessAsAdmin 信号";
+            emit loginSuccessAsAdmin(); // 发送信号给 main.cpp
             this->close();
         } else {
-            QMessageBox::warning(this, "登录失败", "管理员账号或密码错误！");
+            QMessageBox::warning(this, "失败", "管理员账号或密码错误！");
         }
     }
+    // --- 用户逻辑 (索引 0) ---
     else {
-        // 验证普通用户
         bool isUser = LoginFunc::verifyUser(username, password);
-
         if(isUser){
-            // 5. 【关键】获取并保存用户 ID
-            // 既然 verifyUser 成功了，说明账号密码是对的，现在查一下 ID
-            QSqlQuery query;
-            query.prepare("SELECT id FROM users WHERE username = :u");
-            query.bindValue(":u", username);
-
-            if(query.exec() && query.next()) {
+            QSqlQuery query = ODBC::query(QString("SELECT id FROM users WHERE username = '%1'").arg(username));
+            if(query.next()) {
                 int userId = query.value("id").toInt();
-
-                // 将 ID 存入单例，供后续“我的订单”、“收藏”使用
                 UserSession::instance().setUserId(userId);
 
-                qDebug() << "用户登录成功，ID:" << userId;
+                emit loginSuccess(); // 发送信号给 main.cpp
+                this->close();
             } else {
-                // 极少见的情况：验证通过但查不到ID
-                qWarning() << "警告：无法获取用户ID";
-                UserSession::instance().setUserId(-1);
+                QMessageBox::warning(this, "异常", "无法获取用户信息");
             }
-
-            // 发送信号并关闭登录窗
-            emit loginSuccess();
-            this->close();
-        }
-        else{
-            QMessageBox::warning(this, "登录失败", "用户名或密码错误！");
+        } else {
+            QMessageBox::warning(this, "失败", "用户名或密码错误！\n(管理员请记得切换下拉框)");
         }
     }
 }
-
 void LoginWidget::on_btn_cancel_clicked()
 {
-    // 退出程序
     qApp->quit();
 }
 
 void LoginWidget::on_btn_register_clicked()
 {
-    // 跳转注册
     emit goToRegister();
 }
