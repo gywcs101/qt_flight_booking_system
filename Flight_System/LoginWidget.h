@@ -15,6 +15,10 @@ public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
 
+protected:
+    void showEvent(QShowEvent *event) override;
+
+
 signals:
     // 跳转注册页信号
     void goToRegister();

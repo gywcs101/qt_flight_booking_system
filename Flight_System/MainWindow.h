@@ -16,6 +16,7 @@ class MainWindow : public QWidget
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+signals: void logout();
 
 private slots:
     void on_menuList_currentRowChanged(int currentRow);

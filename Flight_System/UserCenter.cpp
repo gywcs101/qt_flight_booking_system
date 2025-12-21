@@ -1,6 +1,7 @@
 #include "UserCenter.h"
 #include "ui_UserCenter.h"
 #include "ODBC.h"
+#include"AdminWidget.h"
 #include "UserSession.h"
 #include "ResetPasswordWidget.h"
 #include <QSqlQuery>
@@ -273,7 +274,7 @@ void UserCenter::onBtnLogoutClicked()
 
         // 同样处理管理员登录信号（如果有的话）
         connect(newLogin, &LoginWidget::loginSuccessAsAdmin, [=](){
-            MainWindow *newMain = new MainWindow();
+            AdminWidget *newMain = new AdminWidget();
             // 如果管理员界面不一样，这里new对应的窗口
             newMain->show();
             newLogin->deleteLater();
