@@ -237,7 +237,7 @@
          <string>-添加/修改/搜索 用户信息------------------------------------------------------------------------------------------------------------------------------------------------------------------</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_modify_4">
+       <widget class="QPushButton" name="btn_search">
         <property name="geometry">
          <rect>
           <x>550</x>
@@ -431,7 +431,7 @@
          <string>修改</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_modify_5">
+       <widget class="QPushButton" name="btn_search_2">
         <property name="geometry">
          <rect>
           <x>550</x>
@@ -737,7 +737,7 @@
          <string>修改</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_modify_6">
+       <widget class="QPushButton" name="btn_search_3">
         <property name="geometry">
          <rect>
           <x>550</x>

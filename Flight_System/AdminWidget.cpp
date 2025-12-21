@@ -376,3 +376,131 @@ void AdminWidget::clearFlightInputs() {
     ui->lineEdit_capacity->clear();
     m_selectedFlightId.clear();
 }
+
+void AdminWidget::on_btn_search_clicked()
+{
+    // 1. 获取输入
+    QString u = ui->lineEdit_username->text().trimmed();
+    QString p = ui->lineEdit_phone->text().trimmed();
+
+    // 2. 构建 SQL 语句
+    // WHERE 1=1 是为了方便后续拼接 AND 语句
+    QString sql = "SELECT id, username, password, phone, balance FROM users WHERE 1=1";
+
+    if (!u.isEmpty()) {
+        sql += QString(" AND username LIKE '%%1%'").arg(u);
+    }
+    if (!p.isEmpty()) {
+        sql += QString(" AND phone LIKE '%%1%'").arg(p);
+    }
+
+    // 3. 执行查询
+    QSqlQuery query = ODBC::query(sql);
+
+    // 4. 刷新表格 (这部分逻辑和 loadUsers 是一样的)
+    ui->tableUser->setRowCount(0); // 清空旧数据
+    int row = 0;
+    while(query.next()) {
+        ui->tableUser->insertRow(row);
+        ui->tableUser->setItem(row, 0, new QTableWidgetItem(query.value("id").toString()));
+        ui->tableUser->setItem(row, 1, new QTableWidgetItem(query.value("username").toString()));
+        ui->tableUser->setItem(row, 2, new QTableWidgetItem(query.value("password").toString()));
+        ui->tableUser->setItem(row, 3, new QTableWidgetItem(query.value("phone").toString()));
+        ui->tableUser->setItem(row, 4, new QTableWidgetItem(query.value("balance").toString()));
+        row++;
+    }
+
+    if (row == 0) {
+        QMessageBox::information(this, "提示", "未找到符合条件的用户");
+    }
+}
+
+// 在 AdminWidget.cpp 中添加
+
+void AdminWidget::on_btn_search_2_clicked()
+{
+    QString u = ui->lineEdit_managername->text().trimmed();
+    QString p = ui->lineEdit_phone_2->text().trimmed();
+
+    QString sql = "SELECT id, username, password, phone FROM admins WHERE 1=1";
+
+    if (!u.isEmpty()) {
+        sql += QString(" AND username LIKE '%%1%'").arg(u);
+    }
+    if (!p.isEmpty()) {
+        sql += QString(" AND phone LIKE '%%1%'").arg(p);
+    }
+
+    QSqlQuery query = ODBC::query(sql);
+
+    ui->tableManager->setRowCount(0);
+    int row = 0;
+    while(query.next()) {
+        ui->tableManager->insertRow(row);
+        ui->tableManager->setItem(row, 0, new QTableWidgetItem(query.value("id").toString()));
+        ui->tableManager->setItem(row, 1, new QTableWidgetItem(query.value("username").toString()));
+        ui->tableManager->setItem(row, 2, new QTableWidgetItem(query.value("password").toString()));
+        ui->tableManager->setItem(row, 3, new QTableWidgetItem(query.value("phone").toString()));
+        row++;
+    }
+
+    if (row == 0) {
+        QMessageBox::information(this, "提示", "未找到符合条件的管理员");
+    }
+}
+
+// 在 AdminWidget.cpp 中添加
+
+void AdminWidget::on_btn_search_3_clicked()
+{
+    // 1. 获取所有输入框的内容
+    QString fid = ui->lineEdit_flightID->text().trimmed();
+    QString dep = ui->lineEdit_departure->text().trimmed();
+    QString arr = ui->lineEdit_destination->text().trimmed();
+    QString dt  = ui->lineEdit_dptTime->text().trimmed(); // 日期模糊搜索
+
+    // 2. 构建 SQL
+    QString sql = "SELECT flight_id, airline, departure_city, arrival_city, departure_time, arrival_time, price, capacity FROM flights WHERE 1=1";
+
+    if (!fid.isEmpty()) {
+        sql += QString(" AND flight_id LIKE '%%1%'").arg(fid);
+    }
+    if (!dep.isEmpty()) {
+        sql += QString(" AND departure_city LIKE '%%1%'").arg(dep);
+    }
+    if (!arr.isEmpty()) {
+        sql += QString(" AND arrival_city LIKE '%%1%'").arg(arr);
+    }
+    if (!dt.isEmpty()) {
+        // 支持搜索日期，例如输入 "2025-12"
+        sql += QString(" AND departure_time LIKE '%%1%'").arg(dt);
+    }
+
+    // 价格和容量可以做精确匹配或者范围匹配，这里简单处理为精确匹配（如果不为空）
+    // 如果你想搜价格区间，需要UI加两个框，这里暂不处理
+    if (!ui->lineEdit_price->text().isEmpty()) {
+        sql += QString(" AND price = %1").arg(ui->lineEdit_price->text());
+    }
+
+    // 3. 执行与刷新
+    QSqlQuery query = ODBC::query(sql);
+
+    ui->tableFlight->setRowCount(0);
+    int row = 0;
+    while(query.next()) {
+        ui->tableFlight->insertRow(row);
+        ui->tableFlight->setItem(row, 0, new QTableWidgetItem(query.value("flight_id").toString()));
+        ui->tableFlight->setItem(row, 1, new QTableWidgetItem(query.value("airline").toString()));
+        ui->tableFlight->setItem(row, 2, new QTableWidgetItem(query.value("departure_city").toString()));
+        ui->tableFlight->setItem(row, 3, new QTableWidgetItem(query.value("arrival_city").toString()));
+        ui->tableFlight->setItem(row, 4, new QTableWidgetItem(query.value("departure_time").toDateTime().toString("yyyy-MM-dd HH:mm")));
+        ui->tableFlight->setItem(row, 5, new QTableWidgetItem(query.value("arrival_time").toDateTime().toString("yyyy-MM-dd HH:mm")));
+        ui->tableFlight->setItem(row, 6, new QTableWidgetItem(QString::number(query.value("price").toDouble(), 'f', 2)));
+        ui->tableFlight->setItem(row, 7, new QTableWidgetItem(query.value("capacity").toString()));
+        row++;
+    }
+
+    if (row == 0) {
+        QMessageBox::information(this, "提示", "未找到符合条件的航班");
+    }
+}

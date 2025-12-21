@@ -16,26 +16,28 @@ public:
     ~AdminWidget();
 
 private slots:
-    // [核心修正] 槽函数名必须与 objectName 'listMenu' 对应
     void on_listMenu_currentRowChanged(int currentRow);
 
-    // --- 用户管理槽函数 ---
+    // --- 用户管理 ---
     void on_tableUser_cellClicked(int row, int column);
     void on_btn_add_clicked();
     void on_btn_del_clicked();
     void on_btn_modify_clicked();
+    void on_btn_search_clicked(); // [新增] 用户搜索
 
-    // --- 管理员管理槽函数 ---
+    // --- 管理员管理 ---
     void on_tableManager_cellClicked(int row, int column);
     void on_btn_add_2_clicked();
     void on_btn_del_2_clicked();
     void on_btn_modify_2_clicked();
+    void on_btn_search_2_clicked(); // [新增] 管理员搜索
 
-    // --- 航班管理槽函数 ---
+    // --- 航班管理 ---
     void on_tableFlight_cellClicked(int row, int column);
     void on_btn_add_3_clicked();
     void on_btn_del_3_clicked();
     void on_btn_modify_3_clicked();
+    void on_btn_search_3_clicked(); // [新增] 航班搜索
 
 private:
     void setupUiCustom();
