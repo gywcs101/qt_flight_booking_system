@@ -26,8 +26,8 @@
       <widget class="QListWidget" name="listMenu">
        <property name="font">
         <font>
-         <family>宋体</family>
-         <pointsize>13</pointsize>
+         <family>楷体</family>
+         <pointsize>11</pointsize>
          <bold>false</bold>
         </font>
        </property>
