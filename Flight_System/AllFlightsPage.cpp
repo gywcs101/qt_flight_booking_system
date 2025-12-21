@@ -19,7 +19,6 @@ AllFlightsPage::AllFlightsPage(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // ================== 【通用滚动条样式开始】 ==================
     // 1. 设置滚动区无边框，背景透明
     ui->scrollArea->setFrameShape(QFrame::NoFrame);
     ui->scrollArea->setAttribute(Qt::WA_TranslucentBackground);
@@ -53,24 +52,16 @@ AllFlightsPage::AllFlightsPage(QWidget *parent) :
 
     // 3. 应用样式
     ui->scrollArea->setStyleSheet(commonStyle);
-    // ================== 【通用滚动条样式结束】 ==================
 
 
-    // 1. 布局优化
     if (this->layout()) this->layout()->setContentsMargins(0,0,0,0);
     if (!ui->scrollAreaWidgetContents->layout()) {
         QVBoxLayout *vbox = new QVBoxLayout(ui->scrollAreaWidgetContents);
         vbox->setSpacing(15);
         vbox->setContentsMargins(20, 20, 20, 20);
     }
-
-    // 2. 初始化日期
     ui->dateSelector->setDate(QDate::currentDate());
-
-    // 3. 连接查询按钮
     connect(ui->btnSearch, &QPushButton::clicked, this, &AllFlightsPage::loadFlightsData);
-
-    // 4. 自动加载
     loadFlightsData();
 }
 
@@ -84,7 +75,6 @@ void AllFlightsPage::loadFlightsData()
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(ui->scrollAreaWidgetContents->layout());
     if (!layout) return;
 
-    // 清空界面
     QLayoutItem *child;
     while ((child = layout->takeAt(0)) != nullptr) {
         if (child->widget()) delete child->widget();
@@ -93,10 +83,7 @@ void AllFlightsPage::loadFlightsData()
 
     int uid = UserSession::instance().getUserId();
 
-    // =================================================================
-    // 【核心修改 1】 SQL 查询：排除已预订的航班
-    // =================================================================
-    // 逻辑：查找 flights 表，但排除掉 (NOT IN) 那些在 orders 表里 flight_id 和 user_id 都匹配的记录
+    //查找
     QString sql = QString("SELECT f.*, "
                           "(SELECT COUNT(*) FROM favorites WHERE user_id = %1 AND flight_id = f.flight_id) as is_fav "
                           "FROM flights f "
@@ -145,7 +132,7 @@ void AllFlightsPage::loadFlightsData()
         FlightCard *card = new FlightCard(data, this);
         layout->addWidget(card);
 
-        // --- 1. 收藏逻辑 ---
+        //收藏
         connect(card, &FlightCard::favClicked, [=](const QString& fid, bool isFav){
             if (uid == -1) return;
             QString favSql;
@@ -154,14 +141,14 @@ void AllFlightsPage::loadFlightsData()
             ODBC::query(favSql);
         });
 
-        // --- 2. 预订逻辑 (自动扣费 + 移除卡片) ---
+        //预定
         connect(card, &FlightCard::bookClicked, [=](QString fid) {
             if (uid == -1) {
                 QMessageBox::warning(this, "提示", "请先登录后再预订机票！");
                 return;
             }
 
-            // A. 检查余额
+            //检查余额
             QString balanceSql = QString("SELECT balance FROM users WHERE id = %1").arg(uid);
             QSqlQuery balanceQ = ODBC::query(balanceSql);
             if (balanceQ.next()) {
@@ -173,42 +160,40 @@ void AllFlightsPage::loadFlightsData()
                     return;
                 }
 
-                // B. 开启事务
+                //开启事务
                 QSqlDatabase::database().transaction();
                 bool success = true;
 
-                // 扣款
+                //扣款
                 QString deductSql = QString("UPDATE users SET balance = balance - %1 WHERE id = %2")
                                         .arg(data.price).arg(uid);
                 if (ODBC::query(deductSql).lastError().isValid()) success = false;
 
-                // 生成订单
+                //生成订单
                 QString orderSql = QString("INSERT INTO orders (user_id, flight_id, price, status, create_time) "
                                            "VALUES (%1, '%2', %3, '已支付', NOW())")
                                        .arg(uid).arg(fid).arg(data.price);
                 if (ODBC::query(orderSql).lastError().isValid()) success = false;
 
-                // C. 提交或回滚
+                //提交或回滚
                 if (success) {
                     QSqlDatabase::database().commit();
 
                     QMessageBox::information(this, "预订成功",
                                              QString("预订成功！\n已自动扣除 ¥%1。\n您可以在“我的订单”中查看详情。").arg(data.price));
 
-                    // 【核心修改 2】 预订成功后，立即从界面移除该卡片
-                    layout->removeWidget(card); // 1. 从布局移除
-                    card->deleteLater();        // 2. 销毁对象
+                    layout->removeWidget(card); //从布局移除
+                    card->deleteLater();        //销毁对象
                 } else {
                     QSqlDatabase::database().rollback();
                     QMessageBox::critical(this, "预订失败", "系统繁忙，交易已取消，请重试。");
                 }
             }
         });
-        card->startEntryAnimation(delayCounter * 80); // 每个间隔 80ms
+        card->startEntryAnimation(delayCounter * 80);
         delayCounter++;
     }
 
-    // 暂无数据提示
     if(count == 0){
         QLabel* tipLabel = new QLabel("未找到符合条件的航班\n(或者该日期的航班您已全部预订)", this);
         tipLabel->setAlignment(Qt::AlignCenter);
