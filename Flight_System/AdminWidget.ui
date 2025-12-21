@@ -86,7 +86,7 @@
        <widget class="QPushButton" name="btn_del">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>250</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -104,7 +104,7 @@
        <widget class="QPushButton" name="btn_add">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>100</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -122,7 +122,7 @@
        <widget class="QPushButton" name="btn_modify">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>400</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -235,6 +235,24 @@
         </property>
         <property name="text">
          <string>-添加/修改/搜索 用户信息------------------------------------------------------------------------------------------------------------------------------------------------------------------</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_modify_4">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>550</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>搜索</string>
         </property>
        </widget>
       </widget>
@@ -362,7 +380,7 @@
        <widget class="QPushButton" name="btn_add_2">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>100</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -380,7 +398,7 @@
        <widget class="QPushButton" name="btn_del_2">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>250</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -398,7 +416,7 @@
        <widget class="QPushButton" name="btn_modify_2">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>400</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -411,6 +429,24 @@
         </property>
         <property name="text">
          <string>修改</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_modify_5">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>550</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>搜索</string>
         </property>
        </widget>
       </widget>
@@ -650,7 +686,7 @@
        <widget class="QPushButton" name="btn_add_3">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>100</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -668,7 +704,7 @@
        <widget class="QPushButton" name="btn_del_3">
         <property name="geometry">
          <rect>
-          <x>340</x>
+          <x>250</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -686,7 +722,7 @@
        <widget class="QPushButton" name="btn_modify_3">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>400</x>
           <y>550</y>
           <width>91</width>
           <height>31</height>
@@ -699,6 +735,24 @@
         </property>
         <property name="text">
          <string>修改</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_modify_6">
+        <property name="geometry">
+         <rect>
+          <x>550</x>
+          <y>550</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>搜索</string>
         </property>
        </widget>
       </widget>
