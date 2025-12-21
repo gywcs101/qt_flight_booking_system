@@ -1,4 +1,0 @@
-QListWidget {
-    background-color: transparent; /* 背景完全透明 */
-    border: none;                  /* 去除边框 */
-}
